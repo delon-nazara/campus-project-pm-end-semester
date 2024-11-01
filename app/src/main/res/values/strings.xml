@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">ProyekAkhirPemrogramanMobile</string>
+    <string name="app_name">Central Class</string>
+    <string name="base_screen">Base Screen</string>
+    <string name="go_to_register_screen">Go to Register Screen</string>
+    <string name="go_to_login_screen">Go to Login Screen</string>
+    <string name="this_is_base_screen">This is Base Screen</string>
 </resources>
