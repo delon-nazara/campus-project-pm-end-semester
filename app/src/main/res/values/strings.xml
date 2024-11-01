@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Central Class</string>
-    <string name="base_screen">Base Screen</string>
+    <string name="go_to_base_screen">Go to Base Screen</string>
     <string name="go_to_register_screen">Go to Register Screen</string>
     <string name="go_to_login_screen">Go to Login Screen</string>
     <string name="this_is_base_screen">This is Base Screen</string>
+    <string name="this_is_register_screen">This is Register Screen</string>
+    <string name="this_is_login_screen">This is Login Screen</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="student_id">NIM</string>
+    <string name="password">Kata Sandi</string>
 </resources>
