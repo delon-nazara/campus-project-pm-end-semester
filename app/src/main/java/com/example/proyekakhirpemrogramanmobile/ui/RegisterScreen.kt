@@ -26,7 +26,10 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(
+    onLoginScreenButtonClicked: () -> Unit,
+    onBaseScreenButtonClicked: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -82,7 +85,7 @@ fun RegisterScreen() {
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             Button(
-                onClick = {},
+                onClick = onLoginScreenButtonClicked,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -91,7 +94,7 @@ fun RegisterScreen() {
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = {},
+                onClick = onBaseScreenButtonClicked,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)

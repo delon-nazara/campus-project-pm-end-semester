@@ -26,7 +26,10 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onRegisterScreenButtonClicked: () -> Unit,
+    onBaseScreenButtonClicked: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +67,7 @@ fun LoginScreen() {
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.width(300.dp)
             )
-            Spacer(modifier = Modifier.height(150.dp))
+            Spacer(modifier = Modifier.height(125.dp))
         }
 
         Column(
@@ -73,7 +76,7 @@ fun LoginScreen() {
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             Button(
-                onClick = {},
+                onClick = onRegisterScreenButtonClicked,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -82,7 +85,7 @@ fun LoginScreen() {
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = {},
+                onClick = onBaseScreenButtonClicked,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
