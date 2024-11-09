@@ -73,7 +73,7 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = { authViewModel.register(email, password, context) },
+                onClick = { authViewModel.register(email, password, context, navController) },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)

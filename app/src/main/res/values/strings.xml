@@ -1,13 +1,22 @@
 <resources>
+
     <string name="app_name">Central Class</string>
+
     <string name="go_to_base_screen">Go to Base Screen</string>
     <string name="go_to_register_screen">Go to Register Screen</string>
     <string name="go_to_login_screen">Go to Login Screen</string>
+
     <string name="this_is_base_screen">This is Base Screen</string>
     <string name="this_is_register_screen">This is Register Screen</string>
     <string name="this_is_login_screen">This is Login Screen</string>
-    <string name="register">Register</string>
-    <string name="login">Login</string>
+    <string name="this_is_home_screen">This is Home Screen</string>
+
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
+    <string name="display_email">Email: %s</string>
+
 </resources>

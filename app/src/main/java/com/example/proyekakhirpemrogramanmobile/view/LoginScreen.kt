@@ -73,7 +73,7 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = { authViewModel.login(email, password, context) },
+                onClick = { authViewModel.login(email, password, context, navController) },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)

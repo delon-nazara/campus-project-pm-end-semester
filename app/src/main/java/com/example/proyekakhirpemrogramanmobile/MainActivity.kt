@@ -3,7 +3,6 @@ package com.example.proyekakhirpemrogramanmobile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -12,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.ui.theme.ProyekAkhirPemrogramanMobileTheme
 import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
+import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.view.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthViewModel
@@ -34,7 +34,7 @@ fun App() {
 
     NavHost(
         navController = navController,
-        startDestination = "base_screen"
+        startDestination = authViewModel.startDestinationBasedAuth()
     ) {
         composable("base_screen") {
             BaseScreen(
@@ -49,6 +49,12 @@ fun App() {
         }
         composable("login_screen") {
             LoginScreen(
+                authViewModel = authViewModel,
+                navController = navController
+            )
+        }
+        composable("home_screen") {
+            HomeScreen(
                 authViewModel = authViewModel,
                 navController = navController
             )
