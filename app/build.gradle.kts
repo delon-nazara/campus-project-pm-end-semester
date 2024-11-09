@@ -1,16 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    // google-services for firebase
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.proyekakhirpemrogramanmobile"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.proyekakhirpemrogramanmobile"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -68,4 +71,9 @@ dependencies {
 
     // navigation component
     implementation(libs.androidx.navigation.compose)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.google.firebase.auth.ktx)
+
 }

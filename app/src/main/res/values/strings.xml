@@ -6,7 +6,8 @@
     <string name="this_is_base_screen">This is Base Screen</string>
     <string name="this_is_register_screen">This is Register Screen</string>
     <string name="this_is_login_screen">This is Login Screen</string>
-    <string name="full_name">Input Nama Lengkap</string>
-    <string name="student_id">Input NIM</string>
-    <string name="password">Input Kata Sandi</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.ui
+package com.example.proyekakhirpemrogramanmobile.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.proyekakhirpemrogramanmobile.R
 
 @Composable
 fun BaseScreen(
-    onRegisterScreenButtonClicked: () -> Unit,
-    onLoginScreenButtonClicked: () -> Unit
+    navController: NavController
 ) {
     Box(
         modifier = Modifier
@@ -41,7 +41,7 @@ fun BaseScreen(
             modifier = Modifier.align(Alignment.Center)
         ) {
             Button(
-                onClick = onRegisterScreenButtonClicked,
+                onClick = { navController.navigate("register_screen") },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -50,7 +50,7 @@ fun BaseScreen(
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = onLoginScreenButtonClicked,
+                onClick = { navController.navigate("login_screen") },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
