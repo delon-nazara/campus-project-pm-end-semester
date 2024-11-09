@@ -4,18 +4,13 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class AuthViewModel : ViewModel() {
 
@@ -39,7 +34,11 @@ class AuthViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     user = auth.currentUser
-                    navController.navigate("home_screen")
+                    navController.navigate("home_screen") {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
                 } else {
                     val message = when (task.exception) {
@@ -64,7 +63,11 @@ class AuthViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     user = auth.currentUser
-                    navController.navigate("home_screen")
+                    navController.navigate("home_screen") {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
                     Toast.makeText(context, "Register successful", Toast.LENGTH_SHORT).show()
                 } else {
                     val message = when (task.exception) {
@@ -88,8 +91,13 @@ class AuthViewModel : ViewModel() {
 
     fun logout(navController: NavController, context: Context) {
         auth.signOut()
+        user = null
+        navController.navigate("base_screen") {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
         Toast.makeText(context, "Logout successful", Toast.LENGTH_SHORT).show()
-        navController.navigate("base_screen")
     }
 
 }

@@ -41,7 +41,13 @@ fun BaseScreen(
             modifier = Modifier.align(Alignment.Center)
         ) {
             Button(
-                onClick = { navController.navigate("register_screen") },
+                onClick = {
+                    navController.navigate("register_screen") {
+                        popUpTo("register_screen") {
+                            inclusive = true
+                        }
+                    }
+                },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -50,7 +56,13 @@ fun BaseScreen(
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = { navController.navigate("login_screen") },
+                onClick = {
+                    navController.navigate("login_screen") {
+                        popUpTo("login_screen") {
+                            inclusive = true
+                        }
+                    }
+                },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)

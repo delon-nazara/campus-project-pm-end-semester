@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -89,7 +88,13 @@ fun RegisterScreen(
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             Button(
-                onClick = { navController.navigate("login_screen") },
+                onClick = {
+                    navController.navigate("login_screen") {
+                        popUpTo("login_screen") {
+                            inclusive = true
+                        }
+                    }
+                },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -98,7 +103,13 @@ fun RegisterScreen(
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = { navController.popBackStack("base_screen", inclusive = false) },
+                onClick = {
+                    navController.navigate("base_screen") {
+                        popUpTo("base_screen") {
+                            inclusive = true
+                        }
+                    }
+                },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
