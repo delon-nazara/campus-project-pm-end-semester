@@ -10,22 +10,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthViewModel
 
 @Composable
 fun HomeScreen(
-    authViewModel: AuthViewModel,
-    navController: NavController
+    email: String?,
+    onLogoutButtonClicked: () -> Unit
 ) {
-    val context = LocalContext.current
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -38,12 +33,12 @@ fun HomeScreen(
             modifier = Modifier.align(Alignment.TopCenter)
         )
         Text(
-            text = stringResource(R.string.display_email, authViewModel.user?.email ?: "not found"),
+            text = stringResource(R.string.display_email, email ?: "not found"),
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center)
         )
         Button(
-            onClick = { authViewModel.logout(navController, context) },
+            onClick = onLogoutButtonClicked,
             modifier = Modifier
                 .width(200.dp)
                 .height(50.dp)

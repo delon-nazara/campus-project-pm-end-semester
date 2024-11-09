@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.proyekakhirpemrogramanmobile.R
 
 @Composable
 fun BaseScreen(
-    navController: NavController
+    onRegisterScreenButton: () -> Unit,
+    onLoginScreenButton: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -41,13 +41,7 @@ fun BaseScreen(
             modifier = Modifier.align(Alignment.Center)
         ) {
             Button(
-                onClick = {
-                    navController.navigate("register_screen") {
-                        popUpTo("register_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
+                onClick = onRegisterScreenButton,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -56,13 +50,7 @@ fun BaseScreen(
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = {
-                    navController.navigate("login_screen") {
-                        popUpTo("login_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
+                onClick = onLoginScreenButton,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)

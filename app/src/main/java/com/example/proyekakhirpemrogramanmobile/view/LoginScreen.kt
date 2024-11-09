@@ -14,28 +14,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreen(
-    authViewModel: AuthViewModel,
-    navController: NavController
+    onLoginButtonClicked: (String, String) -> Unit,
+    onRegisterScreenButtonClicked: () -> Unit,
+    onBaseScreenButtonClicked: () -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    val context = LocalContext.current
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -67,12 +64,12 @@ fun LoginScreen(
                 onValueChange = { password = it },
                 label = { Text(stringResource(R.string.password)) },
                 singleLine = true,
-//                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = { authViewModel.login(email, password, context, navController) },
+                onClick = { onLoginButtonClicked(email, password) },
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -88,13 +85,7 @@ fun LoginScreen(
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             Button(
-                onClick = {
-                    navController.navigate("register_screen") {
-                        popUpTo("register_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
+                onClick = onRegisterScreenButtonClicked,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
@@ -103,13 +94,7 @@ fun LoginScreen(
             }
             Spacer(modifier = Modifier.height(25.dp))
             Button(
-                onClick = {
-                    navController.navigate("base_screen") {
-                        popUpTo("base_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
+                onClick = onBaseScreenButtonClicked,
                 modifier = Modifier
                     .width(200.dp)
                     .height(50.dp)
