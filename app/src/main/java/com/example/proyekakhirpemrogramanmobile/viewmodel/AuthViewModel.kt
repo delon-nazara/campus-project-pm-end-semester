@@ -20,25 +20,55 @@ class AuthViewModel : ViewModel() {
     private val _userState = MutableStateFlow<FirebaseUser?>(null)
 
     fun login(email: String, password: String, context: Context) {
+        if (email.isEmpty() or password.isEmpty()) {
+            Toast.makeText(context, "Email or password cannot be empty", Toast.LENGTH_SHORT).show()
+            return
+        }
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _userState.value = auth.currentUser
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_SHORT).show()
+                     val message = when (task.exception) {
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            "Invalid email or password"
+                        }
+                        else -> {
+                            task.exception?.localizedMessage ?: "Authentication Error"
+                        }
+                    }
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     fun register(email: String, password: String, context: Context) {
+        if (email.isEmpty() or password.isEmpty()) {
+            Toast.makeText(context, "Email or password cannot be empty", Toast.LENGTH_SHORT).show()
+            return
+        }
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _userState.value = auth.currentUser
                     Toast.makeText(context, "Register successful", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_SHORT).show()
+                    val message = when (task.exception) {
+                        is FirebaseAuthUserCollisionException -> {
+                            "Email has been used"
+                        }
+                        is FirebaseAuthWeakPasswordException -> {
+                            "Password must consist of 6-15 characters"
+                        }
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            "Invalid email or password"
+                        }
+                        else -> {
+                            task.exception?.localizedMessage ?: "Authentication Error"
+                        }
+                    }
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }
             }
     }
