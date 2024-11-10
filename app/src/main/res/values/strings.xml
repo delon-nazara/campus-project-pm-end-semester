@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ProyekAkhirPemrogramanMobile</string>
     <string name="title_activity_profil">ProfilActivity</string>
+    <string name="title_activity_side_bar">SideBar</string>
 </resources>
