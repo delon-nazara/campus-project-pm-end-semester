@@ -13,11 +13,6 @@
         android:theme="@style/Theme.ProyekAkhirPemrogramanMobile"
         tools:targetApi="31">
         <activity
-            android:name=".SideBar"
-            android:exported="false"
-            android:label="@string/title_activity_side_bar"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
             android:name=".ProfilActivity"
             android:exported="false"
             android:label="@string/title_activity_profil"
