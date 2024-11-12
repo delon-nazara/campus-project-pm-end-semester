@@ -3,4 +3,5 @@
     <string name="title_activity_profil">ProfilActivity</string>
     <string name="title_activity_side_bar">SideBar</string>
     <string name="title_activity_pengaturan">PengaturanActivity</string>
+    <string name="title_activity_alat">AlatActivity</string>
 </resources>
