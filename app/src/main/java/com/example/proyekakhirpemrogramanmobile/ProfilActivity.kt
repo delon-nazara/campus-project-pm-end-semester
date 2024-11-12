@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,6 +26,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
@@ -41,6 +48,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,10 +91,6 @@ fun MainProfil() {
                     modifier = Modifier.fillMaxSize().background(colorResource(R.color.very_light_blue)),
                     verticalArrangement = Arrangement.SpaceBetween
                 ){
-                    //===================
-                    //KONTAINER TITLE BAR
-                    //===================
-
                     Column(
                         modifier = Modifier.background(colorResource(R.color.very_light_blue)),
                         verticalArrangement = Arrangement.Center
@@ -94,7 +99,7 @@ fun MainProfil() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween // Mengatur jarak yang sama di antara elemen
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             IconButton(
                                 onClick = {
@@ -112,24 +117,22 @@ fun MainProfil() {
                                 )
                             }
 
-
-
-                            Spacer(modifier = Modifier.width(50.dp)) // Spacer tetap bisa digunakan untuk jarak khusus
+                            Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
-                    Divider(
-                        color = Color.Gray, // Warna divider, bisa disesuaikan
-                        thickness = 1.dp, // Ketebalan divider
-                        modifier = Modifier.fillMaxWidth() // Divider horizontal penuh
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(),
+                        thickness = 1.dp,
+                        color = Color.Gray
                     )
-                    //===================
-                    //KONTAINER TEKS BUTTON
-                    //===================
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
                     ){
+                        //=================================================
+                        //Button Beranda untuk Navigation Drawer
+                        //=================================================
                         TextButton(
                             onClick = { /* Handle click for Beranda */ },
                             modifier = Modifier
@@ -143,12 +146,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Beranda",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Jadwal untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for Jadwal */ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -160,12 +166,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Jadwal",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Mata Kuliah untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for MataKuliah */ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -177,12 +186,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Mata Kuliah",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Tugas untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for Tugas */ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -194,12 +206,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Tugas",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Beranda untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for Modul */ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -211,12 +226,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Modul",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Informasi untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for Informasi*/ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -228,12 +246,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Informasi",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Alat untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for Alat */ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -245,12 +266,15 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Alat",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
+                        //=================================================
+                        //Button Pengaturan untuk Navigation Drawer
+                        //=================================================
                         TextButton(
-                            onClick = { /* Handle click for Beranda */ },
+                            onClick = { /* Handle click for Pengaturan*/ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
@@ -262,47 +286,64 @@ fun MainProfil() {
                             ){
                                 Text(
                                     text = "Pengaturan",
-                                    color = Color.White, // Pewarnaan teks langsung
+                                    color = Color.White,
                                 )
                             }
                         }
 
 
                     }
-//                    =========================
+//
                     Spacer(modifier = Modifier.weight(1f))
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color(0xFF001245)) // Sesuaikan warna latar belakang sesuai kebutuhan
+                            .background(colorResource(R.color.dark_blue))
                             .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Menggunakan gambar profil dari drawable
-                        Image(
-                            painter = painterResource(id = R.drawable.profil_arkan), // Ganti dengan nama file drawable Anda
-                            contentDescription = "Profile Image",
-                            modifier = Modifier
-                                .size(50.dp)
-                                .padding(end = 20.dp)
-                                .padding(start = 10.dp)
-                        )
+                        verticalAlignment = Alignment.CenterVertically,
 
-                        Column {
-                            Text(
-                                text = "Usama Bin Laden",
-                                color = Color.White,
-                            )
-                            Text(
-                                text = "221401999",
-                                color = Color(0xFFBBBBBB),
-                            )
+                    ) {
+                        //=================================================
+                        //Button Profil paling bawah untuk Navigation Drawer
+                        //=================================================
+                        Button(onClick = {/* Handle click for Profil di paling bawah*/},
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(Color.Transparent)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Start
+                            ){
+                                Image(
+                                    painter = painterResource(id = R.drawable.profil_arkan),
+                                    contentDescription = "Profile Image",
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .padding(end = 20.dp)
+                                        .padding(start = 10.dp)
+
+                                )
+                                Column {
+                                    Text(
+                                        text = "Usama Bin Laden",
+                                        color = Color.White,
+                                    )
+                                    Text(
+                                        text = "221401999",
+                                        color = Color.White,
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
         },
     ) {
+        //=================================================
+        //Navigasi Top App Bar
+        //=================================================
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
         Scaffold(
@@ -319,6 +360,9 @@ fun MainProfil() {
                         )
                     },
                     navigationIcon = {
+                        //=================================================
+                        //Button untuk membuka Drawer
+                        //=================================================
                         IconButton(onClick = {
                             scope.launch {
                                 if (drawerState.isClosed) drawerState.open() else drawerState.close()
@@ -331,6 +375,9 @@ fun MainProfil() {
                         }
                     },
                     actions = {
+                        //=================================================
+                        //Button Profil kanan Top App Bar
+                        //=================================================
                         IconButton(onClick = { /* do something */ }) {
                             Icon(
                                 imageVector = Icons.Filled.AccountCircle,
@@ -347,46 +394,206 @@ fun MainProfil() {
         }
     }
 }
+
 @Composable
-fun IsiProfil(paddingValues: PaddingValues){
+fun IsiProfil(paddingValues: PaddingValues) {
+    val listKelasUmum = remember { mutableStateListOf("Kom A Stambuk 2021", "Kom B Stambuk 2022", "Kom C Stambuk 2023") }
+    val listMataKuliah = remember { mutableStateListOf("Pemrograman Mobile", "Grafika Komputer", "Cloud Computing") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .verticalScroll(rememberScrollState())
             .background(Color.White)
     ) {
         HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(), // Divider horizontal penuh
-            thickness = 1.dp, // Ketebalan divider
-            color = Color.Gray // Warna divider, bisa disesuaikan
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = Color.Gray
         )
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(
-                        color = colorResource(R.color.dark_blue),
-                        shape = RoundedCornerShape(
-                            bottomStart = 16.dp,
-                            bottomEnd = 16.dp
-                        )
+        //==========================
+        //Ribbon
+        //==========================
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .background(
+                    color = colorResource(R.color.dark_blue),
+                    shape = RoundedCornerShape(
+                        bottomStart = 16.dp,
+                        bottomEnd = 16.dp
                     )
-                    .padding(vertical = 16.dp),
-                contentAlignment = Alignment.Center
-            ) {
+                )
+                .padding(vertical = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Profil Anda",
+                color = Color.White,
+                fontSize = 18.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.padding(15.dp)
+        )
+
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.birulangit)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.dark_blue))
+                ) {
+                    Text(
+                        text = "Kelas Umum Saya",
+                        modifier = Modifier.padding(16.dp),
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+                //==============================================
+                //LazyColumn untuk Kelas Umum
+                //==============================================
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                ) {
+                    items(listKelasUmum) { item ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp, vertical = 8.dp)
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(horizontal = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = item,
+                                modifier = Modifier
+                                    .padding(start = 15.dp)
+                                    .weight(1f),
+                                fontSize = 16.sp
+                            )
+                            //===========================================
+                            // Button Remove Kelas Umum
+                            //===========================================
+                            IconButton(onClick = { listKelasUmum.remove(item)/* Handle click here untuk button remove*/ }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.icon_cancel),
+                                    contentDescription = "Cancel Icon",
+                                    tint = Color.Unspecified
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Spacer(
+            modifier = Modifier.padding(15.dp)
+        )
+
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.birulangit)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.dark_blue))
+                ) {
+                    Text(
+                        text = "Kelas Mata Kuliah Saya",
+                        modifier = Modifier.padding(16.dp),
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+                //============================================
+                //LazyColumn untuk Kelas Mata Kuliah
+                //============================================
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                ) {
+                    items(listMataKuliah) { item ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp, vertical = 8.dp)
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(horizontal = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = item,
+                                modifier = Modifier
+                                    .padding(start = 15.dp)
+                                    .weight(1f),
+                                fontSize = 16.sp
+                            )
+                            //=====================================
+                            // Button Remove Mata Kuliah
+                            //=====================================
+                            IconButton(onClick = { listMataKuliah.remove(item)/* Handle click here untuk button remove */ }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.icon_cancel),
+                                    contentDescription = "Cancel Icon",
+                                    tint = Color.Unspecified
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //=======================================
+        //Button Pilih Kelas
+        //=======================================
+        TextButton(
+            onClick = { /* Handle click for Button Pilih Kelas */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .background(colorResource(R.color.dark_blue),
+                    RoundedCornerShape(15.dp))
+        ){
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+            ){
                 Text(
-                    text = "Profil Anda",
+                    text = "Pilih atau Buat Kelas Baru",
                     color = Color.White,
-                    fontSize = 18.sp,
-                    style = MaterialTheme.typography.titleLarge
+                    fontSize = 18.sp
                 )
             }
         }
-
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
