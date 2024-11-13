@@ -2,6 +2,8 @@ package com.example.proyekakhirpemrogramanmobile.utils
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -21,6 +23,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun App(context: Context) {
     val authenticationViewModel: AuthenticationViewModel = viewModel()
+    val userState by authenticationViewModel.userState.collectAsState()
+
     val databaseViewModel: DatabaseViewModel = viewModel()
 
     val navController: NavHostController = rememberNavController()
@@ -28,7 +32,7 @@ fun App(context: Context) {
 
     NavHost(
         navController = navController,
-        startDestination = authenticationViewModel.startDestinationBasedAuth()
+        startDestination = "base_screen"
     ) {
         composable("base_screen") {
             BaseScreen(
@@ -57,7 +61,7 @@ fun App(context: Context) {
                         coroutineScope.launch {
                             val registerResult = authenticationViewModel.register(email, password)
                             if (registerResult == "Successful") {
-                                val saveUserResult = databaseViewModel.saveUserToDatabase(authenticationViewModel.currentUser!!.uid)
+                                val saveUserResult = databaseViewModel.saveUserToDatabase(userState!!.uid)
                                 if (saveUserResult == "Successful") {
                                     showToast(context, "Successful")
                                     navController.navigate("setup_profile_screen") {
@@ -134,7 +138,7 @@ fun App(context: Context) {
         }
         composable("home_screen") {
             HomeScreen(
-                email = authenticationViewModel.currentUser?.email,
+                email = userState?.email,
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()
                     navController.navigate("base_screen") {
