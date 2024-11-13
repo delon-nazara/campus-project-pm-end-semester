@@ -217,7 +217,7 @@ fun MainRegister() {
                     //================================================
                     if (!isPasswordValid && password.isNotEmpty()) {
                         Text(
-                            text = "Password harus 6-15 karakter huruf atau angka",
+                            text = "Password harus minimal 6-15 karakter huruf atau angka",
                             color = Color.Red,
                             fontSize = 12.sp,
                             modifier = Modifier
