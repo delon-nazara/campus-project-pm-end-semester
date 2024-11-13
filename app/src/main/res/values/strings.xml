@@ -5,4 +5,5 @@
     <string name="title_activity_pengaturan">PengaturanActivity</string>
     <string name="title_activity_alat">AlatActivity</string>
     <string name="title_activity_kelompok">KelompokActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
