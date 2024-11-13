@@ -12,19 +12,22 @@ import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
 import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.view.RegisterScreen
-import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthViewModel
+import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
+import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun App(context: Context) {
-    val authViewModel: AuthViewModel = viewModel()
+    val authenticationViewModel: AuthenticationViewModel = viewModel()
+    val databaseViewModel: DatabaseViewModel = viewModel()
+
     val navController: NavHostController = rememberNavController()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     NavHost(
         navController = navController,
-        startDestination = authViewModel.startDestinationBasedAuth()
+        startDestination = authenticationViewModel.startDestinationBasedAuth()
     ) {
         composable("base_screen") {
             BaseScreen(
@@ -51,15 +54,22 @@ fun App(context: Context) {
                         showToast(context, "Email or password cannot be empty")
                     } else {
                         coroutineScope.launch {
-                            val result = authViewModel.register(email, password)
-                            if (result == "Successful") {
-                                navController.navigate("home_screen") {
-                                    popUpTo(0) {
-                                        inclusive = true
+                            val registerResult = authenticationViewModel.register(email, password)
+                            if (registerResult == "Successful") {
+                                val saveUserResult = databaseViewModel.saveUserToDatabase(authenticationViewModel.currentUser!!.uid)
+                                if (saveUserResult == "Successful") {
+                                    showToast(context, "Successful")
+                                    navController.navigate("home_screen") {
+                                        popUpTo(0) {
+                                            inclusive = true
+                                        }
                                     }
+                                } else {
+                                    showToast(context, saveUserResult)
                                 }
+                            } else {
+                                showToast(context, registerResult)
                             }
-                            showToast(context, result)
                         }
                     }
                 },
@@ -86,7 +96,7 @@ fun App(context: Context) {
                         showToast(context, "Email or password cannot be empty")
                     } else {
                         coroutineScope.launch {
-                            val result = authViewModel.login(email, password)
+                            val result = authenticationViewModel.login(email, password)
                             if (result == "Successful") {
                                 navController.navigate("home_screen") {
                                     popUpTo(0) {
@@ -116,9 +126,9 @@ fun App(context: Context) {
         }
         composable("home_screen") {
             HomeScreen(
-                email = authViewModel.user?.email,
+                email = authenticationViewModel.currentUser?.email,
                 onLogoutButtonClicked = {
-                    authViewModel.logout()
+                    authenticationViewModel.logout()
                     navController.navigate("base_screen") {
                         popUpTo(0) {
                             inclusive = true
