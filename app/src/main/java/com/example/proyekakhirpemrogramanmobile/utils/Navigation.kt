@@ -1,9 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.utils
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,6 +22,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun App(context: Context) {
+
     val authenticationViewModel: AuthenticationViewModel = viewModel()
     val userState by authenticationViewModel.userState.collectAsState()
 
@@ -32,19 +31,27 @@ fun App(context: Context) {
     val navController: NavHostController = rememberNavController()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
-    val startDestination =
-        if (userState == null) {
-            "base_screen"
-        } else if (!databaseViewModel.userExistInDatabase(userState!!.uid)) {
-            "setup_profile_screen"
-        } else {
-            "home_screen"
-        }
-
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = "base_screen"
     ) {
+        coroutineScope.launch {
+            if (userState != null) {
+                if (databaseViewModel.userExistInDatabase(userState!!.uid)) {
+                    navController.navigate("home_screen") {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                } else {
+                    navController.navigate("setup_profile_screen") {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+        }
         composable("base_screen") {
             BaseScreen(
                 onRegisterScreenButton = {
@@ -70,22 +77,15 @@ fun App(context: Context) {
                         showToast(context, "Email or password cannot be empty")
                     } else {
                         coroutineScope.launch {
-                            val registerResult = authenticationViewModel.register(email, password)
-                            if (registerResult == "Successful") {
-                                val saveUserResult = databaseViewModel.saveUserToDatabase(userState!!)
-                                if (saveUserResult == "Successful") {
-                                    showToast(context, "Successful")
-                                    navController.navigate("setup_profile_screen") {
-                                        popUpTo(0) {
-                                            inclusive = true
-                                        }
+                            val result = authenticationViewModel.register(email, password)
+                            if (result == "Successful") {
+                                navController.navigate("setup_profile_screen") {
+                                    popUpTo(0) {
+                                        inclusive = true
                                     }
-                                } else {
-                                    showToast(context, saveUserResult)
                                 }
-                            } else {
-                                showToast(context, registerResult)
                             }
+                            showToast(context, result)
                         }
                     }
                 },
@@ -143,7 +143,17 @@ fun App(context: Context) {
         composable("setup_profile_screen") {
             SetupProfileScreen(
                 onSetupProfileButtonClicked = { fullName, studentId ->
-
+                    coroutineScope.launch {
+                        val result = databaseViewModel.saveUserToDatabase(userState!!, fullName, studentId)
+                        if (result == "Successful") {
+                            navController.navigate("home_screen") {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                        showToast(context, result)
+                    }
                 }
             )
         }
@@ -162,4 +172,5 @@ fun App(context: Context) {
             )
         }
     }
+
 }
