@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,6 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -40,6 +44,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -55,6 +60,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
@@ -121,7 +127,6 @@ fun MainHalamanTugas() {
                                     modifier = Modifier.size(48.dp)
                                 )
                             }
-
                             Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
@@ -465,13 +470,14 @@ fun IsiTugas(paddingValues: PaddingValues) {
             modifier = Modifier.padding(15.dp)
         )
         KontainerTugas()
+            ListInstruksiTugas()
     }
 }
 //=========================
 //KONTAINER CARD TUGAS
 //=========================
 @Composable
-fun KontainerTugas(modifier: Modifier = Modifier) {
+fun KontainerTugas() {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Tugas Aktif", "Tugas Lampau")
 
@@ -485,7 +491,7 @@ fun KontainerTugas(modifier: Modifier = Modifier) {
             containerColor = Color(0xFFABD2FA), // Warna background tab
             contentColor = Color(0xFF1A237E), // Warna teks tab
             indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
+                SecondaryIndicator(
                     Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                     color = Color(0xFF4B84FF)
                 )
@@ -516,7 +522,7 @@ fun KontainerTugas(modifier: Modifier = Modifier) {
 //Fungsi pemanggil data class dengan lazy column
 //=============================================
 @Composable
-fun TugasAktifContent(modifier: Modifier = Modifier) {
+fun TugasAktifContent() {
     val mylist = getTugasAktif()
     LazyColumn(
         modifier = Modifier
@@ -528,7 +534,7 @@ fun TugasAktifContent(modifier: Modifier = Modifier) {
     }
 }
 @Composable
-fun TugasLampauContent(modifier: Modifier = Modifier) {
+fun TugasLampauContent() {
     val mylist = getTugasLampau()
     LazyColumn(
         modifier = Modifier
@@ -545,6 +551,9 @@ fun TugasLampauContent(modifier: Modifier = Modifier) {
 @Composable
 fun CardTugas(item : TugasAktif) {
     Card(
+        onClick = {
+//            logic ke halaman selanjutnya
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp),
@@ -582,6 +591,9 @@ fun CardTugas(item : TugasAktif) {
 @Composable
 fun CardTugas(item : TugasLampau) {
     Card(
+        onClick = {
+//            logic ke halaman selanjutnya
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp),
@@ -612,6 +624,154 @@ fun CardTugas(item : TugasLampau) {
                 painter = painterResource(id = item.iconJenisTugas),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+@Composable
+fun ListInstruksiTugas() {
+    val detailInstruksiList = getDetailInstruksiTugas()
+
+    LazyColumn(modifier = Modifier
+        .padding(16.dp)
+    ) {
+        items(detailInstruksiList) { detailTugas ->
+            InstruksiTugas(detailTugas)
+            Spacer(modifier = Modifier.height(16.dp)) // Tambahkan jarak antar item
+        }
+    }
+}
+@Composable
+fun InstruksiTugas(
+    detailTugas: DetailInstruksiTugas,
+    modifier: Modifier = Modifier
+) {
+    var showAlert by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.birulangit))
+    ){
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ){
+                //==========================
+                // Nama Mata Kuliah dan Icon
+                //==========================
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 12.dp)
+                ){
+                    Text(
+                        text = detailTugas.namaMatkul,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color(0xFF091441)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        painter = painterResource(R.drawable.tugas_pribadi),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+            Column(
+                modifier = Modifier.padding(horizontal = 12.dp)
+                ){
+                    Spacer(modifier = Modifier.height(8.dp))
+                    //====================================
+                    // Tanggal Ditugaskan dan Dikumpulkan
+                    //====================================
+                    Text(
+                        text = "Tenggat : ${detailTugas.tanggalDikumpulkan}",
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = "Ditugaskan :  ${detailTugas.tanggalDitugaskan}",
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    )
+                }
+            Spacer(
+                modifier = Modifier.height(16.dp)
+                )
+            Card(
+                modifier = Modifier
+                    .padding(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ){
+                Column(
+                    modifier = Modifier
+                        .size(width = 150.dp,30.dp)
+                ) {
+                    Text(
+                        text = "Catatan Tugas : ",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 10.dp)
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(10.dp),
+                        thickness = 2.dp,
+                        color = colorResource(R.color.very_light_blue),
+                    )
+                }
+                //===============
+                // Perintah Tugas
+                //===============
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = detailTugas.perintahTugas,
+                    color = Color(0xFF1A237E)
+                )
+                Row(
+                    modifier = Modifier.padding(vertical = 16.dp)
+                        .padding(end = 16.dp)
+
+                ){
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "Menu"
+                    )
+                    Text(
+                        text = detailTugas.linkTerkait,
+                        fontSize = 14.sp,
+                        color = Color(0xFF4B84FF),
+                        modifier = Modifier.clickable { /* Handle link click */ }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            // Tombol "Tandai Sebagai Selesai"
+            Button(
+                onClick = { showAlert = true },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4B84FF)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .padding(horizontal = 12.dp),
+                shape = RoundedCornerShape(16.dp)
+            ){
+                Text(text = "Tandai Sebagai Selesai", color = Color.White)
+            }
+        }
+        // Alert ketika tombol diklik
+        if (showAlert) {
+            AlertDialog(
+                onDismissRequest = { showAlert = false },
+                confirmButton = {
+                    TextButton(onClick = { showAlert = false }) {
+                        Text("OK")
+                    }
+                },
+                title = { Text("Notifikasi") },
+                text = { Text("Tugas telah selesai") }
             )
         }
     }
