@@ -6,4 +6,6 @@
     <string name="title_activity_alat">AlatActivity</string>
     <string name="title_activity_kelompok">KelompokActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_boarding">BoardingActivity</string>
 </resources>
