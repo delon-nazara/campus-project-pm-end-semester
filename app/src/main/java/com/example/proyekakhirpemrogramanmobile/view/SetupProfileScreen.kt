@@ -62,7 +62,6 @@ fun SetupProfileScreen(
                 onValueChange = { studentId = it },
                 label = { Text(stringResource(R.string.student_id)) },
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(50.dp))

@@ -1,6 +1,5 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth

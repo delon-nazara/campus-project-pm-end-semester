@@ -1,7 +1,9 @@
 package com.example.proyekakhirpemrogramanmobile.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,9 +32,18 @@ fun App(context: Context) {
     val navController: NavHostController = rememberNavController()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
+    val startDestination =
+        if (userState == null) {
+            "base_screen"
+        } else if (!databaseViewModel.userExistInDatabase(userState!!.uid)) {
+            "setup_profile_screen"
+        } else {
+            "home_screen"
+        }
+
     NavHost(
         navController = navController,
-        startDestination = "base_screen"
+        startDestination = startDestination
     ) {
         composable("base_screen") {
             BaseScreen(
@@ -61,7 +72,7 @@ fun App(context: Context) {
                         coroutineScope.launch {
                             val registerResult = authenticationViewModel.register(email, password)
                             if (registerResult == "Successful") {
-                                val saveUserResult = databaseViewModel.saveUserToDatabase(userState!!.uid)
+                                val saveUserResult = databaseViewModel.saveUserToDatabase(userState!!)
                                 if (saveUserResult == "Successful") {
                                     showToast(context, "Successful")
                                     navController.navigate("setup_profile_screen") {
