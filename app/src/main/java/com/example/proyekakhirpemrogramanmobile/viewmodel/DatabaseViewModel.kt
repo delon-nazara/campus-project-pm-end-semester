@@ -1,12 +1,15 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.cloudinary.android.MediaManager
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.tasks.await
 
 class DatabaseViewModel : ViewModel() {
@@ -43,6 +46,23 @@ class DatabaseViewModel : ViewModel() {
         } catch(e: FirebaseFirestoreException) {
             false
         }
+    }
+
+    fun cloudinaryInitialization(context: Context) {
+        val dotenv = dotenv {
+            directory = "/assets"
+            filename = "env"
+        }
+
+        val config = hashMapOf(
+            "cloud_name" to dotenv["CLOUD_NAME"],
+            "secure" to true
+        )
+        MediaManager.init(context, config)
+    }
+
+    fun getImageUrlFromCloudinary(): String {
+        return MediaManager.get().url().generate("alphabet_profile_picture_d")
     }
 
 }

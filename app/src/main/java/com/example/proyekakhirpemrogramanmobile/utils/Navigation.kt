@@ -31,6 +31,9 @@ fun App(context: Context) {
     val navController: NavHostController = rememberNavController()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
+    // temp init
+    databaseViewModel.cloudinaryInitialization(context)
+
     NavHost(
         navController = navController,
         startDestination = "base_screen"
@@ -159,6 +162,7 @@ fun App(context: Context) {
         }
         composable("home_screen") {
             HomeScreen(
+                imageUrl = databaseViewModel.getImageUrlFromCloudinary(),
                 email = userState?.email,
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()

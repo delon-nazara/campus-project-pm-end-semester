@@ -81,13 +81,13 @@ dependencies {
     implementation(libs.google.firebase.auth.ktx)
     implementation(libs.firebase.firestore)
 
-    // Coroutines Library
-    implementation(libs.kotlinx.coroutines.play.services)
-
     // Cloudinary Library
     implementation(libs.cloudinary.android)
 
     // Dotenv Kotlin Library
     implementation(libs.dotenv.kotlin)
+
+    // Coil Library
+    implementation(libs.coil.compose)
 
 }
