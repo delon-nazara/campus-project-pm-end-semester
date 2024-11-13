@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 
-    // google-services for firebase
+    // Google Services for Firebase
     id("com.google.gms.google-services")
 }
 
@@ -54,7 +54,7 @@ android {
 
 dependencies {
 
-    // default
+    // Default Library
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // testing (default)
+    // Default Testing Library
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,14 +73,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // navigation component
+    // Navigation Component Library
     implementation(libs.androidx.navigation.compose)
 
-    // firebase
+    // Firebase Library
     implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.auth.ktx)
+    implementation(libs.firebase.firestore)
 
-    // coroutines
-    implementation(libs.kotlinx.coroutines.play.services)
+    // Cloudinary Library
+    implementation(libs.cloudinary.android)
+
+    // Dotenv Kotlin Library
+    implementation(libs.dotenv.kotlin)
+
+    // Coil Library
+    implementation(libs.coil.compose)
 
 }
