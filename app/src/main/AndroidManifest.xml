@@ -13,9 +13,9 @@
         android:theme="@style/Theme.ProyekAkhirPemrogramanMobile"
         tools:targetApi="31">
         <activity
-            android:name=".AlatActivity"
+            android:name=".KelompokActivity"
             android:exported="false"
-            android:label="@string/title_activity_alat"
+            android:label="@string/title_activity_kelompok"
             android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
         <activity
             android:name=".PengaturanActivity"
