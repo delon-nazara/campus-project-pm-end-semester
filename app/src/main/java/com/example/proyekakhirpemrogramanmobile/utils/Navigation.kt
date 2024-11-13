@@ -12,6 +12,7 @@ import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
 import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.view.RegisterScreen
+import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -59,7 +60,7 @@ fun App(context: Context) {
                                 val saveUserResult = databaseViewModel.saveUserToDatabase(authenticationViewModel.currentUser!!.uid)
                                 if (saveUserResult == "Successful") {
                                     showToast(context, "Successful")
-                                    navController.navigate("home_screen") {
+                                    navController.navigate("setup_profile_screen") {
                                         popUpTo(0) {
                                             inclusive = true
                                         }
@@ -121,6 +122,13 @@ fun App(context: Context) {
                             inclusive = true
                         }
                     }
+                }
+            )
+        }
+        composable("setup_profile_screen") {
+            SetupProfileScreen(
+                onSetupProfileButtonClicked = { fullName, studentId ->
+
                 }
             )
         }
