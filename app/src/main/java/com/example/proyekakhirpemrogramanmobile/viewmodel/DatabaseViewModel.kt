@@ -24,6 +24,7 @@ class DatabaseViewModel : ViewModel() {
                 .set(
                     hashMapOf(
                         "fullName" to fullName,
+                        "firstLetter" to fullName[0],
                         "studentId" to studentId,
                         "email" to user.email,
                         "createdAt" to FieldValue.serverTimestamp()
@@ -48,6 +49,7 @@ class DatabaseViewModel : ViewModel() {
         }
     }
 
+    // todo
     fun cloudinaryInitialization(context: Context) {
         val dotenv = dotenv {
             directory = "/assets"
@@ -61,6 +63,7 @@ class DatabaseViewModel : ViewModel() {
         MediaManager.init(context, config)
     }
 
+    // todo
     fun getImageUrlFromCloudinary(): String {
         return MediaManager.get().url().generate("alphabet_profile_picture_d")
     }

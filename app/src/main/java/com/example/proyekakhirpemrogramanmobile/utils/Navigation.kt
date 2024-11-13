@@ -31,12 +31,12 @@ fun App(context: Context) {
     val navController: NavHostController = rememberNavController()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
-    // temp init
+    // todo
     databaseViewModel.cloudinaryInitialization(context)
 
     NavHost(
         navController = navController,
-        startDestination = "base_screen"
+        startDestination = "base_screen" // todo
     ) {
         coroutineScope.launch {
             if (userState != null) {
@@ -145,7 +145,7 @@ fun App(context: Context) {
         }
         composable("setup_profile_screen") {
             SetupProfileScreen(
-                onSetupProfileButtonClicked = { fullName, studentId ->
+                onSetupProfileButtonClicked = { fullName, studentId -> // todo
                     coroutineScope.launch {
                         val result = databaseViewModel.saveUserToDatabase(userState!!, fullName, studentId)
                         if (result == "Successful") {
@@ -162,7 +162,7 @@ fun App(context: Context) {
         }
         composable("home_screen") {
             HomeScreen(
-                imageUrl = databaseViewModel.getImageUrlFromCloudinary(),
+                imageUrl = databaseViewModel.getImageUrlFromCloudinary(), // todo
                 email = userState?.email,
                 onLogoutButtonClicked = {
                     authenticationViewModel.logout()
