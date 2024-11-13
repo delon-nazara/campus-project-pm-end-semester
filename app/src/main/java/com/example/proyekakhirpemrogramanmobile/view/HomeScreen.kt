@@ -1,7 +1,11 @@
 package com.example.proyekakhirpemrogramanmobile.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -32,11 +36,20 @@ fun HomeScreen(
             fontSize = 20.sp,
             modifier = Modifier.align(Alignment.TopCenter)
         )
-        Text(
-            text = stringResource(R.string.display_email, email ?: "not found"),
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Center)
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+        ) {
+            // image
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = stringResource(R.string.display_email, email ?: "not found"),
+                fontWeight = FontWeight.Bold,
+            )
+        }
         Button(
             onClick = onLogoutButtonClicked,
             modifier = Modifier
