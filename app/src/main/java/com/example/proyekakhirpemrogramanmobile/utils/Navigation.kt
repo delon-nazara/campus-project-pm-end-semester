@@ -147,7 +147,7 @@ fun App(context: Context) {
             SetupProfileScreen(
                 onSetupProfileButtonClicked = { fullName, studentId -> // todo
                     coroutineScope.launch {
-                        val result = databaseViewModel.saveUserToDatabase(userState!!, fullName, studentId)
+                        val result = databaseViewModel.addUserToDatabase(userState!!, fullName, studentId)
                         if (result == "Successful") {
                             navController.navigate("home_screen") {
                                 popUpTo(0) {
