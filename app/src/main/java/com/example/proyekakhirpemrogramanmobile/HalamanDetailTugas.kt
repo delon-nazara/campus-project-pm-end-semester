@@ -1,6 +1,5 @@
 package com.example.proyekakhirpemrogramanmobile
 
-import androidx.compose.foundation.lazy.items
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -41,11 +41,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -60,7 +55,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
@@ -69,9 +63,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.ui.theme.ProyekAkhirPemrogramanMobileTheme
 import kotlinx.coroutines.launch
 
-class HalamanTugas : ComponentActivity() {
+class HalamanDetailTugas : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -80,12 +75,10 @@ class HalamanTugas : ComponentActivity() {
         }
     }
 }
-//==================================
-//     SIDEBAR DAN TOP APP BAR
-//==================================
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanTugas() {
+fun MainDetailHalamanTugas() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -416,21 +409,21 @@ fun MainHalamanTugas() {
             }
 
         ) { contentPadding ->
-            IsiTugas(contentPadding)
+            IsiDetailTugas(contentPadding)
         }
     }
 }
-@Preview
-    (showBackground = true)
-//==============================
-//   KONTAINER HALAMAN TUGAS
-//==============================
+
+@Preview(
+    showBackground = true
+)
 @Composable
-fun PreviewTugas(modifier: Modifier = Modifier) {
-    MainHalamanTugas()
+fun PreviewDetailHalamanTugas(modifier: Modifier = Modifier) {
+    MainDetailHalamanTugas()
 }
+
 @Composable
-fun IsiTugas(paddingValues: PaddingValues) {
+fun IsiDetailTugas(paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -470,160 +463,160 @@ fun IsiTugas(paddingValues: PaddingValues) {
             modifier = Modifier.padding(15.dp)
         )
 //        KontainerTugas()
-            ListInstruksiTugas()
+        ListInstruksiTugas()
     }
 }
-//=========================
-//KONTAINER CARD TUGAS
-//=========================
+//================================================
+//Fungsi pemanggil dataclass DetailTugasMatakuliah
+//================================================
 @Composable
-fun KontainerTugas() {
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Tugas Aktif", "Tugas Lampau")
+fun ListInstruksiTugas() {
+    val detailInstruksiList = getDetailInstruksiTugas()
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp)
+    LazyColumn(modifier = Modifier
+        .padding(16.dp)
     ) {
-        // Bagian Tab
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            containerColor = Color(0xFFABD2FA), // Warna background tab
-            contentColor = Color(0xFF1A237E), // Warna teks tab
-            indicator = { tabPositions ->
-                SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                    color = Color(0xFF4B84FF)
-                )
-            }
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
+        items(detailInstruksiList) { detailTugas ->
+            InstruksiTugas(detailTugas)
+            Spacer(modifier = Modifier.height(16.dp)) // Tambahkan jarak antar item
+        }
+    }
+}
 
-                    selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
-                    text = {
-                        Text(
-                            title, fontWeight = FontWeight.Bold,
-                            color = if (selectedTabIndex == index) Color(0xFF4B84FF) else Color.Gray
-                        )
-                    }
-                )
-            }
-        }
-        // Konten sesuai tab yang dipilih
-        when (selectedTabIndex) {
-            0 -> TugasAktifContent() // Konten untuk "Tugas Aktif"
-            1 -> TugasLampauContent() // Konten untuk "Tugas Lampau"
-        }
-    }
-}
-//=============================================
-//Fungsi pemanggil data class dengan lazy column
-//=============================================
+//=============================
+//Desain Card Detail Tugas Matakuliah
+//=============================
 @Composable
-fun TugasAktifContent() {
-    val mylist = getTugasAktif()
-    LazyColumn(
-        modifier = Modifier
-            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-    ){
-        items(mylist){ item ->
-            CardTugas(item)
-        }
-    }
-}
-@Composable
-fun TugasLampauContent() {
-    val mylist = getTugasLampau()
-    LazyColumn(
-        modifier = Modifier
-            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-    ){
-        items(mylist){ item ->
-            CardTugas(item)
-        }
-    }
-}
-//========================================
-//Desain card tugas aktif dan tugas lampau
-//========================================
-@Composable
-fun CardTugas(item : TugasAktif) {
+fun InstruksiTugas(
+    detailTugas: DetailInstruksiTugas,
+    modifier: Modifier = Modifier
+) {
+    var showAlert by remember { mutableStateOf(false) }
+
     Card(
-        onClick = {
-//            logic ke halaman selanjutnya
-        },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE1F5FE)
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.birulangit))
+    ){
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ){
+            //==========================
+            // Nama Mata Kuliah dan Icon
+            //==========================
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ){
                 Text(
-                    text = item.namaMatakuliah,
+                    text = detailTugas.namaMatkul,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color(0xFF1A237E)
+                    fontSize = 18.sp,
+                    color = Color(0xFF091441)
                 )
-                Text(
-                    text = item.deadlineDate,
-                    fontSize = 12.sp,
-                    color = Color(0xFF757575)
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    painter = painterResource(R.drawable.tugas_pribadi),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Unspecified
                 )
             }
-            Image(
-                painter = painterResource(id = item.iconJenisTugas),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
+            Column(
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ){
+                Spacer(modifier = Modifier.height(8.dp))
+                //====================================
+                // Tanggal Ditugaskan dan Dikumpulkan
+                //====================================
+                Text(
+                    text = "Tenggat : ${detailTugas.tanggalDikumpulkan}",
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
+                Text(
+                    text = "Ditugaskan :  ${detailTugas.tanggalDitugaskan}",
+                    fontSize = 14.sp,
+                    color = Color.Black
+                )
+            }
+            Spacer(
+                modifier = Modifier.height(16.dp)
             )
-        }
-    }
-}
-@Composable
-fun CardTugas(item : TugasLampau) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE1F5FE)
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Card(
+                modifier = Modifier
+                    .padding(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ){
+                Column(
+                    modifier = Modifier
+                        .size(width = 150.dp,30.dp)
+                ) {
+                    Text(
+                        text = "Catatan Tugas : ",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 10.dp)
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(10.dp),
+                        thickness = 2.dp,
+                        color = colorResource(R.color.very_light_blue),
+                    )
+                }
+                //===============
+                // Perintah Tugas
+                //===============
                 Text(
-                    text = item.namaMatakuliah,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    modifier = Modifier.padding(16.dp),
+                    text = detailTugas.perintahTugas,
                     color = Color(0xFF1A237E)
                 )
-                Text(
-                    text = item.deadlineDate,
-                    fontSize = 12.sp,
-                    color = Color(0xFF757575)
-                )
+                Row(
+                    modifier = Modifier.padding(vertical = 16.dp)
+                        .padding(end = 16.dp)
+
+                ){
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "Menu"
+                    )
+                    Text(
+                        text = detailTugas.linkTerkait,
+                        fontSize = 14.sp,
+                        color = Color(0xFF4B84FF),
+                        modifier = Modifier.clickable { /* Handle link click */ }
+                    )
+                }
             }
-            Image(
-                painter = painterResource(id = item.iconJenisTugas),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
+            Spacer(modifier = Modifier.height(8.dp))
+            // Tombol "Tandai Sebagai Selesai"
+            Button(
+                onClick = { showAlert = true },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4B84FF)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .padding(horizontal = 12.dp),
+                shape = RoundedCornerShape(16.dp)
+            ){
+                Text(text = "Tandai Sebagai Selesai", color = Color.White)
+            }
+        }
+        // Alert ketika tombol diklik
+        if (showAlert) {
+            AlertDialog(
+                onDismissRequest = { showAlert = false },
+                confirmButton = {
+                    TextButton(onClick = { showAlert = false }) {
+                        Text("OK")
+                    }
+                },
+                title = { Text("Notifikasi") },
+                text = { Text("Tugas telah selesai") }
             )
         }
     }

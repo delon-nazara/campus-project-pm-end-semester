@@ -585,9 +585,6 @@ fun CardMataKuliah(item : DetailMataKuliah) {
                     fontSize = 14.sp,
                     color = Color.White.copy(alpha = 0.9f)
                 )
-
-
-
             }
             Image(
                 painter = painterResource(id = item.imageRes),

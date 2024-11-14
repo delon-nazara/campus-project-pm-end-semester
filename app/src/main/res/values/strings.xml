@@ -8,4 +8,5 @@
     <string name="title_activity_halaman_mata_kuliah">HalamanMataKuliah</string>
     <string name="title_activity_halaman_mata_kuliah_kosong">HalamanMataKuliahKosong</string>
     <string name="title_activity_halaman_tugas_aktif">HalamanTugasAktif</string>
+    <string name="title_activity_halaman_detail_tugas">HalamanDetailTugas</string>
 </resources>
