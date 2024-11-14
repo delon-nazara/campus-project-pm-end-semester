@@ -3,6 +3,7 @@ package com.example.proyekakhirpemrogramanmobile.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
+import com.example.proyekakhirpemrogramanmobile.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,24 +17,25 @@ class DatabaseViewModel : ViewModel() {
 
     private val database: FirebaseFirestore = Firebase.firestore
     private val usersRef = database.collection("users")
+    private val classesRef = database.collection("classes")
 
-    suspend fun saveUserToDatabase(user: FirebaseUser, fullName: String, studentId: String): String {
+    suspend fun addUserToDatabase(user: FirebaseUser, fullName: String, studentId: String): String {
         return try {
             usersRef
                 .document(user.uid)
                 .set(
-                    hashMapOf(
-                        "fullName" to fullName,
-                        "firstLetter" to fullName[0],
-                        "studentId" to studentId,
-                        "email" to user.email,
-                        "createdAt" to FieldValue.serverTimestamp()
+                    UserModel(
+                        fullName = fullName,
+                        firstLetter = fullName[0].toString(),
+                        studentId = studentId,
+                        email = user.email!!,
+                        createdAt = FieldValue.serverTimestamp()
                     )
                 )
                 .await()
             "Successful"
         } catch(e: FirebaseFirestoreException) {
-            e.localizedMessage ?: "Save User Error"
+            e.localizedMessage ?: "Add User Error"
         }
     }
 
