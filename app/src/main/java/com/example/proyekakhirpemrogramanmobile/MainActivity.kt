@@ -32,8 +32,9 @@ class MainActivity : ComponentActivity() {
             //TEMPAT TES ACTIVITY//
 //          =====================
             //MainTemplate()
-            MainHalamanTugas()
+//            MainHalamanTugas()
 //            LazyColumnDemo()
+            MainHalamanDetailMataKuliah()
 //          =====================
         }
     }

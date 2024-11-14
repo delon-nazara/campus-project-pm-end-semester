@@ -13,6 +13,11 @@
         android:theme="@style/Theme.ProyekAkhirPemrogramanMobile"
         tools:targetApi="31">
         <activity
+            android:name=".HalamanDetailMataKuliah"
+            android:exported="false"
+            android:label="@string/title_activity_halaman_detail_mata_kuliah"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
             android:name=".HalamanDetailTugas"
             android:exported="false"
             android:label="@string/title_activity_halaman_detail_tugas"
