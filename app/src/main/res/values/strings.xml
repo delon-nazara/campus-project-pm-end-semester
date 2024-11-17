@@ -8,4 +8,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_boarding">BoardingActivity</string>
+    <string name="title_activity_register_profil">RegisterProfilActivity</string>
 </resources>
