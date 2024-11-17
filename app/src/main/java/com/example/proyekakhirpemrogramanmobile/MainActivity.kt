@@ -34,7 +34,8 @@ class MainActivity : ComponentActivity() {
             //MainTemplate()
 //            MainHalamanTugas()
 //            LazyColumnDemo()
-            MainHalamanDetailMataKuliah()
+//            MainHalamanDetailMataKuliah()
+            MainPembuatanKelas()
 //          =====================
         }
     }
