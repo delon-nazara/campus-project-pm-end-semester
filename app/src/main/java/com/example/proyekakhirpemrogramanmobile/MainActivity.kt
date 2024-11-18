@@ -28,8 +28,9 @@ class MainActivity : ComponentActivity() {
 //            MainHalamanTugas()
 //            LazyColumnDemo()
 //            MainHalamanDetailMataKuliah()
-            MainPembuatanKelas()
+//            MainPembuatanKelas()
 //          =====================
+            MainHome()
         }
     }
 }

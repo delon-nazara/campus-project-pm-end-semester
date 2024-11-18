@@ -1,10 +1,11 @@
 package com.example.proyekakhirpemrogramanmobile
 
-import androidx.compose.foundation.lazy.items
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,11 +16,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
@@ -37,16 +42,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,12 +62,17 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-class HalamanTugas : ComponentActivity() {
+class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -74,12 +81,11 @@ class HalamanTugas : ComponentActivity() {
         }
     }
 }
-//==================================
-//     SIDEBAR DAN TOP APP BAR
-//==================================
+
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanTugas() {
+fun MainHome() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -121,6 +127,7 @@ fun MainHalamanTugas() {
                                     modifier = Modifier.size(48.dp)
                                 )
                             }
+
                             Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
@@ -313,7 +320,7 @@ fun MainHalamanTugas() {
 
 
                     }
-//
+
                     Spacer(modifier = Modifier.weight(1f))
 
                     Row(
@@ -410,216 +417,503 @@ fun MainHalamanTugas() {
             }
 
         ) { contentPadding ->
-            IsiTugas(contentPadding)
+            IsiHome(contentPadding)
         }
     }
 }
-@Preview
-    (showBackground = true)
-//==============================
-//   KONTAINER HALAMAN TUGAS
-//==============================
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showBackground = true)
 @Composable
-fun PreviewTugas(modifier: Modifier = Modifier) {
-    MainHalamanTugas()
+fun PreviewMainHome() {
+    MainHome()
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun IsiTugas(paddingValues: PaddingValues) {
+fun IsiHome(paddingValues: PaddingValues) {
+
+    var currentDateTime by remember { mutableStateOf(LocalDateTime.now()) }
+    val scrollState = rememberScrollState()
+    // Coroutine to update the time every second
+    LaunchedEffect(Unit) {
+        while (true) {
+            currentDateTime = LocalDateTime.now()
+            delay(1000L) // Update every 1 second
+        }
+    }
+
+    // Date and time formatting
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("in", "ID"))
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues)
+            .padding(paddingValues) // Properly apply padding here
             .background(Color.White)
+//            .verticalScroll(scrollState)
     ) {
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
             thickness = 1.dp,
             color = Color.Gray
         )
-        //==========================
-        //Ribbon
-        //==========================
+        //===================================
+        // Tanggal serta jam saat ini
+        //===================================
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .background(
                     color = colorResource(R.color.dark_blue),
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
+                    shape = RoundedCornerShape(16.dp)
                 )
                 .padding(vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Tugas",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = currentDateTime.format(dateFormatter),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                        .weight(1f)
+                )
+                Text(
+                    text = currentDateTime.format(timeFormatter),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.End
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.verticalScroll(scrollState)
+        ){
+            //===================================
+            // Kalender Taken by: Delon Nazara
+            //===================================
+//            Card(
+//                colors = CardDefaults.cardColors(
+//                    containerColor = colorResource(R.color.birulangit)
+//                ),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp)
+//            ) {
+//                Column {
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .background(colorResource(R.color.dark_blue))
+//                    ) {
+//                        Text(
+//                            text = "Kalender",
+//                            modifier = Modifier.padding(16.dp),
+//                            color = Color.White,
+//                            fontSize = 18.sp,
+//                            fontWeight = FontWeight.SemiBold
+//                        )
+//
+//                    }
+//                    Row{
+//                        Text("hello world")
+//                    }
+//                }
+//            }
+            Spacer(
+                modifier = Modifier.padding(5.dp)
             )
-        }
-        Spacer(
-            modifier = Modifier.padding(15.dp)
-        )
-        KontainerTugas()
-//            ListInstruksiTugas()
-    }
-}
-//=========================
-//KONTAINER CARD TUGAS
-//=========================
-@Composable
-fun KontainerTugas() {
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Tugas Aktif", "Tugas Lampau")
-
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp)
-    ) {
-        // Bagian Tab
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            containerColor = Color(0xFFABD2FA), // Warna background tab
-            contentColor = Color(0xFF1A237E), // Warna teks tab
-            indicator = { tabPositions ->
-                SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                    color = Color(0xFF4B84FF)
-                )
-            }
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-
-                    selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
-                    text = {
-                        Text(
-                            title, fontWeight = FontWeight.Bold,
-                            color = if (selectedTabIndex == index) Color(0xFF4B84FF) else Color.Gray
-                        )
-                    }
-                )
-            }
-        }
-        // Konten sesuai tab yang dipilih
-        when (selectedTabIndex) {
-            0 -> TugasAktifContent() // Konten untuk "Tugas Aktif"
-            1 -> TugasLampauContent() // Konten untuk "Tugas Lampau"
-        }
-    }
-}
-//=============================================
-//Fungsi pemanggil data class dengan lazy column
-//=============================================
-@Composable
-fun TugasAktifContent() {
-    val mylist = getTugasAktif()
-    LazyColumn(
-        modifier = Modifier
-            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-    ){
-        items(mylist){ item ->
-            CardTugas(item)
+            LazyCallerJadwalHariIni()//fungsi untuk membuat card jadwal hari ini
+            LazyCallerTugasHariIni()//fungsi untuk membuat card tugas hari ini
+            LazyCallerTugasBesok()//fungsi untuk membuat card tugas besok
         }
     }
 }
 @Composable
-fun TugasLampauContent() {
-    val mylist = getTugasLampau()
-    LazyColumn(
-        modifier = Modifier
-            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-    ){
-        items(mylist){ item ->
-            CardTugas(item)
-        }
-    }
-}
-//========================================
-//Desain card tugas aktif dan tugas lampau
-//========================================
-@Composable
-fun CardTugas(item : TugasAktif) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya
-        },
+fun LazyCallerJadwalHariIni() {
+    val mylist = getjadwalHariIni()
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE1F5FE)
-        ),
-        shape = RoundedCornerShape(12.dp)
+            .padding(16.dp)
+            .height(490.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f))
-            {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(
+                topStart = 15.dp,
+                topEnd = 15.dp
+            )
+        ){
+            Row(
+                modifier = Modifier
+                    .background(colorResource(R.color.dark_blue))
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
                 Text(
-                    text = item.namaMatakuliah,
+                    text = "Jadwal Hari Ini",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color(0xFF1A237E)
-                )
-                Text(
-                    text = item.deadlineDate,
-                    fontSize = 12.sp,
-                    color = Color(0xFF757575)
+                    color = Color.White
                 )
             }
-            Image(
-                painter = painterResource(id = item.iconJenisTugas),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
+        }
+        LazyColumn(
+            modifier = Modifier
+                .background(colorResource(R.color.birulangit),
+                    shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
+        ){
+            items(mylist){ item ->
+                JadwalHariIni(item)
+            }
+        }
+    }
+}
+
+@Composable
+fun JadwalHariIni(item : jadwalHariIni) {
+    Card(
+        onClick = {
+//            logic ke halaman selanjutnya isi ya bang backend awkaowkoa
+        },
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.white)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+
+        ) {
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults
+                    .cardColors(
+                        containerColor = Color.White
+                    )
+            ){
+                Row(
+                    modifier = Modifier
+                        .background(colorResource(R.color.hijau_konfirmasi))
+                        .fillMaxWidth()
+                ){
+                    Text(
+                        text = item.namaMatakuliah,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_jam),
+                        contentDescription = "icon jam"
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.jamKelas,
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_gedung),
+                        contentDescription = "icon jam"
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.lokasiKelas,
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_pencil),
+                        contentDescription = "icon jam",
+                        modifier = Modifier.size(25.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.catatanDosen,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LazyCallerTugasHariIni() {
+    val mylist = getTugasHariIni()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .height(380.dp)
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(
+                topStart = 15.dp,
+                topEnd = 15.dp
             )
+        ){
+            Row(
+                modifier = Modifier
+                    .background(colorResource(R.color.dark_blue))
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Tugas Hari Ini",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
+        LazyColumn(
+            modifier = Modifier
+                .background(colorResource(R.color.birulangit),
+                    shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
+        ){
+            items(mylist){ item ->
+                TugasHariIni(item)
+            }
         }
     }
 }
 @Composable
-fun CardTugas(item : TugasLampau) {
+fun TugasHariIni(item : tugasHariIni) {
     Card(
         onClick = {
-//            logic ke halaman selanjutnya
+//            logic ke halaman selanjutnya usahakan ya bang hehe
         },
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.white)
+        ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE1F5FE)
-        ),
-        shape = RoundedCornerShape(12.dp)
+            .padding(16.dp)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .background(Color.White)
+
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults
+                    .cardColors(
+                        containerColor = Color.White
+                    )
+            ){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ){
+                    Text(
+                        text = item.namaMatakuliah,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Image(
+                        painter = painterResource(item.jenisTugas),
+                        contentDescription = "icon tugas",
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_jam),
+                        contentDescription = "icon jam"
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.deadlineTugas,
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_pencil),
+                        contentDescription = "icon jam",
+                        modifier = Modifier.size(25.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.perintahTugas,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LazyCallerTugasBesok() {
+    val mylist = getTugasBesok()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .height(410.dp)
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(
+                topStart = 15.dp,
+                topEnd = 15.dp
+            )
+        ){
+            Row(
+                modifier = Modifier
+                    .background(colorResource(R.color.dark_blue))
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
                 Text(
-                    text = item.namaMatakuliah,
+                    text = "Tugas Besok",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color(0xFF1A237E)
-                )
-                Text(
-                    text = item.deadlineDate,
-                    fontSize = 12.sp,
-                    color = Color(0xFF757575)
+                    color = Color.White
                 )
             }
-            Image(
-                painter = painterResource(id = item.iconJenisTugas),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
+        }
+        LazyColumn(
+            modifier = Modifier
+                .background(colorResource(R.color.birulangit),
+                    shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
+        ){
+            items(mylist){ item ->
+                TugasBesok(item)
+            }
+        }
+    }
+}
+@Composable
+fun TugasBesok(item : tugasBesok) {
+    Card(
+        onClick = {
+//            logic ke halaman selanjutnya janji ini yang terakhir hjehe
+        },
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.white)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+
+        ) {
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults
+                    .cardColors(
+                        containerColor = Color.White
+                    )
+            ){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ){
+                    Text(
+                        text = item.namaMatakuliah,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Image(
+                        painter = painterResource(item.jenisTugas),
+                        contentDescription = "icon tugas",
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_jam),
+                        contentDescription = "icon jam"
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.deadlineTugas,
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_pencil),
+                        contentDescription = "icon jam",
+                        modifier = Modifier.size(25.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = item.perintahTugas,
+                    )
+                }
+            }
         }
     }
 }
