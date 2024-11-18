@@ -11,4 +11,5 @@
     <string name="title_activity_halaman_detail_tugas">HalamanDetailTugas</string>
     <string name="title_activity_halaman_detail_mata_kuliah">HalamanDetailMataKuliah</string>
     <string name="title_activity_halaman_pembuatan_kelas">HalamanPembuatanKelas</string>
+    <string name="title_activity_halaman_alat">HalamanAlat</string>
 </resources>
