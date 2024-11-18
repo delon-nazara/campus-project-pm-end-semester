@@ -9,4 +9,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_boarding">BoardingActivity</string>
     <string name="title_activity_register_profil">RegisterProfilActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_jadwal">JadwalActivity</string>
 </resources>

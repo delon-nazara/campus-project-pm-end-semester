@@ -1,9 +1,11 @@
 package com.example.proyekakhirpemrogramanmobile
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,18 +16,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,15 +36,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,32 +51,36 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-class PengaturanActivity : ComponentActivity() {
+class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
+            
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPengaturan() {
+fun MainHome() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -389,20 +394,32 @@ fun MainPengaturan() {
             }
 
         ) { contentPadding ->
-            IsiPengaturan(contentPadding)
+            IsiHome(contentPadding)
         }
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun IsiPengaturan(paddingValues: PaddingValues) {
-    var name by remember { mutableStateOf("Delon Nazara") }
-    var nim by remember { mutableStateOf("221401073") }
+fun IsiHome(paddingValues: PaddingValues) {
+
+    var currentDateTime by remember { mutableStateOf(LocalDateTime.now()) }
+
+    // Coroutine to update the time every second
+    LaunchedEffect(Unit) {
+        while (true) {
+            currentDateTime = LocalDateTime.now()
+            delay(1000L) // Update every 1 second
+        }
+    }
+
+    // Date and time formatting
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("in", "ID"))
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues)
+            .padding(paddingValues) // Properly apply padding here
             .background(Color.White)
     ) {
         HorizontalDivider(
@@ -410,262 +427,263 @@ fun IsiPengaturan(paddingValues: PaddingValues) {
             thickness = 1.dp,
             color = Color.Gray
         )
-        //==========================
-        //Ribbon
-        //==========================
+        //===================================
+        // Tanggal serta jam saat ini
+        //===================================
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .background(
                     color = colorResource(R.color.dark_blue),
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
+                    shape = RoundedCornerShape(16.dp)
                 )
                 .padding(vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Pengaturan",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = currentDateTime.format(dateFormatter),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                        .weight(1f)
+                )
+                Text(
+                    text = currentDateTime.format(timeFormatter),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.End
+                )
+            }
         }
 
         Spacer(
             modifier = Modifier.padding(5.dp)
         )
-        //=========================================
-        //Row yang berisi Hai
-        //=========================================
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(
-                text = "Hai, $name!",
-                color = Color.Black,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        //=========================================
-        //Row yang berisi Image profil
-        //=========================================
-        Row(
-            modifier = Modifier.fillMaxWidth().height(150.dp).padding(bottom = 15.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Image(
-                painter = painterResource(id = R.drawable.profil_arkan),
-                contentDescription = "Profile Image",
-                modifier = Modifier
-                    .scale(1f)
-            )
-        }
-        //=========================================
-        //Form Nama
-        //=========================================
-        Row(
+
+        //===================================
+        // Kalender
+        //===================================
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.birulangit)
+            ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end=16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 16.dp)
         ) {
-            Text(
-                text = "Nama",
-                color = Color.Black,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .padding(vertical = 15.dp)
-                    .padding(start = 16.dp)
-                    .weight(1f)
-            )
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                modifier = Modifier
-                    .weight(2f)
-                    .padding(horizontal = 8.dp),
-                singleLine = true,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color(0xFFF7F9FC),
-                    focusedBorderColor = Color.Gray,
-                    unfocusedBorderColor = Color.LightGray
-                ),
-                shape = RoundedCornerShape(8.dp)
-            )
-        }
-        //=========================================
-        //Form NIM
-        //=========================================
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end=16.dp)
-                .padding(vertical = 15.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "NIM",
-                color = Color.Black,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .padding(vertical = 15.dp)
-                    .padding(start = 16.dp)
-                    .weight(1f)
-            )
-            OutlinedTextField(
-                value = nim,
-                onValueChange = { newValue ->
-                    if (newValue.length <= 9 && newValue.all { it.isDigit() }) {
-                        nim = newValue
-                    }
-                },
-                modifier = Modifier
-                    .weight(2f)
-                    .padding(horizontal = 8.dp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number
-                ),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color(0xFFF7F9FC),
-                    focusedBorderColor = Color.Gray,
-                    unfocusedBorderColor = Color.LightGray
-                ),
-                shape = RoundedCornerShape(8.dp)
-            )
-        }
-        //========================================================
-        //Row yang berisi 2 tombol yaitu logout dan delete account
-        //========================================================
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            //=========================================
-            //Button Log out
-            //=========================================
-            TextButton(
-                onClick = { /* Handle click for Button Log out Account */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .weight(1f),
-                colors = ButtonDefaults.buttonColors(Color.Red),
-                shape = RoundedCornerShape(15.dp)
-            ){
+            Column {
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
-                ){
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.dark_blue))
+                ) {
                     Text(
-                        text = "Log out",
+                        text = "Kalender",
+                        modifier = Modifier.padding(16.dp),
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
+
                 }
-            }
-            //=========================================
-            //Button Delete
-            //=========================================
-            TextButton(
-                onClick = { /* Handle click for Button Delete Account */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = 10.dp),
-                colors = ButtonDefaults.buttonColors(Color.Red),
-                shape = RoundedCornerShape(15.dp)
-            ){
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
-                ){
-                    Text(
-                        text = "Delete Account",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                Row{
+                    Text("hello world")
                 }
             }
         }
 
         Spacer(
-            modifier = Modifier.padding(vertical = 100.dp)
+            modifier = Modifier.padding(10.dp)
         )
-        //==========================================
-        //Row yang berisi button batal dan save
-        //==========================================
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
-            horizontalArrangement = Arrangement.Center
-        ){
-            //=========================================
-            //Button Batal
-            //=========================================
-            TextButton(
-                onClick = { /* Handle click for Button Batal */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .weight(1f)
-                    .padding(vertical = 5.dp),
-                colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
-                shape = RoundedCornerShape(15.dp)
-            ){
+
+        //===================================
+        // Jadwal hari ini
+        //===================================
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.birulangit)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Column {
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
-                ){
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.dark_blue))
+                ) {
                     Text(
-                        text = "Batal",
+                        text = "Jadwal hari ini",
+                        modifier = Modifier.padding(16.dp),
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
+                Row{
+                    Text("hello world")
+                }
             }
-            //=========================================
-            //Button Save
-            //=========================================
-            TextButton(
-                onClick = { /* Handle click for Button Save */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = 10.dp)
-                    .padding(vertical = 5.dp),
-                colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
-                shape = RoundedCornerShape(15.dp)
-            ){
+        }
+
+        Spacer(
+            modifier = Modifier.padding(10.dp)
+        )
+
+        //===================================
+        // Tugas hari ini
+        //===================================
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.birulangit)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Column {
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
-                ){
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.dark_blue))
+                ) {
                     Text(
-                        text = "Save",
-                        color = Color.Black,
+                        text = "Tugas hari ini",
+                        modifier = Modifier.padding(16.dp),
+                        color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
+                }
+                Row{
+                    Text("hello world")
+                }
+            }
+        }
+
+        Spacer(
+            modifier = Modifier.padding(10.dp)
+        )
+
+        //===================================
+        // Tugas besok
+        //===================================
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.birulangit)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.dark_blue))
+                ) {
+                    Text(
+                        text = "Tugas besok",
+                        modifier = Modifier.padding(16.dp),
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Row{
+                    Text("hello world")
                 }
             }
         }
     }
 }
 
+//@RequiresApi(Build.VERSION_CODES.O)
+//@Composable
+//fun CustomCalendar() {
+//    val currentDate = remember { LocalDate.now() }
+//
+//    // Set tanggal yang ingin diwarnai khusus
+//    val specialDates = listOf(
+//        currentDate.withDayOfMonth(6),  // Contoh tanggal khusus
+//        currentDate.withDayOfMonth(12),
+//        currentDate.withDayOfMonth(21)
+//    )
+//
+//    val daysOfWeek = listOf("S", "S", "R", "K", "J", "S", "M")
+//
+//    Column(
+//        modifier = Modifier
+//            .padding(16.dp)
+//            .fillMaxWidth()
+//            .background(Color.White)
+//    ) {
+//        // Header hari dalam seminggu
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceAround
+//        ) {
+//            daysOfWeek.forEach { day ->
+//                Text(text = day, color = Color.White, fontSize = 16.sp)
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        // Layout kalender bulan ini
+//        for (week in 1..5) { // Misalnya 5 minggu dalam 1 bulan
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceAround
+//            ) {
+//                for (day in 1..7) {
+//                    val date = currentDate.withDayOfMonth((week - 1) * 7 + day)
+//                    val isSpecialDate = specialDates.contains(date)
+//                    val isToday = date == currentDate
+//
+//                    Box(
+//                        modifier = Modifier
+//                            .size(40.dp)
+//                            .background(
+//                                color = when {
+//                                    isToday -> Color.Cyan  // Warna lingkaran untuk hari ini
+//                                    isSpecialDate -> Color.Red.copy(alpha = 0.3f) // Warna tanggal khusus
+//                                    else -> Color.Transparent
+//                                },
+//                                shape = CircleShape
+//                            ),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(
+//                            text = date.dayOfMonth.toString(),
+//                            color = if (isToday) Color.White else Color.Black,
+//                            style = if (isSpecialDate) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall
+//                        )
+//                    }
+//                }
+//            }
+//            Spacer(modifier = Modifier.height(8.dp))
+//        }
+//    }
+//}
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun PreviewMainPengaturan() {
-    MainPengaturan()
+fun PreviewMainHome() {
+    MainHome()
 }
