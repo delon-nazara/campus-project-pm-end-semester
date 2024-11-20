@@ -96,7 +96,7 @@ fun MainLogin() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(R.drawable.logobiru),
+                painter = painterResource(R.drawable.logobirusteven),
                 contentDescription = "Logo",
                 modifier = Modifier.size(100.dp)
             )

@@ -59,6 +59,26 @@
             android:label="@string/title_activity_profil"
             android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
         <activity
+            android:name=".HalamanAlat"
+            android:exported="false"
+            android:label="@string/title_activity_halaman_alat"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".HalamanPembuatanKelas"
+            android:exported="false"
+            android:label="@string/title_activity_halaman_pembuatan_kelas"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".HalamanDetailMataKuliah"
+            android:exported="false"
+            android:label="@string/title_activity_halaman_detail_mata_kuliah"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".HalamanDetailTugas"
+            android:exported="false"
+            android:label="@string/title_activity_halaman_detail_tugas"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

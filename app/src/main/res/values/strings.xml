@@ -24,7 +24,6 @@
     <string name="display_email">Email: %s</string>
 
     <!-- Steven Section -->
-    <string name="app_name">ProyekAkhirPemrogramanMobile</string>
     <string name="title_activity_profil">ProfilActivity</string>
     <string name="title_activity_side_bar">SideBar</string>
     <string name="title_activity_pengaturan">PengaturanActivity</string>
@@ -36,5 +35,17 @@
     <string name="title_activity_register_profil">RegisterProfilActivity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_jadwal">JadwalActivity</string>
+
+    <!-- Arkan Section -->
+    <string name="title_activity_modul_matakuliah">ModulMatakuliah</string>
+    <string name="title_activity_belajar_lazy_column">BelajarLazyColumn</string>
+    <string name="title_activity_daftar_modul">DaftarModul</string>
+    <string name="title_activity_halaman_mata_kuliah">HalamanMataKuliah</string>
+    <string name="title_activity_halaman_mata_kuliah_kosong">HalamanMataKuliahKosong</string>
+    <string name="title_activity_halaman_tugas_aktif">HalamanTugasAktif</string>
+    <string name="title_activity_halaman_detail_tugas">HalamanDetailTugas</string>
+    <string name="title_activity_halaman_detail_mata_kuliah">HalamanDetailMataKuliah</string>
+    <string name="title_activity_halaman_pembuatan_kelas">HalamanPembuatanKelas</string>
+    <string name="title_activity_halaman_alat">HalamanAlat</string>
 
 </resources>
