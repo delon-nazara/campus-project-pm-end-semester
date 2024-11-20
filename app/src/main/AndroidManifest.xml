@@ -14,6 +14,51 @@
         android:theme="@style/Theme.ProyekAkhirPemrogramanMobile"
         tools:targetApi="31">
         <activity
+            android:name=".JadwalActivity"
+            android:exported="false"
+            android:label="@string/title_activity_jadwal"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".RegisterProfilActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register_profil"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".BoardingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_boarding"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".KelompokActivity"
+            android:exported="false"
+            android:label="@string/title_activity_kelompok"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".PengaturanActivity"
+            android:exported="false"
+            android:label="@string/title_activity_pengaturan"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
+            android:name=".ProfilActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profil"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

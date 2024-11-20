@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="birulangit">#FFABD2FA</color>
+    <color name="very_light_blue">#FF7692FF</color>
+    <color name="dark_blue">#FF091441</color>
+    <color name="hijau_konfirmasi">#FF2DE1C2</color>
+    <color name="merah_batal">#FFFB9B92</color>
 </resources>

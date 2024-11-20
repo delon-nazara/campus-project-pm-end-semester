@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // Default Testing Library
+    // implementation(libs.androidx.ui.test.android)
+    // implementation(libs.places)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

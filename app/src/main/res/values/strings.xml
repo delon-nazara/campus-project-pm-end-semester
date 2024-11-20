@@ -23,4 +23,18 @@
 
     <string name="display_email">Email: %s</string>
 
+    <!-- Steven Section -->
+    <string name="app_name">ProyekAkhirPemrogramanMobile</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="title_activity_side_bar">SideBar</string>
+    <string name="title_activity_pengaturan">PengaturanActivity</string>
+    <string name="title_activity_alat">AlatActivity</string>
+    <string name="title_activity_kelompok">KelompokActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_boarding">BoardingActivity</string>
+    <string name="title_activity_register_profil">RegisterProfilActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_jadwal">JadwalActivity</string>
+
 </resources>
