@@ -353,7 +353,7 @@ fun MainInformasi() {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.White,
-                        titleContentColor = colorResource(id = R.color.birulangit)
+                        titleContentColor = colorResource(id = R.color.light_blue)
                     ),
                     title = {
                         Text(
@@ -444,7 +444,7 @@ fun IsiInformasi(paddingValues: PaddingValues) {
 
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.birulangit)
+                containerColor = colorResource(R.color.light_blue)
             ),
             modifier = Modifier
                 .fillMaxWidth()
