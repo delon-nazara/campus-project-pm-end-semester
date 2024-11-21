@@ -379,7 +379,7 @@ fun MainHome() {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.White,
-                        titleContentColor = colorResource(id = R.color.birulangit)
+                        titleContentColor = colorResource(id = R.color.light_blue)
                     ),
                     title = {
                         Text(
@@ -574,7 +574,7 @@ fun LazyCallerJadwalHariIni() {
         }
         LazyColumn(
             modifier = Modifier
-                .background(colorResource(R.color.birulangit),
+                .background(colorResource(R.color.light_blue),
                     shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
         ){
             items(mylist){ item ->
@@ -705,7 +705,7 @@ fun LazyCallerTugasHariIni() {
         }
         LazyColumn(
             modifier = Modifier
-                .background(colorResource(R.color.birulangit),
+                .background(colorResource(R.color.light_blue),
                     shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
         ){
             items(mylist){ item ->
@@ -827,7 +827,7 @@ fun LazyCallerTugasBesok() {
         }
         LazyColumn(
             modifier = Modifier
-                .background(colorResource(R.color.birulangit),
+                .background(colorResource(R.color.light_blue),
                     shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
         ){
             items(mylist){ item ->

@@ -63,10 +63,10 @@ fun MainBoarding() {
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> PageBoarding1()
-                1 -> PageBoarding2()
-                2 -> PageBoarding3()
-                3 -> PageBoarding4()
+                0 -> OnboardingPage1()
+                1 -> OnboardingPage2()
+                2 -> OnboardingPage3()
+                3 -> OnboardingPage4()
             }
         }
         //==================================================
@@ -140,14 +140,14 @@ fun MainBoarding() {
 // Layout page 1
 //==================================================
 @Composable
-fun PageBoarding1() {
+fun OnboardingPage1() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        colorResource(R.color.birulangit),
+                        colorResource(R.color.light_blue),
                         Color.White
                     ),
                     start = Offset(0f, 0f),
@@ -161,7 +161,7 @@ fun PageBoarding1() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.boarding1),
+                painter = painterResource(id = R.drawable.onboarding_screen_1),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )
@@ -199,14 +199,14 @@ fun PageBoarding1() {
 // Layout page 2
 //==================================================
 @Composable
-fun PageBoarding2() {
+fun OnboardingPage2() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        colorResource(R.color.birulangit),
+                        colorResource(R.color.light_blue),
                         Color.White
                     ),
                     start = Offset(0f, 0f),
@@ -220,7 +220,7 @@ fun PageBoarding2() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.boarding2),
+                painter = painterResource(id = R.drawable.onboarding_screen_2),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )
@@ -258,14 +258,14 @@ fun PageBoarding2() {
 // Layout page 3
 //==================================================
 @Composable
-fun PageBoarding3() {
+fun OnboardingPage3() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        colorResource(R.color.birulangit),
+                        colorResource(R.color.light_blue),
                         Color.White
                     ),
                     start = Offset(0f, 0f),
@@ -279,7 +279,7 @@ fun PageBoarding3() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.boarding3),
+                painter = painterResource(id = R.drawable.onboarding_screen_3),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )
@@ -317,14 +317,14 @@ fun PageBoarding3() {
 // Layout page 4
 //==================================================
 @Composable
-fun PageBoarding4() {
+fun OnboardingPage4() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        colorResource(R.color.birulangit),
+                        colorResource(R.color.light_blue),
                         Color.White
                     ),
                     start = Offset(0f, 0f),
@@ -338,7 +338,7 @@ fun PageBoarding4() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.boarding4),
+                painter = painterResource(id = R.drawable.onboarding_screen_4),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )

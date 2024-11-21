@@ -368,7 +368,7 @@ fun MainDaftarDetailModul() {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.White,
-                        titleContentColor = colorResource(id = R.color.birulangit)
+                        titleContentColor = colorResource(id = R.color.light_blue)
                     ),
                     title = {
                         Text(

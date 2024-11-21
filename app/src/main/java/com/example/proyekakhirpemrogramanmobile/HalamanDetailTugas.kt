@@ -370,7 +370,7 @@ fun MainDetailHalamanTugas() {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.White,
-                        titleContentColor = colorResource(id = R.color.birulangit)
+                        titleContentColor = colorResource(id = R.color.light_blue)
                     ),
                     title = {
                         Text(
@@ -496,7 +496,7 @@ fun InstruksiTugas(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.birulangit))
+        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.light_blue))
     ){
         Column(
             modifier = Modifier.padding(16.dp)
