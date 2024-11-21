@@ -1,3 +1,7 @@
+// ==========================================================================
+//      All contents in this file are system defaults. Do not change it!
+// ==========================================================================
+
 package com.example.proyekakhirpemrogramanmobile.theme
 
 import androidx.compose.ui.graphics.Color
