@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
+import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.view.RegisterScreen
@@ -34,27 +35,43 @@ fun App(context: Context) {
     // todo
     databaseViewModel.cloudinaryInitialization(context)
 
+    // todo
+    val startDestination = "onboarding_screen"
+
     NavHost(
         navController = navController,
-        startDestination = "base_screen" // todo
+        startDestination =  startDestination
     ) {
-        coroutineScope.launch {
-            if (userState != null) {
-                if (databaseViewModel.userExistInDatabase(userState!!.uid)) {
-                    navController.navigate("home_screen") {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                    }
-                } else {
-                    navController.navigate("setup_profile_screen") {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                    }
-                }
-            }
+//        coroutineScope.launch {
+//            if (userState != null) {
+//                if (databaseViewModel.userExistInDatabase(userState!!.uid)) {
+//                    navController.navigate("home_screen") {
+//                        popUpTo(0) {
+//                            inclusive = true
+//                        }
+//                    }
+//                } else {
+//                    navController.navigate("setup_profile_screen") {
+//                        popUpTo(0) {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        // =============================
+        //      FINAL SECTION START
+        // =============================
+
+        composable("onboarding_screen") {
+            OnboardingScreen()
         }
+
+        // ===========================
+        //      FINAL SECTION END
+        // ===========================
+
         composable("base_screen") {
             BaseScreen(
                 onRegisterScreenButton = {
