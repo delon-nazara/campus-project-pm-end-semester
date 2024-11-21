@@ -33,17 +33,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.utils.onboardingScreenButtonText
-import com.example.proyekakhirpemrogramanmobile.utils.onboardingScreenDescription
-import com.example.proyekakhirpemrogramanmobile.utils.onboardingScreenTitle
+import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun OnboardingScreen() {
+fun PreviewOnboardingScreen() {
+    OnboardingScreen(
+        onStartButtonClicked = {}
+    )
+}
+
+@Composable
+fun OnboardingScreen(
+    onStartButtonClicked: () -> Unit
+) {
     val pagerState = rememberPagerState(pageCount = {4})
     val coroutineScope = rememberCoroutineScope()
 
@@ -125,7 +135,8 @@ fun OnboardingScreen() {
             ) {
                 Text(
                     text = leftText,
-                    style = onboardingScreenButtonText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = colorResource(R.color.very_light_blue)
                 )
             }
@@ -158,18 +169,23 @@ fun OnboardingScreen() {
             // Next Button
             TextButton(
                 onClick = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(
-                            page = pagerState.currentPage + 1,
-                            animationSpec = tween(500)
-                        )
+                    if (pagerState.currentPage == 3) {
+                        onStartButtonClicked()
+                    } else {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(
+                                page = pagerState.currentPage + 1,
+                                animationSpec = tween(500)
+                            )
+                        }
                     }
                 },
                 modifier = Modifier.width(75.dp)
             ) {
                 Text(
                     text = rightText,
-                    style = onboardingScreenButtonText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = colorResource(R.color.very_light_blue)
                 )
             }
@@ -195,7 +211,6 @@ fun OnboardingPage(
                         colorResource(R.color.light_blue),
                         colorResource(R.color.white)
                     ),
-                    start = Offset(0f, 0f),
                     end = Offset(0f, Float.POSITIVE_INFINITY)
                 )
             )
@@ -207,7 +222,7 @@ fun OnboardingPage(
             modifier = Modifier.size(300.dp)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         // Line
         HorizontalDivider(
@@ -223,7 +238,9 @@ fun OnboardingPage(
         // Title
         Text(
             text = stringResource(title),
-            style = onboardingScreenTitle,
+            fontSize = 30.sp,
+            fontFamily = Poppins,
+            fontWeight = FontWeight.Bold,
             color = colorResource(R.color.black)
         )
 
@@ -232,7 +249,10 @@ fun OnboardingPage(
         // Description
         Text(
             text = stringResource(description),
-            style = onboardingScreenDescription,
+            fontSize = 18.sp,
+            fontFamily = Poppins,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Center,
             color = colorResource(R.color.black),
             modifier = Modifier.padding(horizontal = 32.dp)
         )

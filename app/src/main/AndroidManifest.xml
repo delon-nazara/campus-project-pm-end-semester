@@ -29,19 +29,9 @@
             android:label="@string/title_activity_register_profil"
             android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
         <activity
-            android:name=".BoardingActivity"
-            android:exported="false"
-            android:label="@string/title_activity_boarding"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login"
             android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
         <activity
             android:name=".KelompokActivity"
