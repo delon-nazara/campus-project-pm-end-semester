@@ -1,6 +1,9 @@
 package com.example.proyekakhirpemrogramanmobile.utils
 
 import android.content.Context
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,9 +14,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
-import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.LoginScreen
+import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.view.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
@@ -64,8 +67,31 @@ fun App(context: Context) {
         //      FINAL SECTION START
         // =============================
 
-        composable("onboarding_screen") {
-            OnboardingScreen()
+        composable(
+            route = "onboarding_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            OnboardingScreen(
+                onStartButtonClicked = {
+                    navController.navigate("login_screen")
+                }
+            )
+        }
+        composable(
+            route = "login_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            LoginScreen(
+                temp = {
+                    navController.navigate("onboarding_screen")
+                }
+            )
         }
 
         // ===========================
@@ -125,41 +151,41 @@ fun App(context: Context) {
                 }
             )
         }
-        composable("login_screen") {
-            LoginScreen(
-                onLoginButtonClicked = { email, password ->
-                    if (email.isEmpty() or password.isEmpty()) {
-                        showToast(context, "Email or password cannot be empty")
-                    } else {
-                        coroutineScope.launch {
-                            val result = authenticationViewModel.login(email, password)
-                            if (result == "Successful") {
-                                navController.navigate("home_screen") {
-                                    popUpTo(0) {
-                                        inclusive = true
-                                    }
-                                }
-                            }
-                            showToast(context, result)
-                        }
-                    }
-                },
-                onRegisterScreenButtonClicked = {
-                    navController.navigate("register_screen") {
-                        popUpTo("register_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
-                onBaseScreenButtonClicked = {
-                    navController.navigate("base_screen") {
-                        popUpTo("base_screen") {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
-        }
+//        composable("login_screen") {
+//            LoginScreen(
+//                onLoginButtonClicked = { email, password ->
+//                    if (email.isEmpty() or password.isEmpty()) {
+//                        showToast(context, "Email or password cannot be empty")
+//                    } else {
+//                        coroutineScope.launch {
+//                            val result = authenticationViewModel.login(email, password)
+//                            if (result == "Successful") {
+//                                navController.navigate("home_screen") {
+//                                    popUpTo(0) {
+//                                        inclusive = true
+//                                    }
+//                                }
+//                            }
+//                            showToast(context, result)
+//                        }
+//                    }
+//                },
+//                onRegisterScreenButtonClicked = {
+//                    navController.navigate("register_screen") {
+//                        popUpTo("register_screen") {
+//                            inclusive = true
+//                        }
+//                    }
+//                },
+//                onBaseScreenButtonClicked = {
+//                    navController.navigate("base_screen") {
+//                        popUpTo("base_screen") {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            )
+//        }
         composable("setup_profile_screen") {
             SetupProfileScreen(
                 onSetupProfileButtonClicked = { fullName, studentId -> // todo

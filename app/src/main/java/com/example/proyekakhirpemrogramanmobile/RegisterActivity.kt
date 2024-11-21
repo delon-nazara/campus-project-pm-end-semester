@@ -96,7 +96,7 @@ fun MainRegister() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(R.drawable.logobirusteven),
+                painter = painterResource(R.drawable.logo_central_class_full),
                 contentDescription = "Logo",
                 modifier = Modifier.size(100.dp)
             )
