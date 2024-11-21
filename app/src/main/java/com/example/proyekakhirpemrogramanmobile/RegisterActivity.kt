@@ -24,6 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
@@ -154,11 +155,17 @@ fun MainRegister() {
                             )
                         },
                         isError = !isEmailValid,
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFF7F9FC),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFFF7F9FC),
+                            unfocusedContainerColor = Color(0xFFF7F9FC),
                             focusedBorderColor = if (isEmailValid) Color.Gray else Color.Red,
                             unfocusedBorderColor = if (isEmailValid) Color.LightGray else Color.Red
                         ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            containerColor = Color(0xFFF7F9FC),
+//                            focusedBorderColor = if (isEmailValid) Color.Gray else Color.Red,
+//                            unfocusedBorderColor = if (isEmailValid) Color.LightGray else Color.Red
+//                        ),
                         shape = RoundedCornerShape(8.dp)
                     )
 
@@ -204,11 +211,17 @@ fun MainRegister() {
                         },
                         isError = !isPasswordValid,
                         visualTransformation = PasswordVisualTransformation(),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFF7F9FC),
-                            focusedBorderColor = if (isPasswordValid) Color.Gray else Color.Red,
-                            unfocusedBorderColor = if (isPasswordValid) Color.LightGray else Color.Red
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFFF7F9FC),
+                            unfocusedContainerColor = Color(0xFFF7F9FC),
+                            focusedBorderColor = if (isEmailValid) Color.Gray else Color.Red,
+                            unfocusedBorderColor = if (isEmailValid) Color.LightGray else Color.Red
                         ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            containerColor = Color(0xFFF7F9FC),
+//                            focusedBorderColor = if (isPasswordValid) Color.Gray else Color.Red,
+//                            unfocusedBorderColor = if (isPasswordValid) Color.LightGray else Color.Red
+//                        ),
                         shape = RoundedCornerShape(8.dp)
                     )
 

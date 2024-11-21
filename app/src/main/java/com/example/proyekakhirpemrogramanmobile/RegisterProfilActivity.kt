@@ -23,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
@@ -148,11 +149,17 @@ fun MainRegisterProfil() {
                                 fontSize = 14.sp,
                             )
                         },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFF7F9FC),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFFF7F9FC),
+                            unfocusedContainerColor = Color(0xFFF7F9FC),
                             focusedBorderColor = Color.Gray,
-                            unfocusedBorderColor = Color.LightGray,
+                            unfocusedBorderColor = Color.LightGray
                         ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            containerColor = Color(0xFFF7F9FC),
+//                            focusedBorderColor = Color.Gray,
+//                            unfocusedBorderColor = Color.LightGray,
+//                        ),
                         shape = RoundedCornerShape(8.dp)
                     )
 
@@ -183,11 +190,17 @@ fun MainRegisterProfil() {
                             )
                         },
                         isError = !isnimValid,
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFF7F9FC),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color(0xFFF7F9FC),
+                            unfocusedContainerColor = Color(0xFFF7F9FC),
                             focusedBorderColor = if (isnimValid) Color.Gray else Color.Red,
                             unfocusedBorderColor = if (isnimValid) Color.LightGray else Color.Red
                         ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            containerColor = Color(0xFFF7F9FC),
+//                            focusedBorderColor = if (isnimValid) Color.Gray else Color.Red,
+//                            unfocusedBorderColor = if (isnimValid) Color.LightGray else Color.Red
+//                        ),
                         shape = RoundedCornerShape(8.dp)
                     )
 

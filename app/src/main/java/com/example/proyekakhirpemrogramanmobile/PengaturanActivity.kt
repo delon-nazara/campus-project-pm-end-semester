@@ -35,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -493,11 +494,17 @@ fun IsiPengaturan(paddingValues: PaddingValues) {
                     .weight(2f)
                     .padding(horizontal = 8.dp),
                 singleLine = true,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color(0xFFF7F9FC),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF7F9FC),
+                    unfocusedContainerColor = Color(0xFFF7F9FC),
                     focusedBorderColor = Color.Gray,
                     unfocusedBorderColor = Color.LightGray
                 ),
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    containerColor = Color(0xFFF7F9FC),
+//                    focusedBorderColor = Color.Gray,
+//                    unfocusedBorderColor = Color.LightGray
+//                ),
                 shape = RoundedCornerShape(8.dp)
             )
         }
@@ -535,11 +542,17 @@ fun IsiPengaturan(paddingValues: PaddingValues) {
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color(0xFFF7F9FC),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF7F9FC),
+                    unfocusedContainerColor = Color(0xFFF7F9FC),
                     focusedBorderColor = Color.Gray,
                     unfocusedBorderColor = Color.LightGray
                 ),
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    containerColor = Color(0xFFF7F9FC),
+//                    focusedBorderColor = Color.Gray,
+//                    unfocusedBorderColor = Color.LightGray
+//                ),
                 shape = RoundedCornerShape(8.dp)
             )
         }
