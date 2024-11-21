@@ -1,6 +1,21 @@
 <resources>
 
+    <!-- Final Section Start -->
+
+    <!-- General -->
     <string name="app_name">Central Class</string>
+
+    <!-- Onboarding Screen -->
+    <string name="onboarding_screen_title_page_1">Selamat datang!</string>
+    <string name="onboarding_screen_description_page_1">Mari lihat semua yang kamu dapatkan dalam satu aplikasi</string>
+    <string name="onboarding_screen_title_page_2">Jadwal Perkuliahan</string>
+    <string name="onboarding_screen_description_page_2">Tetap terinformasi dengan perubahan jadwal yang terjadi</string>
+    <string name="onboarding_screen_title_page_3">Informasi Tugas</string>
+    <string name="onboarding_screen_description_page_3">Pantau deadline dan detail tugas agar tidak terlewatkan</string>
+    <string name="onboarding_screen_title_page_4">Kumpulan Modul</string>
+    <string name="onboarding_screen_description_page_4">Pelajari kembali materi perkuliahan, kapanpun dan dimanapun</string>
+
+    <!-- Final Section End -->
 
     <string name="go_to_base_screen">Go to Base Screen</string>
     <string name="go_to_register_screen">Go to Register Screen</string>
