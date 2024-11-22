@@ -28,8 +28,8 @@ import com.example.proyekakhirpemrogramanmobile.R
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenOldPreview() {
-    LoginScreenOld(
+fun BackendLoginScreenPreview() {
+    BackendLoginScreen(
         onLoginButtonClicked = {_, _ ->},
         onRegisterScreenButtonClicked = {},
         onBaseScreenButtonClicked = {}
@@ -37,7 +37,7 @@ fun LoginScreenOldPreview() {
 }
 
 @Composable
-fun LoginScreenOld(
+fun BackendLoginScreen(
     onLoginButtonClicked: (String, String) -> Unit,
     onRegisterScreenButtonClicked: () -> Unit,
     onBaseScreenButtonClicked: () -> Unit

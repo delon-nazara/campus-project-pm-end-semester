@@ -1,9 +1,5 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -46,20 +41,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 
-class RegisterActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun MainRegister() {
+fun StevenRegisterScreen() {
     var email by remember { mutableStateOf("") }
     var isEmailValid by remember { mutableStateOf(true) }
     var password by remember { mutableStateOf("") }
@@ -310,10 +296,4 @@ fun MainRegister() {
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewMainRegister() {
-    MainRegister()
 }

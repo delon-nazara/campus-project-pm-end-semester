@@ -49,15 +49,39 @@ import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(
-        temp = {}
-    )
+fun AuthenticationScreenPreview() {
+    val showLoginScreenPreview = false
+    if (showLoginScreenPreview) {
+        // Login screen preview
+        AuthenticationScreen(
+            screenTitle = stringResource(R.string.authentication_login_title),
+            mainText = stringResource(R.string.authentication_login),
+            sideText = stringResource(R.string.authentication_register),
+            navigationText = stringResource(R.string.authentication_not_have_account),
+            onTopButtonClicked = {},
+            onBottomButtonClicked = {}
+        )
+    } else {
+        // Register screen preview
+        AuthenticationScreen(
+            screenTitle = stringResource(R.string.authentication_register_title),
+            mainText = stringResource(R.string.authentication_register),
+            sideText = stringResource(R.string.authentication_login),
+            navigationText = stringResource(R.string.authentication_already_have_account),
+            onTopButtonClicked = {},
+            onBottomButtonClicked = {}
+        )
+    }
 }
 
 @Composable
-fun LoginScreen(
-    temp: () -> Unit
+fun AuthenticationScreen(
+    screenTitle: String,
+    mainText: String,
+    sideText: String,
+    navigationText: String,
+    onTopButtonClicked: () -> Unit,
+    onBottomButtonClicked: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,7 +101,7 @@ fun LoginScreen(
     ) {
         // Title
         Text(
-            text = stringResource(R.string.authentication_login_title),
+            text = screenTitle,
             fontSize = 24.sp,
             fontFamily = Poppins,
             fontWeight = FontWeight.Bold,
@@ -122,7 +146,7 @@ fun LoginScreen(
 
                 // Card Title
                 Text(
-                    text = stringResource(R.string.authentication_login),
+                    text = mainText,
                     fontSize = 20.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
@@ -135,7 +159,7 @@ fun LoginScreen(
                     value = email,
                     onValueChange = { input ->
                         email = input
-                        isEmailValid = input.matches(Regex("^[A-Za-z0-9._%+-]+@gmail\\.com$"))
+                        isEmailValid = input.matches(Regex("^[A-Za-z0-9._%+-]+@gmail\\.com$")) // todo
                     },
                     singleLine = true,
                     textStyle = TextStyle(fontSize = 14.sp),
@@ -164,7 +188,7 @@ fun LoginScreen(
                 // Email Error
                 if (!isEmailValid && email.isNotEmpty()) {
                     Text(
-                        text = stringResource(R.string.authentication_email_error),
+                        text = stringResource(R.string.authentication_email_error), // todo
                         color = colorResource(R.color.red),
                         fontSize = 12.sp,
                         modifier = Modifier
@@ -181,7 +205,7 @@ fun LoginScreen(
                     onValueChange = { input ->
                         if (input.length <= 15) {
                             password = input
-                            isPasswordValid = password.length in 6..15
+                            isPasswordValid = password.length in 6..15 // todo
                         }
                     },
                     singleLine = true,
@@ -235,7 +259,7 @@ fun LoginScreen(
                 // Password Error
                 if (!isPasswordValid && password.isNotEmpty()) {
                     Text(
-                        text = stringResource(R.string.authentication_password_error),
+                        text = stringResource(R.string.authentication_password_error), // todo
                         color = colorResource(R.color.red),
                         fontSize = 12.sp,
                         modifier = Modifier
@@ -246,9 +270,9 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Login Button
+                // Top Button
                 TextButton(
-                    onClick = { temp() },
+                    onClick = onTopButtonClicked,
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
                     modifier = Modifier
@@ -256,7 +280,7 @@ fun LoginScreen(
                         .height(45.dp)
                 ){
                     Text(
-                        text = stringResource(R.string.authentication_login),
+                        text = mainText,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colorResource(R.color.white)
@@ -276,7 +300,7 @@ fun LoginScreen(
 
                 // Navigation Text
                 Text(
-                    text = stringResource(R.string.authentication_not_have_account),
+                    text = navigationText,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
@@ -285,9 +309,9 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Register Button
+                // Bottom Button
                 TextButton(
-                    onClick = {  },
+                    onClick = onBottomButtonClicked,
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
                     modifier = Modifier
@@ -295,7 +319,7 @@ fun LoginScreen(
                         .height(45.dp)
                 ){
                     Text(
-                        text = stringResource(R.string.authentication_register),
+                        text = sideText,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colorResource(R.color.white)
