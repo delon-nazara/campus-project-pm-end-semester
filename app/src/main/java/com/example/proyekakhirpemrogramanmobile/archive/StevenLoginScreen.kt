@@ -46,7 +46,7 @@ import com.example.proyekakhirpemrogramanmobile.R
 
 @Preview
 @Composable
-fun MainLogin() {
+fun StevenLoginScreen() {
     var email by remember { mutableStateOf("") }
     var isEmailValid by remember { mutableStateOf(true) }
     var password by remember { mutableStateOf("") }

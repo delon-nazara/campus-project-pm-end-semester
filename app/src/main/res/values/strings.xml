@@ -17,6 +17,7 @@
 
     <!-- Authentication (Login and Register) Screen -->
     <string name="authentication_login_title">Selamat Datang!</string>
+    <string name="authentication_register_title">Daftar Sekarang!</string>
     <string name="authentication_login">Masuk</string>
     <string name="authentication_register">Daftar</string>
     <string name="authentication_email">Email</string>
@@ -24,6 +25,7 @@
     <string name="authentication_email_error">Email harus diakhiri dengan @gmail.com</string>
     <string name="authentication_password_error">Password harus terdiri dari 6–15 karakter</string>
     <string name="authentication_not_have_account">Belum punya akun?\nDaftar sekarang!</string>
+    <string name="authentication_already_have_account">Sudah punya akun?\nMasuk sekarang!</string>
 
     <!-- Final Section End -->
 

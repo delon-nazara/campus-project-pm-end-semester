@@ -8,16 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.view.AuthenticationScreen
 import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
 import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
-import com.example.proyekakhirpemrogramanmobile.view.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
-import com.example.proyekakhirpemrogramanmobile.view.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
@@ -80,6 +81,7 @@ fun App(context: Context) {
                 }
             )
         }
+
         composable(
             route = "login_screen",
             enterTransition = { fadeIn(animationSpec = tween(1000)) },
@@ -87,9 +89,41 @@ fun App(context: Context) {
             exitTransition = { fadeOut(animationSpec = tween(1000)) },
             popExitTransition = { fadeOut(animationSpec = tween(1000)) }
         ) {
-            LoginScreen(
-                temp = {
-                    navController.navigate("onboarding_screen")
+            AuthenticationScreen(
+                screenTitle = stringResource(R.string.authentication_login_title),
+                mainText = stringResource(R.string.authentication_login),
+                sideText = stringResource(R.string.authentication_register),
+                navigationText = stringResource(R.string.authentication_not_have_account),
+                onTopButtonClicked = {},
+                onBottomButtonClicked = {
+                    navController.navigate("register_screen") {
+                        popUpTo("register_screen") {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        composable(
+            route = "register_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            AuthenticationScreen(
+                screenTitle = stringResource(R.string.authentication_register_title),
+                mainText = stringResource(R.string.authentication_register),
+                sideText = stringResource(R.string.authentication_login),
+                navigationText = stringResource(R.string.authentication_already_have_account),
+                onTopButtonClicked = {},
+                onBottomButtonClicked = {
+                    navController.navigate("login_screen") {
+                        popUpTo("login_screen") {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -116,41 +150,41 @@ fun App(context: Context) {
                 }
             )
         }
-        composable("register_screen") {
-            RegisterScreen(
-                onRegisterButtonClicked = { email, password ->
-                    if (email.isEmpty() or password.isEmpty()) {
-                        showToast(context, "Email or password cannot be empty")
-                    } else {
-                        coroutineScope.launch {
-                            val result = authenticationViewModel.register(email, password)
-                            if (result == "Successful") {
-                                navController.navigate("setup_profile_screen") {
-                                    popUpTo(0) {
-                                        inclusive = true
-                                    }
-                                }
-                            }
-                            showToast(context, result)
-                        }
-                    }
-                },
-                onLoginScreenButtonClicked = {
-                    navController.navigate("login_screen") {
-                        popUpTo("login_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
-                onBaseScreenButtonClicked = {
-                    navController.navigate("base_screen") {
-                        popUpTo("base_screen") {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
-        }
+//        composable("register_screen") {
+//            RegisterScreen(
+//                onRegisterButtonClicked = { email, password ->
+//                    if (email.isEmpty() or password.isEmpty()) {
+//                        showToast(context, "Email or password cannot be empty")
+//                    } else {
+//                        coroutineScope.launch {
+//                            val result = authenticationViewModel.register(email, password)
+//                            if (result == "Successful") {
+//                                navController.navigate("setup_profile_screen") {
+//                                    popUpTo(0) {
+//                                        inclusive = true
+//                                    }
+//                                }
+//                            }
+//                            showToast(context, result)
+//                        }
+//                    }
+//                },
+//                onLoginScreenButtonClicked = {
+//                    navController.navigate("login_screen") {
+//                        popUpTo("login_screen") {
+//                            inclusive = true
+//                        }
+//                    }
+//                },
+//                onBaseScreenButtonClicked = {
+//                    navController.navigate("base_screen") {
+//                        popUpTo("base_screen") {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            )
+//        }
 //        composable("login_screen") {
 //            LoginScreen(
 //                onLoginButtonClicked = { email, password ->
