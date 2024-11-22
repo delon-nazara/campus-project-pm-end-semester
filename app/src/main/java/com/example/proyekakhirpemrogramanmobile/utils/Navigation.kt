@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -22,8 +21,6 @@ import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun App(context: Context) {
@@ -34,7 +31,7 @@ fun App(context: Context) {
     val databaseViewModel: DatabaseViewModel = viewModel()
 
     val navController: NavHostController = rememberNavController()
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+//    val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     // todo
     databaseViewModel.cloudinaryInitialization(context)
@@ -117,7 +114,9 @@ fun App(context: Context) {
                 mainText = stringResource(R.string.authentication_register),
                 sideText = stringResource(R.string.authentication_login),
                 navigationText = stringResource(R.string.authentication_already_have_account),
-                onTopButtonClicked = {},
+                onTopButtonClicked = {
+                    navController.navigate("setup_profile_screen")
+                },
                 onBottomButtonClicked = {
                     navController.navigate("login_screen") {
                         popUpTo("login_screen") {
@@ -125,6 +124,21 @@ fun App(context: Context) {
                         }
                     }
                 }
+            )
+        }
+
+        composable(
+            route = "setup_profile_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            SetupProfileScreen(
+                screenTitle = stringResource(R.string.authentication_setup_profile_title),
+                cardTitle = stringResource(R.string.authentication_setup_profile),
+                finishText = stringResource(R.string.authentication_finish),
+                onFinishButtonClicked = {},
             )
         }
 
@@ -220,23 +234,23 @@ fun App(context: Context) {
 //                }
 //            )
 //        }
-        composable("setup_profile_screen") {
-            SetupProfileScreen(
-                onSetupProfileButtonClicked = { fullName, studentId -> // todo
-                    coroutineScope.launch {
-                        val result = databaseViewModel.addUserToDatabase(userState!!, fullName, studentId)
-                        if (result == "Successful") {
-                            navController.navigate("home_screen") {
-                                popUpTo(0) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-                        showToast(context, result)
-                    }
-                }
-            )
-        }
+//        composable("setup_profile_screen") {
+//            SetupProfileScreen(
+//                onSetupProfileButtonClicked = { fullName, studentId -> // todo
+//                    coroutineScope.launch {
+//                        val result = databaseViewModel.addUserToDatabase(userState!!, fullName, studentId)
+//                        if (result == "Successful") {
+//                            navController.navigate("home_screen") {
+//                                popUpTo(0) {
+//                                    inclusive = true
+//                                }
+//                            }
+//                        }
+//                        showToast(context, result)
+//                    }
+//                }
+//            )
+//        }
         composable("home_screen") {
             HomeScreen(
                 imageUrl = databaseViewModel.getImageUrlFromCloudinary(), // todo

@@ -83,7 +83,7 @@ fun StevenLoginScreen() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(R.drawable.logo_central_class_full),
+                painter = painterResource(R.drawable.central_class_full_logo),
                 contentDescription = "Logo",
                 modifier = Modifier.size(100.dp)
             )
