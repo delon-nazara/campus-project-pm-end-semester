@@ -152,7 +152,7 @@ fun OnboardingPage1() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_screen_1),
+                painter = painterResource(id = R.drawable.onboarding_screen_image_1),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )
@@ -211,7 +211,7 @@ fun OnboardingPage2() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_screen_2),
+                painter = painterResource(id = R.drawable.onboarding_screen_image_2),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )
@@ -270,7 +270,7 @@ fun OnboardingPage3() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_screen_3),
+                painter = painterResource(id = R.drawable.onboarding_screen_image_3),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )
@@ -329,7 +329,7 @@ fun OnboardingPage4() {
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_screen_4),
+                painter = painterResource(id = R.drawable.onboarding_screen_image_4),
                 contentDescription = "Onboarding Image",
                 modifier = Modifier.size(300.dp)
             )

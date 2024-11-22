@@ -24,7 +24,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
         <activity
-            android:name=".RegisterProfilActivity"
+            android:name=".archive.RegisterProfilActivity"
             android:exported="false"
             android:label="@string/title_activity_register_profil"
             android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />

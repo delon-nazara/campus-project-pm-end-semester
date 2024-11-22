@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,11 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +56,7 @@ import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 fun AuthenticationScreenPreview() {
     val showLoginScreenPreview = false
     if (showLoginScreenPreview) {
-        // Login screen preview
+        // Login Screen Preview
         AuthenticationScreen(
             screenTitle = stringResource(R.string.authentication_login_title),
             mainText = stringResource(R.string.authentication_login),
@@ -62,7 +66,7 @@ fun AuthenticationScreenPreview() {
             onBottomButtonClicked = {}
         )
     } else {
-        // Register screen preview
+        // Register Screen Preview
         AuthenticationScreen(
             screenTitle = stringResource(R.string.authentication_register_title),
             mainText = stringResource(R.string.authentication_register),
@@ -112,7 +116,7 @@ fun AuthenticationScreen(
 
         // Logo
         Image(
-            painter = painterResource(R.drawable.logo_central_class_full),
+            painter = painterResource(R.drawable.central_class_full_logo),
             contentDescription = "Central Class Logo",
             modifier = Modifier.size(100.dp)
         )
@@ -138,6 +142,7 @@ fun AuthenticationScreen(
                     .fillMaxWidth()
                     .padding(vertical = 24.dp, horizontal = 32.dp)
             ) {
+                val focusManager = LocalFocusManager.current
                 var email by rememberSaveable { mutableStateOf("") }
                 var password by rememberSaveable { mutableStateOf("") }
                 var isEmailValid by rememberSaveable { mutableStateOf(true) }
@@ -179,6 +184,10 @@ fun AuthenticationScreen(
                         focusedBorderColor = colorResource(R.color.gray),
                         unfocusedBorderColor = colorResource(R.color.gray),
                         errorBorderColor = colorResource(R.color.red)
+                    ),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -223,9 +232,9 @@ fun AuthenticationScreen(
                         ) {
                             Icon(
                                 painter = if (isPasswordVisible) {
-                                    painterResource(R.drawable.password_show)
+                                    painterResource(R.drawable.password_show_icon)
                                 } else {
-                                    painterResource(R.drawable.password_hidden)
+                                    painterResource(R.drawable.password_hidden_icon)
                                 },
                                 contentDescription = if (isPasswordVisible) {
                                     "Hide Password"
@@ -250,6 +259,10 @@ fun AuthenticationScreen(
                         focusedBorderColor = colorResource(R.color.gray),
                         unfocusedBorderColor = colorResource(R.color.gray),
                         errorBorderColor = colorResource(R.color.red)
+                    ),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
                     ),
                     modifier = Modifier
                         .fillMaxWidth()

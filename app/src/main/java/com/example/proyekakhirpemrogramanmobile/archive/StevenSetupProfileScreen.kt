@@ -1,9 +1,5 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -44,20 +39,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 
-class RegisterProfilActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun MainRegisterProfil() {
+fun StevenSetupProfileScreen() {
     var nama by remember { mutableStateOf("") }
     var nim by remember { mutableStateOf("") }
     var isnimValid by remember { mutableStateOf(true) }
@@ -93,7 +79,7 @@ fun MainRegisterProfil() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(R.drawable.logo_central_class_full),
+                painter = painterResource(R.drawable.central_class_full_logo),
                 contentDescription = "Logo",
                 modifier = Modifier.size(100.dp)
             )
@@ -247,10 +233,4 @@ fun MainRegisterProfil() {
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewMainRegisterProfil() {
-    MainRegisterProfil()
 }
