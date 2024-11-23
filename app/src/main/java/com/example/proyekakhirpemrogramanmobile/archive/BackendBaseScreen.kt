@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.view
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

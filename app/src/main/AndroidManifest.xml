@@ -4,72 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:supportsRtl="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/Theme.ProyekAkhirPemrogramanMobile"
         tools:targetApi="31">
-        <activity
-            android:name=".JadwalActivity"
-            android:exported="false"
-            android:label="@string/title_activity_jadwal"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false"
-            android:label="@string/title_activity_home"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".archive.RegisterProfilActivity"
-            android:exported="false"
-            android:label="@string/title_activity_register_profil"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false"
-            android:label="@string/title_activity_register"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".KelompokActivity"
-            android:exported="false"
-            android:label="@string/title_activity_kelompok"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".PengaturanActivity"
-            android:exported="false"
-            android:label="@string/title_activity_pengaturan"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".ProfilActivity"
-            android:exported="false"
-            android:label="@string/title_activity_profil"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".HalamanAlat"
-            android:exported="false"
-            android:label="@string/title_activity_halaman_alat"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".HalamanPembuatanKelas"
-            android:exported="false"
-            android:label="@string/title_activity_halaman_pembuatan_kelas"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".HalamanDetailMataKuliah"
-            android:exported="false"
-            android:label="@string/title_activity_halaman_detail_mata_kuliah"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-        <activity
-            android:name=".HalamanDetailTugas"
-            android:exported="false"
-            android:label="@string/title_activity_halaman_detail_tugas"
-            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
-
-        <!-- Final Section Start -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -78,8 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Final Section End -->
-
     </application>
 
 </manifest>

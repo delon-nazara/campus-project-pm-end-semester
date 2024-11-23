@@ -312,7 +312,7 @@ fun MainHalamanDetailMataKuliah() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(colorResource(R.color.dark_blue))
+                            .background(colorResource(R.color.very_dark_blue))
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
 
@@ -436,7 +436,7 @@ fun IsiDetailMataKuliah(paddingValues: PaddingValues) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .background(
-                    color = colorResource(R.color.dark_blue),
+                    color = colorResource(R.color.very_dark_blue),
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
                         bottomEnd = 16.dp
@@ -481,7 +481,7 @@ fun DetailMatakuliahScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
-            colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+            colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(text = "Modul Pembelajaran", color = Color.White)
@@ -509,10 +509,10 @@ fun DropdownItem(title: String, expanded: Boolean, onClick: () -> Unit) {
                 Icon(
                     imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, // Ubah dengan ikon sesuai kebutuhan Anda
                     contentDescription = null,
-                    tint = colorResource(R.color.dark_blue),
+                    tint = colorResource(R.color.very_dark_blue),
                     modifier = Modifier.size(20.dp)
                 )
-                Text(text = title, color = colorResource(R.color.dark_blue))
+                Text(text = title, color = colorResource(R.color.very_dark_blue))
                 Spacer(modifier = Modifier.width(5.dp))
             }
         }

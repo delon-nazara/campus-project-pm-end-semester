@@ -18,21 +18,33 @@
     <!-- Authentication (Login and Register) Screen -->
     <string name="authentication_login_title">Selamat Datang!</string>
     <string name="authentication_register_title">Daftar Sekarang!</string>
-    <string name="authentication_setup_profile_title">Mari Berkenalan!</string>
     <string name="authentication_login">Masuk</string>
     <string name="authentication_register">Daftar</string>
-    <string name="authentication_setup_profile">Lengkapi Data Dirimu</string>
-    <string name="authentication_finish">Selesai</string>
     <string name="authentication_email">Email</string>
     <string name="authentication_password">Kata Sandi</string>
-    <string name="authentication_full_name">Nama Lengkap</string>
-    <string name="authentication_student_id">NIM</string>
     <string name="authentication_email_error">Email harus diakhiri dengan @gmail.com</string>
     <string name="authentication_password_error">Password harus terdiri dari 6–15 karakter</string>
-    <string name="authentication_full_name_error">Nama Lengkap harus terdiri dari 3–50 karakter</string>
-    <string name="authentication_student_id_error">NIM harus terdiri tepat dari 9 angka</string>
     <string name="authentication_not_have_account">Belum punya akun?\nDaftar sekarang!</string>
     <string name="authentication_already_have_account">Sudah punya akun?\nMasuk sekarang!</string>
+
+    <!-- Setup (Profile and Class) Screen -->
+    <string name="setup_profile_title">Mari Berkenalan!</string>
+    <string name="setup_profile">Lengkapi Data Dirimu</string>
+    <string name="setup_profile_full_name">Nama Lengkap</string>
+    <string name="setup_profile_student_id">NIM</string>
+    <string name="setup_profile_finish">Selesai</string>
+    <string name="setup_profile_full_name_error">Nama Lengkap harus terdiri dari 3–50 karakter</string>
+    <string name="setup_profile_student_id_error">NIM harus terdiri tepat dari 9 angka</string>
+
+    <!-- SideBar -->
+    <string name="sidebar_home">Beranda</string>
+    <string name="sidebar_schedule">Jadwal</string>
+    <string name="sidebar_subject">Mata Kuliah</string>
+    <string name="sidebar_homework">Tugas</string>
+    <string name="sidebar_module">Modul</string>
+    <string name="sidebar_announcement">Pengumuman</string>
+    <string name="sidebar_tool">Alat</string>
+    <string name="sidebar_setting">Pengaturan</string>
 
     <!-- Final Section End -->
 
@@ -52,7 +64,6 @@
     <string name="login">Login</string>
     <string name="full_name">Full Name</string>
     <string name="student_id">Student ID</string>
-    <string name="setup_profile">Setup Profile</string>
     <string name="logout">Logout</string>
 
     <string name="display_email">Email: %s</string>

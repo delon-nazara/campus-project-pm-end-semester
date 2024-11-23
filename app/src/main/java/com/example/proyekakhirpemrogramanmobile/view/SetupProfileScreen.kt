@@ -54,18 +54,18 @@ import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 @Composable
 fun SetupProfileScreenPreview() {
     SetupProfileScreen(
-        screenTitle = stringResource(R.string.authentication_setup_profile_title),
-        cardTitle = stringResource(R.string.authentication_setup_profile),
-        finishText = stringResource(R.string.authentication_finish),
+        screenTitle = R.string.setup_profile_title,
+        cardTitle = R.string.setup_profile,
+        finishText = R.string.setup_profile_finish,
         onFinishButtonClicked = {},
     )
 }
 
 @Composable
 fun SetupProfileScreen(
-    screenTitle: String,
-    cardTitle: String,
-    finishText: String,
+    screenTitle: Int,
+    cardTitle: Int,
+    finishText: Int,
     onFinishButtonClicked: () -> Unit,
 ) {
     Box(
@@ -85,7 +85,7 @@ fun SetupProfileScreen(
         // Logo
         Image(
             painter = painterResource(R.drawable.central_class_half_logo),
-            contentDescription = "Central Class Logo",
+            contentDescription = "Central class logo",
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .size(85.dp)
@@ -100,7 +100,7 @@ fun SetupProfileScreen(
         ) {
             // Title
             Text(
-                text = screenTitle,
+                text = stringResource(screenTitle),
                 fontSize = 24.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold,
@@ -139,7 +139,7 @@ fun SetupProfileScreen(
 
                     // Card Title
                     Text(
-                        text = cardTitle,
+                        text = stringResource(cardTitle),
                         fontSize = 20.sp,
                         fontFamily = Poppins,
                         fontWeight = FontWeight.SemiBold,
@@ -158,7 +158,7 @@ fun SetupProfileScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.authentication_full_name),
+                                text = stringResource(R.string.setup_profile_full_name),
                                 fontSize = 14.sp
                             )
                         },
@@ -185,7 +185,7 @@ fun SetupProfileScreen(
                     // Full Name Error
                     if (!isFullNameValid && fullName.isNotEmpty()) {
                         Text(
-                            text = stringResource(R.string.authentication_full_name_error), // todo
+                            text = stringResource(R.string.setup_profile_full_name_error), // todo
                             color = colorResource(R.color.red),
                             fontSize = 12.sp,
                             modifier = Modifier
@@ -209,7 +209,7 @@ fun SetupProfileScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.authentication_student_id),
+                                text = stringResource(R.string.setup_profile_student_id),
                                 fontSize = 14.sp,
                             )
                         },
@@ -236,7 +236,7 @@ fun SetupProfileScreen(
                     // Student Id Error
                     if (!isStudentIdValid && studentId.isNotEmpty()) {
                         Text(
-                            text = stringResource(R.string.authentication_student_id_error), // todo
+                            text = stringResource(R.string.setup_profile_student_id_error), // todo
                             color = colorResource(R.color.red),
                             fontSize = 12.sp,
                             modifier = Modifier
@@ -297,13 +297,13 @@ fun SetupProfileScreen(
                     TextButton(
                         onClick = onFinishButtonClicked,
                         shape = RoundedCornerShape(15.dp),
-                        colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                        colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         modifier = Modifier
                             .width(200.dp)
                             .height(45.dp)
                     ){
                         Text(
-                            text = finishText,
+                            text = stringResource(finishText),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = colorResource(R.color.white)

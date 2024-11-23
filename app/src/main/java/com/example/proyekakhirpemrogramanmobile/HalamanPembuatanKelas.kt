@@ -321,7 +321,7 @@ fun MainPembuatanKelas() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(colorResource(R.color.dark_blue))
+                            .background(colorResource(R.color.very_dark_blue))
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
 
@@ -442,7 +442,7 @@ fun IsiPembuatanKelas(paddingValues: PaddingValues) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .background(
-                    color = colorResource(R.color.dark_blue),
+                    color = colorResource(R.color.very_dark_blue),
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
                         bottomEnd = 16.dp
@@ -515,7 +515,7 @@ fun BuatKelas() {
                 TabRow(
                     selectedTabIndex = selectedTabIndex,
                     containerColor = colorResource(R.color.very_light_blue),
-                    contentColor = colorResource(R.color.dark_blue),
+                    contentColor = colorResource(R.color.very_dark_blue),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Tab(
@@ -563,7 +563,7 @@ fun BuatKelas() {
                                 ) {
                                     Row(
                                         modifier = Modifier
-                                            .background(colorResource(R.color.dark_blue))
+                                            .background(colorResource(R.color.very_dark_blue))
                                             .padding(16.dp)
                                             .fillMaxWidth()
                                     ) {
@@ -811,7 +811,7 @@ fun BuatKelas() {
                                     .padding(horizontal = 10.dp)
                                     .weight(1f)
                                     .padding(vertical = 5.dp),
-                                colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                                colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                                 shape = RoundedCornerShape(15.dp)
                             ) {
                                 Row(
@@ -852,7 +852,7 @@ fun BuatKelas() {
                                 ) {
                                     Text(
                                         text = "Buat Kelas",
-                                        color = colorResource(R.color.dark_blue),
+                                        color = colorResource(R.color.very_dark_blue),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.SemiBold
                                     )
@@ -941,7 +941,7 @@ fun BuatKelas() {
                                 ) {
                                     Row(
                                         modifier = Modifier
-                                            .background(colorResource(R.color.dark_blue))
+                                            .background(colorResource(R.color.very_dark_blue))
                                             .padding(16.dp)
                                             .fillMaxWidth()
                                     ) {
@@ -1031,7 +1031,7 @@ fun BuatKelas() {
                                     .padding(horizontal = 10.dp)
                                     .weight(1f)
                                     .padding(vertical = 5.dp),
-                                colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                                colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                                 shape = RoundedCornerShape(15.dp)
                             ) {
                                 Text(
@@ -1061,7 +1061,7 @@ fun BuatKelas() {
                             ) {
                                 Text(
                                     text = "Buat Kelas",
-                                    color = colorResource(R.color.dark_blue),
+                                    color = colorResource(R.color.very_dark_blue),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.SemiBold
                                 )

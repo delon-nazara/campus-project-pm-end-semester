@@ -298,7 +298,7 @@ fun MainPengaturan() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(colorResource(R.color.dark_blue))
+                            .background(colorResource(R.color.very_dark_blue))
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
 
@@ -418,7 +418,7 @@ fun IsiPengaturan(paddingValues: PaddingValues) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .background(
-                    color = colorResource(R.color.dark_blue),
+                    color = colorResource(R.color.very_dark_blue),
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
                         bottomEnd = 16.dp
@@ -632,7 +632,7 @@ fun IsiPengaturan(paddingValues: PaddingValues) {
                     .padding(horizontal = 10.dp)
                     .weight(1f)
                     .padding(vertical = 5.dp),
-                colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                 shape = RoundedCornerShape(15.dp)
             ){
                 Row(

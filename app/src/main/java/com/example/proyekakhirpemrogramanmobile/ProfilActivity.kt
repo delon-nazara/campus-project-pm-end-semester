@@ -295,7 +295,7 @@ fun MainProfil() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(colorResource(R.color.dark_blue))
+                            .background(colorResource(R.color.very_dark_blue))
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
 
@@ -415,7 +415,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .background(
-                    color = colorResource(R.color.dark_blue),
+                    color = colorResource(R.color.very_dark_blue),
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
                         bottomEnd = 16.dp
@@ -448,7 +448,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(colorResource(R.color.dark_blue))
+                        .background(colorResource(R.color.very_dark_blue))
                 ) {
                     Text(
                         text = "Kelas Umum Saya",
@@ -516,7 +516,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(colorResource(R.color.dark_blue))
+                        .background(colorResource(R.color.very_dark_blue))
                 ) {
                     Text(
                         text = "Kelas Mata Kuliah Saya",
@@ -576,7 +576,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .background(colorResource(R.color.dark_blue),
+                .background(colorResource(R.color.very_dark_blue),
                     RoundedCornerShape(15.dp))
         ){
             Row(

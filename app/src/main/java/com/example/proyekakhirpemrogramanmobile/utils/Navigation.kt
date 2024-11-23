@@ -15,8 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.view.AuthenticationScreen
-import com.example.proyekakhirpemrogramanmobile.view.BaseScreen
-import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
@@ -43,6 +41,95 @@ fun App(context: Context) {
         navController = navController,
         startDestination =  startDestination
     ) {
+        // =============================
+        //      FINAL SECTION START
+        // =============================
+
+        // Route: Onboarding Screen
+        composable(
+            route = "onboarding_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            OnboardingScreen(
+                onStartButtonClicked = {
+                    navController.navigate("login_screen")
+                }
+            )
+        }
+
+        // Route: Login Screen
+        composable(
+            route = "login_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            AuthenticationScreen(
+                screenTitle = R.string.authentication_login_title,
+                mainText = R.string.authentication_login,
+                sideText = R.string.authentication_register,
+                navigationText = R.string.authentication_not_have_account,
+                onTopButtonClicked = {},
+                onBottomButtonClicked = {
+                    navController.navigate("register_screen") {
+                        popUpTo("register_screen") {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        // Route: Register Screen
+        composable(
+            route = "register_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            AuthenticationScreen(
+                screenTitle = R.string.authentication_register_title,
+                mainText = R.string.authentication_register,
+                sideText = R.string.authentication_login,
+                navigationText = R.string.authentication_already_have_account,
+                onTopButtonClicked = {
+                    navController.navigate("setup_profile_screen")
+                },
+                onBottomButtonClicked = {
+                    navController.navigate("login_screen") {
+                        popUpTo("login_screen") {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        // Route: Setup Profile Screen
+        composable(
+            route = "setup_profile_screen",
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            SetupProfileScreen(
+                screenTitle = R.string.setup_profile_title,
+                cardTitle = R.string.setup_profile,
+                finishText = R.string.setup_profile_finish,
+                onFinishButtonClicked = {},
+            )
+        }
+
+        // ===========================
+        //      FINAL SECTION END
+        // ===========================
+
 //        coroutineScope.launch {
 //            if (userState != null) {
 //                if (databaseViewModel.userExistInDatabase(userState!!.uid)) {
@@ -60,110 +147,24 @@ fun App(context: Context) {
 //                }
 //            }
 //        }
-
-        // =============================
-        //      FINAL SECTION START
-        // =============================
-
-        composable(
-            route = "onboarding_screen",
-            enterTransition = { fadeIn(animationSpec = tween(1000)) },
-            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
-            exitTransition = { fadeOut(animationSpec = tween(1000)) },
-            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
-        ) {
-            OnboardingScreen(
-                onStartButtonClicked = {
-                    navController.navigate("login_screen")
-                }
-            )
-        }
-
-        composable(
-            route = "login_screen",
-            enterTransition = { fadeIn(animationSpec = tween(1000)) },
-            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
-            exitTransition = { fadeOut(animationSpec = tween(1000)) },
-            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
-        ) {
-            AuthenticationScreen(
-                screenTitle = stringResource(R.string.authentication_login_title),
-                mainText = stringResource(R.string.authentication_login),
-                sideText = stringResource(R.string.authentication_register),
-                navigationText = stringResource(R.string.authentication_not_have_account),
-                onTopButtonClicked = {},
-                onBottomButtonClicked = {
-                    navController.navigate("register_screen") {
-                        popUpTo("register_screen") {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
-        }
-
-        composable(
-            route = "register_screen",
-            enterTransition = { fadeIn(animationSpec = tween(1000)) },
-            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
-            exitTransition = { fadeOut(animationSpec = tween(1000)) },
-            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
-        ) {
-            AuthenticationScreen(
-                screenTitle = stringResource(R.string.authentication_register_title),
-                mainText = stringResource(R.string.authentication_register),
-                sideText = stringResource(R.string.authentication_login),
-                navigationText = stringResource(R.string.authentication_already_have_account),
-                onTopButtonClicked = {
-                    navController.navigate("setup_profile_screen")
-                },
-                onBottomButtonClicked = {
-                    navController.navigate("login_screen") {
-                        popUpTo("login_screen") {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
-        }
-
-        composable(
-            route = "setup_profile_screen",
-            enterTransition = { fadeIn(animationSpec = tween(1000)) },
-            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
-            exitTransition = { fadeOut(animationSpec = tween(1000)) },
-            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
-        ) {
-            SetupProfileScreen(
-                screenTitle = stringResource(R.string.authentication_setup_profile_title),
-                cardTitle = stringResource(R.string.authentication_setup_profile),
-                finishText = stringResource(R.string.authentication_finish),
-                onFinishButtonClicked = {},
-            )
-        }
-
-        // ===========================
-        //      FINAL SECTION END
-        // ===========================
-
-        composable("base_screen") {
-            BaseScreen(
-                onRegisterScreenButton = {
-                    navController.navigate("register_screen") {
-                        popUpTo("register_screen") {
-                            inclusive = true
-                        }
-                    }
-                },
-                onLoginScreenButton = {
-                    navController.navigate("login_screen") {
-                        popUpTo("login_screen") {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
-        }
+//        composable("base_screen") {
+//            BaseScreen(
+//                onRegisterScreenButton = {
+//                    navController.navigate("register_screen") {
+//                        popUpTo("register_screen") {
+//                            inclusive = true
+//                        }
+//                    }
+//                },
+//                onLoginScreenButton = {
+//                    navController.navigate("login_screen") {
+//                        popUpTo("login_screen") {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            )
+//        }
 //        composable("register_screen") {
 //            RegisterScreen(
 //                onRegisterButtonClicked = { email, password ->
@@ -251,21 +252,21 @@ fun App(context: Context) {
 //                }
 //            )
 //        }
-        composable("home_screen") {
-            HomeScreen(
-                imageUrl = databaseViewModel.getImageUrlFromCloudinary(), // todo
-                email = userState?.email,
-                onLogoutButtonClicked = {
-                    authenticationViewModel.logout()
-                    navController.navigate("base_screen") {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                    }
-                    showToast(context, "Successful")
-                }
-            )
-        }
+//        composable("home_screen") {
+//            HomeScreen(
+//                imageUrl = databaseViewModel.getImageUrlFromCloudinary(), // todo
+//                email = userState?.email,
+//                onLogoutButtonClicked = {
+//                    authenticationViewModel.logout()
+//                    navController.navigate("base_screen") {
+//                        popUpTo(0) {
+//                            inclusive = true
+//                        }
+//                    }
+//                    showToast(context, "Successful")
+//                }
+//            )
+//        }
     }
 
 }
