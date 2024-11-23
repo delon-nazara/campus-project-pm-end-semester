@@ -6,14 +6,14 @@
     <string name="app_name">Central Class</string>
 
     <!-- Onboarding Screen -->
-    <string name="onboarding_screen_title_page_1">Selamat datang!</string>
-    <string name="onboarding_screen_description_page_1">Mari lihat semua yang kamu dapatkan dalam satu aplikasi</string>
-    <string name="onboarding_screen_title_page_2">Jadwal Perkuliahan</string>
-    <string name="onboarding_screen_description_page_2">Tetap terinformasi dengan perubahan jadwal yang terjadi</string>
-    <string name="onboarding_screen_title_page_3">Informasi Tugas</string>
-    <string name="onboarding_screen_description_page_3">Pantau deadline dan detail tugas agar tidak terlewatkan</string>
-    <string name="onboarding_screen_title_page_4">Kumpulan Modul</string>
-    <string name="onboarding_screen_description_page_4">Pelajari kembali materi perkuliahan, kapanpun dan dimanapun</string>
+    <string name="onboarding_title_page_1">Selamat datang!</string>
+    <string name="onboarding_description_page_1">Mari lihat semua yang kamu dapatkan dalam satu aplikasi</string>
+    <string name="onboarding_title_page_2">Jadwal Perkuliahan</string>
+    <string name="onboarding_description_page_2">Tetap terinformasi dengan perubahan jadwal yang terjadi</string>
+    <string name="onboarding_title_page_3">Informasi Tugas</string>
+    <string name="onboarding_description_page_3">Pantau deadline dan detail tugas agar tidak terlewatkan</string>
+    <string name="onboarding_title_page_4">Kumpulan Modul</string>
+    <string name="onboarding_description_page_4">Pelajari kembali materi perkuliahan, kapanpun dan dimanapun</string>
 
     <!-- Authentication (Login and Register) Screen -->
     <string name="authentication_login_title">Selamat Datang!</string>
@@ -46,6 +46,12 @@
     <string name="sidebar_tool">Alat</string>
     <string name="sidebar_setting">Pengaturan</string>
 
+    <!-- SideBar -->
+    <string name="home_today_schedule">Jadwal Hari ini</string>
+    <string name="home_today_schedule_empty">Tidak ada jadwal perkuliahan hari ini.\nKamu bisa melanjutkan tidurmu!</string>
+    <string name="home_active_homework">Tugas Aktif</string>
+    <string name="home_active_homework_empty">Tidak ada tugas aktif saat ini.\nKamu bisa bermain game sekarang!</string>
+
     <!-- Final Section End -->
 
     <string name="go_to_base_screen">Go to Base Screen</string>
@@ -68,29 +74,29 @@
 
     <string name="display_email">Email: %s</string>
 
-    <!-- Steven Section -->
-    <string name="title_activity_profil">ProfilActivity</string>
-    <string name="title_activity_side_bar">SideBar</string>
-    <string name="title_activity_pengaturan">PengaturanActivity</string>
-    <string name="title_activity_alat">AlatActivity</string>
-    <string name="title_activity_kelompok">KelompokActivity</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_boarding">BoardingActivity</string>
-    <string name="title_activity_register_profil">RegisterProfilActivity</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_jadwal">JadwalActivity</string>
+<!--    &lt;!&ndash; Steven Section &ndash;&gt;-->
+<!--    <string name="title_activity_profil">ProfilActivity</string>-->
+<!--    <string name="title_activity_side_bar">SideBar</string>-->
+<!--    <string name="title_activity_pengaturan">PengaturanActivity</string>-->
+<!--    <string name="title_activity_alat">AlatActivity</string>-->
+<!--    <string name="title_activity_kelompok">KelompokActivity</string>-->
+<!--    <string name="title_activity_login">LoginActivity</string>-->
+<!--    <string name="title_activity_register">RegisterActivity</string>-->
+<!--    <string name="title_activity_boarding">BoardingActivity</string>-->
+<!--    <string name="title_activity_register_profil">RegisterProfilActivity</string>-->
+<!--    <string name="title_activity_home">HomeActivity</string>-->
+<!--    <string name="title_activity_jadwal">JadwalActivity</string>-->
 
-    <!-- Arkan Section -->
-    <string name="title_activity_modul_matakuliah">ModulMatakuliah</string>
-    <string name="title_activity_belajar_lazy_column">BelajarLazyColumn</string>
-    <string name="title_activity_daftar_modul">DaftarModul</string>
-    <string name="title_activity_halaman_mata_kuliah">HalamanMataKuliah</string>
-    <string name="title_activity_halaman_mata_kuliah_kosong">HalamanMataKuliahKosong</string>
-    <string name="title_activity_halaman_tugas_aktif">HalamanTugasAktif</string>
-    <string name="title_activity_halaman_detail_tugas">HalamanDetailTugas</string>
-    <string name="title_activity_halaman_detail_mata_kuliah">HalamanDetailMataKuliah</string>
-    <string name="title_activity_halaman_pembuatan_kelas">HalamanPembuatanKelas</string>
-    <string name="title_activity_halaman_alat">HalamanAlat</string>
+<!--    &lt;!&ndash; Arkan Section &ndash;&gt;-->
+<!--    <string name="title_activity_modul_matakuliah">ModulMatakuliah</string>-->
+<!--    <string name="title_activity_belajar_lazy_column">BelajarLazyColumn</string>-->
+<!--    <string name="title_activity_daftar_modul">DaftarModul</string>-->
+<!--    <string name="title_activity_halaman_mata_kuliah">HalamanMataKuliah</string>-->
+<!--    <string name="title_activity_halaman_mata_kuliah_kosong">HalamanMataKuliahKosong</string>-->
+<!--    <string name="title_activity_halaman_tugas_aktif">HalamanTugasAktif</string>-->
+<!--    <string name="title_activity_halaman_detail_tugas">HalamanDetailTugas</string>-->
+<!--    <string name="title_activity_halaman_detail_mata_kuliah">HalamanDetailMataKuliah</string>-->
+<!--    <string name="title_activity_halaman_pembuatan_kelas">HalamanPembuatanKelas</string>-->
+<!--    <string name="title_activity_halaman_alat">HalamanAlat</string>-->
 
 </resources>

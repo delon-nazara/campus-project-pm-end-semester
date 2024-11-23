@@ -1,12 +1,9 @@
 package com.example.proyekakhirpemrogramanmobile.view
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,428 +13,356 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.archive.JadwalHariIni
-import com.example.proyekakhirpemrogramanmobile.archive.LazyCallerJadwalHariIni
-import com.example.proyekakhirpemrogramanmobile.archive.LazyCallerTugasBesok
-import com.example.proyekakhirpemrogramanmobile.archive.LazyCallerTugasHariIni
-import com.example.proyekakhirpemrogramanmobile.archive.TugasBesok
-import com.example.proyekakhirpemrogramanmobile.archive.TugasHariIni
-import com.example.proyekakhirpemrogramanmobile.getTugasBesok
-import com.example.proyekakhirpemrogramanmobile.getTugasHariIni
-import com.example.proyekakhirpemrogramanmobile.getjadwalHariIni
-import com.example.proyekakhirpemrogramanmobile.jadwalHariIni
-import com.example.proyekakhirpemrogramanmobile.tugasBesok
-import com.example.proyekakhirpemrogramanmobile.tugasHariIni
+import com.example.proyekakhirpemrogramanmobile.data.listHomework
+import com.example.proyekakhirpemrogramanmobile.data.listSchedule
+import com.example.proyekakhirpemrogramanmobile.model.HomeworkModel
+import com.example.proyekakhirpemrogramanmobile.model.HomeworkType
+import com.example.proyekakhirpemrogramanmobile.model.ScheduleModel
+import com.example.proyekakhirpemrogramanmobile.model.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.utils.Poppins
+import com.example.proyekakhirpemrogramanmobile.utils.formatDate
+import com.example.proyekakhirpemrogramanmobile.utils.formatTime
+import com.example.proyekakhirpemrogramanmobile.utils.getCurrentMilliseconds
 import kotlinx.coroutines.delay
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun HomeScreen() {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val selectedMenu = R.string.sidebar_home
 
-    SideBar(
-        coroutineScope = coroutineScope,
+    ModalNavigationDrawer(
         drawerState = drawerState,
-        selectedMenu = R.string.sidebar_home
+        drawerContent = {
+            SideBar(
+                coroutineScope = coroutineScope,
+                drawerState = drawerState,
+                selectedMenu = selectedMenu
+            )
+        }
     ) {
-        TopBar(
-            coroutineScope = coroutineScope,
-            drawerState = drawerState
-        ) {
-            IsiHome()
+        Scaffold(
+            topBar = {
+                TopBar(
+                    coroutineScope = coroutineScope,
+                    drawerState = drawerState
+                )
+            }
+        ) { contentPadding ->
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorResource(R.color.white))
+                    .padding(contentPadding)
+                    .padding(16.dp)
+            ) {
+                // Date and Time
+                DateAndTime()
+
+                // Today Schedule
+                TodaySchedule(modifier = Modifier.weight(1f))
+
+                // Active Homework
+                ActiveHomework(modifier = Modifier.weight(1f))
+            }
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun IsiHome() {
-
-    var currentDateTime by remember { mutableStateOf(LocalDateTime.now()) }
-    val scrollState = rememberScrollState()
-    // Coroutine to update the time every second
+fun DateAndTime() {
+    // Time Updater
+    var currentMilliseconds by remember { mutableLongStateOf(getCurrentMilliseconds()) }
     LaunchedEffect(Unit) {
         while (true) {
-            currentDateTime = LocalDateTime.now()
-            delay(1000L) // Update every 1 second
+            delay(1000)
+            currentMilliseconds = getCurrentMilliseconds()
         }
     }
 
-    // Date and time formatting
-    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("in", "ID"))
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
+    val currentDate = formatDate(currentMilliseconds)
+    val currentTime = formatTime(currentMilliseconds)
 
-    Column(
+    // Date and Time
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-//            .verticalScroll(scrollState)
+            .fillMaxWidth()
+            .background(
+                color = colorResource(R.color.very_dark_blue),
+                shape = RoundedCornerShape(16.dp)
+            )
     ) {
-        //===================================
-        // Tanggal serta jam saat ini
-        //===================================
-        Box(
+        // Date
+        Text(
+            text = currentDate,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = colorResource(R.color.white),
+            modifier = Modifier.padding(22.dp)
+        )
+
+        // Time
+        Text(
+            text = currentTime,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = colorResource(R.color.white),
+            modifier = Modifier.padding(22.dp)
+        )
+    }
+}
+
+@Composable
+fun TodaySchedule(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        // Title
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
                 .background(
                     color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
-                .padding(vertical = 16.dp),
-            contentAlignment = Alignment.Center
         ) {
-            Row(
+            Text(
+                text = stringResource(R.string.home_today_schedule),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(R.color.white),
+                modifier = Modifier.padding(horizontal = 22.dp, vertical = 16.dp)
+            )
+        }
+
+        // Content
+        if (listSchedule.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
             ) {
-                Text(
-                    text = currentDateTime.format(dateFormatter),
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .weight(1f)
+                Icon(
+                    painter = painterResource(R.drawable.sleep_icon),
+                    contentDescription = "Night icon",
+                    modifier = Modifier.size(48.dp)
                 )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 Text(
-                    text = currentDateTime.format(timeFormatter),
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .weight(1f),
-                    textAlign = TextAlign.End
+                    text = stringResource(R.string.home_today_schedule_empty),
+                    textAlign = TextAlign.Center,
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
-        }
-        Column(
-            modifier = Modifier.verticalScroll(scrollState)
-        ){
-            //===================================
-            // Kalender Taken by: Delon Nazara
-            //===================================
-//            Card(
-//                colors = CardDefaults.cardColors(
-//                    containerColor = colorResource(R.color.birulangit)
-//                ),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp)
-//            ) {
-//                Column {
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .background(colorResource(R.color.dark_blue))
-//                    ) {
-//                        Text(
-//                            text = "Kalender",
-//                            modifier = Modifier.padding(16.dp),
-//                            color = Color.White,
-//                            fontSize = 18.sp,
-//                            fontWeight = FontWeight.SemiBold
-//                        )
-//
-//                    }
-//                    Row{
-//                        Text("hello world")
-//                    }
-//                }
-//            }
-            Spacer(
-                modifier = Modifier.padding(5.dp)
-            )
-            LazyCallerJadwalHariIni()//fungsi untuk membuat card jadwal hari ini
-            LazyCallerTugasHariIni()//fungsi untuk membuat card tugas hari ini
-            LazyCallerTugasBesok()//fungsi untuk membuat card tugas besok
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                items(listSchedule) { item ->
+                    TodayScheduleItem(item)
+                }
+            }
         }
     }
 }
 
 @Composable
-fun LazyCallerJadwalHariIni() {
-    val mylist = getjadwalHariIni()
+fun TodayScheduleItem(item: ScheduleModel) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .height(490.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(
-                topStart = 15.dp,
-                topEnd = 15.dp
-            )
+        // Title
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = when (item.status) {
+                        ScheduleStatus.PRESENT -> colorResource(R.color.light_green)
+                        ScheduleStatus.UNKNOWN -> colorResource(R.color.light_yellow)
+                        ScheduleStatus.CANCELLED -> colorResource(R.color.light_red)
+                    },
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                )
         ){
+            Text(
+                text = item.subject,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
+            )
+        }
+
+        // Content
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.white),
+                    shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+                )
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            // Time
             Row(
-                modifier = Modifier
-                    .background(colorResource(R.color.very_dark_blue))
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ){
+                Icon(
+                    painter = painterResource(R.drawable.time_icon),
+                    contentDescription = "Time icon",
+                    modifier = Modifier.size(18.dp)
+                )
                 Text(
-                    text = "Jadwal Hari Ini",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    text = item.time,
+                    fontSize = 14.sp
+                )
+            }
+
+            // Location
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ){
+                Icon(
+                    painter = painterResource(R.drawable.location_icon),
+                    contentDescription = "Location icon",
+                    modifier = Modifier.size(18.dp)
+                )
+                Text(
+                    text = item.location,
+                    fontSize = 14.sp
+                )
+            }
+
+            // Notes
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ){
+                Icon(
+                    painter = painterResource(R.drawable.notes_icon),
+                    contentDescription = "Notes icon",
+                    modifier = Modifier.size(18.dp)
+                )
+                Text(
+                    text = item.notes,
+                    fontSize = 14.sp
                 )
             }
         }
-        LazyColumn(
-            modifier = Modifier
-                .background(colorResource(R.color.light_blue),
-                    shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-        ){
-            items(mylist){ item ->
-                JadwalHariIni(item)
-            }
-        }
     }
 }
 
 @Composable
-fun JadwalHariIni(item : jadwalHariIni) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya isi ya bang backend awkaowkoa
-        },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.white)
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-
-        ) {
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults
-                    .cardColors(
-                        containerColor = Color.White
-                    )
-            ){
-                Row(
-                    modifier = Modifier
-                        .background(colorResource(R.color.hijau_konfirmasi))
-                        .fillMaxWidth()
-                ){
-                    Text(
-                        text = item.namaMatakuliah,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_jam),
-                        contentDescription = "icon jam"
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.jamKelas,
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_gedung),
-                        contentDescription = "icon jam"
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.lokasiKelas,
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_pencil),
-                        contentDescription = "icon jam",
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.catatanDosen,
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun LazyCallerTugasHariIni() {
-    val mylist = getTugasHariIni()
+fun ActiveHomework(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .height(380.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(
-                topStart = 15.dp,
-                topEnd = 15.dp
+        // Title
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.very_dark_blue),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                )
+        ) {
+            Text(
+                text = stringResource(R.string.home_active_homework),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(R.color.white),
+                modifier = Modifier.padding(horizontal = 22.dp, vertical = 16.dp)
             )
-        ){
-            Row(
+        }
+
+        // Content
+        if (listHomework.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .background(colorResource(R.color.very_dark_blue))
-                    .padding(16.dp)
-                    .fillMaxWidth()
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
             ) {
+                Icon(
+                    painter = painterResource(R.drawable.game_icon),
+                    contentDescription = "Game icon",
+                    modifier = Modifier.size(48.dp)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 Text(
-                    text = "Tugas Hari Ini",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    text = stringResource(R.string.home_active_homework_empty),
+                    textAlign = TextAlign.Center,
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
-        }
-        LazyColumn(
-            modifier = Modifier
-                .background(colorResource(R.color.light_blue),
-                    shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-        ){
-            items(mylist){ item ->
-                TugasHariIni(item)
-            }
-        }
-    }
-}
-
-@Composable
-fun TugasHariIni(item : tugasHariIni) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya usahakan ya bang hehe
-        },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.white)
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-
-        ) {
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults
-                    .cardColors(
-                        containerColor = Color.White
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
-            ){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    Text(
-                        text = item.namaMatakuliah,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Image(
-                        painter = painterResource(item.jenisTugas),
-                        contentDescription = "icon tugas",
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_jam),
-                        contentDescription = "icon jam"
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.deadlineTugas,
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_pencil),
-                        contentDescription = "icon jam",
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.perintahTugas,
-                    )
+            ) {
+                items(listHomework) { item ->
+                    ActiveHomeworkItem(item)
                 }
             }
         }
@@ -445,124 +370,72 @@ fun TugasHariIni(item : tugasHariIni) {
 }
 
 @Composable
-fun LazyCallerTugasBesok() {
-    val mylist = getTugasBesok()
+fun ActiveHomeworkItem(item: HomeworkModel) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .height(410.dp)
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(
-                topStart = 15.dp,
-                topEnd = 15.dp
+            .fillMaxSize()
+            .background(
+                color = colorResource(R.color.white),
+                shape = RoundedCornerShape(16.dp)
             )
-        ){
-            Row(
-                modifier = Modifier
-                    .background(colorResource(R.color.very_dark_blue))
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = "Tugas Besok",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
-        }
-        LazyColumn(
-            modifier = Modifier
-                .background(colorResource(R.color.light_blue),
-                    shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-        ){
-            items(mylist){ item ->
-                TugasBesok(item)
-            }
-        }
-    }
-}
-
-@Composable
-fun TugasBesok(item : tugasBesok) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya janji ini yang terakhir hjehe
-        },
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.white)
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-
+        // Subject
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
         ) {
+            Text(
+                text = item.subject,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Icon(
+                painter = painterResource(
+                    when (item.type) {
+                        HomeworkType.PERSONAL -> R.drawable.person_icon
+                        HomeworkType.GROUP -> R.drawable.group_icon
+                    }
+                ),
+                contentDescription = "Type icon",
+                modifier = Modifier.size(18.dp)
+            )
+        }
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults
-                    .cardColors(
-                        containerColor = Color.White
-                    )
-            ){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    Text(
-                        text = item.namaMatakuliah,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Image(
-                        painter = painterResource(item.jenisTugas),
-                        contentDescription = "icon tugas",
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_jam),
-                        contentDescription = "icon jam"
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.deadlineTugas,
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(vertical = 10.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_pencil),
-                        contentDescription = "icon jam",
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = item.perintahTugas,
-                    )
-                }
-            }
+        // Deadline
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.time_icon),
+                contentDescription = "Time icon",
+                modifier = Modifier.size(18.dp)
+            )
+            Text(
+                text = "Deadline ${item.deadline}",
+                fontSize = 14.sp,
+            )
+        }
+
+        // Title
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.notes_icon),
+                contentDescription = "Notes icon",
+                modifier = Modifier.size(18.dp)
+            )
+            Text(
+                text = item.title,
+                fontSize = 14.sp,
+            )
         }
     }
 }
