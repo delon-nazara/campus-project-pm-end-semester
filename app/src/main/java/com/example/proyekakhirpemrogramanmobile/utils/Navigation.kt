@@ -1,38 +1,33 @@
 package com.example.proyekakhirpemrogramanmobile.utils
 
-import android.content.Context
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.Route
 import com.example.proyekakhirpemrogramanmobile.view.AuthenticationScreen
+import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
-import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
-import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
 
 @Composable
-fun App(context: Context) {
+fun App() {
 
-    val authenticationViewModel: AuthenticationViewModel = viewModel()
-    val userState by authenticationViewModel.userState.collectAsState()
+//    val authenticationViewModel: AuthenticationViewModel = viewModel()
+//    val userState by authenticationViewModel.userState.collectAsState()
 
-    val databaseViewModel: DatabaseViewModel = viewModel()
+//    val databaseViewModel: DatabaseViewModel = viewModel()
 
     val navController: NavHostController = rememberNavController()
 //    val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     // todo
-    databaseViewModel.cloudinaryInitialization(context)
+//    databaseViewModel.cloudinaryInitialization(context)
 
     // todo
     val startDestination = "onboarding_screen"
@@ -47,7 +42,7 @@ fun App(context: Context) {
 
         // Route: Onboarding Screen
         composable(
-            route = "onboarding_screen",
+            route = Route.ONBOARDING_SCREEN.name,
             enterTransition = { fadeIn(animationSpec = tween(1000)) },
             popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
             exitTransition = { fadeOut(animationSpec = tween(1000)) },
@@ -55,14 +50,14 @@ fun App(context: Context) {
         ) {
             OnboardingScreen(
                 onStartButtonClicked = {
-                    navController.navigate("login_screen")
+                    navController.navigate(Route.LOGIN_SCREEN.name)
                 }
             )
         }
 
         // Route: Login Screen
         composable(
-            route = "login_screen",
+            route = Route.LOGIN_SCREEN.name,
             enterTransition = { fadeIn(animationSpec = tween(1000)) },
             popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
             exitTransition = { fadeOut(animationSpec = tween(1000)) },
@@ -73,20 +68,18 @@ fun App(context: Context) {
                 mainText = R.string.authentication_login,
                 sideText = R.string.authentication_register,
                 navigationText = R.string.authentication_not_have_account,
-                onTopButtonClicked = {},
+                onTopButtonClicked = {
+                    navController.navigate(Route.HOME_SCREEN.name)
+                },
                 onBottomButtonClicked = {
-                    navController.navigate("register_screen") {
-                        popUpTo("register_screen") {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Route.REGISTER_SCREEN.name)
                 }
             )
         }
 
         // Route: Register Screen
         composable(
-            route = "register_screen",
+            route = Route.REGISTER_SCREEN.name,
             enterTransition = { fadeIn(animationSpec = tween(1000)) },
             popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
             exitTransition = { fadeOut(animationSpec = tween(1000)) },
@@ -98,11 +91,11 @@ fun App(context: Context) {
                 sideText = R.string.authentication_login,
                 navigationText = R.string.authentication_already_have_account,
                 onTopButtonClicked = {
-                    navController.navigate("setup_profile_screen")
+                    navController.navigate(Route.SETUP_PROFILE_SCREEN.name)
                 },
                 onBottomButtonClicked = {
-                    navController.navigate("login_screen") {
-                        popUpTo("login_screen") {
+                    navController.navigate(Route.LOGIN_SCREEN.name) {
+                        popUpTo(Route.LOGIN_SCREEN.name) {
                             inclusive = true
                         }
                     }
@@ -112,7 +105,7 @@ fun App(context: Context) {
 
         // Route: Setup Profile Screen
         composable(
-            route = "setup_profile_screen",
+            route = Route.SETUP_PROFILE_SCREEN.name,
             enterTransition = { fadeIn(animationSpec = tween(1000)) },
             popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
             exitTransition = { fadeOut(animationSpec = tween(1000)) },
@@ -122,8 +115,21 @@ fun App(context: Context) {
                 screenTitle = R.string.setup_profile_title,
                 cardTitle = R.string.setup_profile,
                 finishText = R.string.setup_profile_finish,
-                onFinishButtonClicked = {},
+                onFinishButtonClicked = {
+                    navController.navigate(Route.HOME_SCREEN.name)
+                },
             )
+        }
+
+        // Route: Home Screen
+        composable(
+            route = Route.HOME_SCREEN.name,
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+            exitTransition = { fadeOut(animationSpec = tween(1000)) },
+            popExitTransition = { fadeOut(animationSpec = tween(1000)) }
+        ) {
+            HomeScreen()
         }
 
         // ===========================

@@ -599,7 +599,7 @@ fun JadwalHariIni(item : jadwalHariIni) {
             ){
                 Row(
                     modifier = Modifier
-                        .background(colorResource(R.color.hijau_konfirmasi))
+                        .background(colorResource(R.color.light_green))
                         .fillMaxWidth()
                 ){
                     Text(
