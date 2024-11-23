@@ -58,20 +58,20 @@ fun AuthenticationScreenPreview() {
     if (showLoginScreenPreview) {
         // Login Screen Preview
         AuthenticationScreen(
-            screenTitle = stringResource(R.string.authentication_login_title),
-            mainText = stringResource(R.string.authentication_login),
-            sideText = stringResource(R.string.authentication_register),
-            navigationText = stringResource(R.string.authentication_not_have_account),
+            screenTitle = R.string.authentication_login_title,
+            mainText = R.string.authentication_login,
+            sideText = R.string.authentication_register,
+            navigationText = R.string.authentication_not_have_account,
             onTopButtonClicked = {},
             onBottomButtonClicked = {}
         )
     } else {
         // Register Screen Preview
         AuthenticationScreen(
-            screenTitle = stringResource(R.string.authentication_register_title),
-            mainText = stringResource(R.string.authentication_register),
-            sideText = stringResource(R.string.authentication_login),
-            navigationText = stringResource(R.string.authentication_already_have_account),
+            screenTitle = R.string.authentication_register_title,
+            mainText = R.string.authentication_register,
+            sideText = R.string.authentication_login,
+            navigationText = R.string.authentication_already_have_account,
             onTopButtonClicked = {},
             onBottomButtonClicked = {}
         )
@@ -80,10 +80,10 @@ fun AuthenticationScreenPreview() {
 
 @Composable
 fun AuthenticationScreen(
-    screenTitle: String,
-    mainText: String,
-    sideText: String,
-    navigationText: String,
+    screenTitle: Int,
+    mainText: Int,
+    sideText: Int,
+    navigationText: Int,
     onTopButtonClicked: () -> Unit,
     onBottomButtonClicked: () -> Unit
 ) {
@@ -105,7 +105,7 @@ fun AuthenticationScreen(
     ) {
         // Title
         Text(
-            text = screenTitle,
+            text = stringResource(screenTitle),
             fontSize = 24.sp,
             fontFamily = Poppins,
             fontWeight = FontWeight.Bold,
@@ -117,7 +117,7 @@ fun AuthenticationScreen(
         // Logo
         Image(
             painter = painterResource(R.drawable.central_class_full_logo),
-            contentDescription = "Central Class Logo",
+            contentDescription = "Central class logo",
             modifier = Modifier.size(100.dp)
         )
 
@@ -151,7 +151,7 @@ fun AuthenticationScreen(
 
                 // Card Title
                 Text(
-                    text = mainText,
+                    text = stringResource(mainText),
                     fontSize = 20.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
@@ -237,9 +237,9 @@ fun AuthenticationScreen(
                                     painterResource(R.drawable.password_hidden_icon)
                                 },
                                 contentDescription = if (isPasswordVisible) {
-                                    "Hide Password"
+                                    "Hide password"
                                 } else {
-                                    "Show Password"
+                                    "Show password"
                                 }
                             )
                         }
@@ -287,13 +287,13 @@ fun AuthenticationScreen(
                 TextButton(
                     onClick = onTopButtonClicked,
                     shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                    colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                     modifier = Modifier
                         .width(200.dp)
                         .height(45.dp)
                 ){
                     Text(
-                        text = mainText,
+                        text = stringResource(mainText),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colorResource(R.color.white)
@@ -313,7 +313,7 @@ fun AuthenticationScreen(
 
                 // Navigation Text
                 Text(
-                    text = navigationText,
+                    text = stringResource(navigationText),
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
@@ -332,7 +332,7 @@ fun AuthenticationScreen(
                         .height(45.dp)
                 ){
                     Text(
-                        text = sideText,
+                        text = stringResource(sideText),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colorResource(R.color.white)

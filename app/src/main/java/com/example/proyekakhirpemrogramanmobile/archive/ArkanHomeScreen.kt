@@ -1,10 +1,6 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import android.os.Build
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,27 +62,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.getTugasBesok
+import com.example.proyekakhirpemrogramanmobile.getTugasHariIni
+import com.example.proyekakhirpemrogramanmobile.getjadwalHariIni
+import com.example.proyekakhirpemrogramanmobile.jadwalHariIni
+import com.example.proyekakhirpemrogramanmobile.tugasBesok
+import com.example.proyekakhirpemrogramanmobile.tugasHariIni
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class HomeActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            
-        }
-    }
-}
-
+@Preview(showBackground = true)
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHome() {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+fun ArkanHomeScreen() {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
@@ -326,7 +320,7 @@ fun MainHome() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(colorResource(R.color.dark_blue))
+                            .background(colorResource(R.color.very_dark_blue))
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
 
@@ -423,13 +417,6 @@ fun MainHome() {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun PreviewMainHome() {
-    MainHome()
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun IsiHome(paddingValues: PaddingValues) {
 
@@ -467,7 +454,7 @@ fun IsiHome(paddingValues: PaddingValues) {
                 .fillMaxWidth()
                 .padding(16.dp)
                 .background(
-                    color = colorResource(R.color.dark_blue),
+                    color = colorResource(R.color.very_dark_blue),
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(vertical = 16.dp),
@@ -561,7 +548,7 @@ fun LazyCallerJadwalHariIni() {
         ){
             Row(
                 modifier = Modifier
-                    .background(colorResource(R.color.dark_blue))
+                    .background(colorResource(R.color.very_dark_blue))
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
@@ -692,7 +679,7 @@ fun LazyCallerTugasHariIni() {
         ){
             Row(
                 modifier = Modifier
-                    .background(colorResource(R.color.dark_blue))
+                    .background(colorResource(R.color.very_dark_blue))
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
@@ -814,7 +801,7 @@ fun LazyCallerTugasBesok() {
         ){
             Row(
                 modifier = Modifier
-                    .background(colorResource(R.color.dark_blue))
+                    .background(colorResource(R.color.very_dark_blue))
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {

@@ -234,7 +234,7 @@ fun StevenRegisterScreen() {
                             .fillMaxWidth()
                             .padding(horizontal = 40.dp)
                             .padding(vertical = 5.dp),
-                        colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                        colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         shape = RoundedCornerShape(15.dp)
                     ){
                         Row(
@@ -276,7 +276,7 @@ fun StevenRegisterScreen() {
                             .fillMaxWidth()
                             .padding(horizontal = 40.dp)
                             .padding(vertical = 5.dp),
-                        colors = ButtonDefaults.buttonColors(colorResource(R.color.dark_blue)),
+                        colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         shape = RoundedCornerShape(15.dp)
                     ){
                         Row(

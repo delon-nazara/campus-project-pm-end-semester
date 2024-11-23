@@ -218,7 +218,7 @@ fun OnboardingPage(
         // Image
         Image(
             painter = painterResource(image),
-            contentDescription = "Onboarding Image",
+            contentDescription = "Onboarding image",
             modifier = Modifier.size(300.dp)
         )
 
