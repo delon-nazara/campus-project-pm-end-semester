@@ -1,4 +1,6 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
+
+import com.example.proyekakhirpemrogramanmobile.R
 
 data class DetailDaftarModul(
     var imageRes : Int,

@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,13 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -36,21 +38,22 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -60,23 +63,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanMataKuliah : ComponentActivity() {
+class HalamanDetailTugas : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-
+            
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanMataKuliah() {
+fun MainDetailHalamanTugas() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -88,7 +90,9 @@ fun MainHalamanMataKuliah() {
                 // Drawer content
                 //===============
                 Column(
-                    modifier = Modifier.fillMaxSize().background(colorResource(R.color.very_light_blue)),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(colorResource(R.color.very_light_blue)),
                     verticalArrangement = Arrangement.SpaceBetween
                 ){
                     Column(
@@ -116,7 +120,6 @@ fun MainHalamanMataKuliah() {
                                     modifier = Modifier.size(48.dp)
                                 )
                             }
-
                             Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
@@ -142,7 +145,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Beranda",
@@ -162,7 +167,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Jadwal",
@@ -182,7 +189,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Mata Kuliah",
@@ -202,7 +211,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Tugas",
@@ -222,7 +233,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Modul",
@@ -242,7 +255,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Informasi",
@@ -262,7 +277,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Alat",
@@ -282,7 +299,9 @@ fun MainHalamanMataKuliah() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Pengaturan",
@@ -390,13 +409,21 @@ fun MainHalamanMataKuliah() {
             }
 
         ) { contentPadding ->
-            IsiTHalamanMataKuliah(contentPadding)
+            IsiDetailTugas(contentPadding)
         }
     }
 }
-@Composable
-fun IsiTHalamanMataKuliah(paddingValues: PaddingValues) {
 
+@Preview(
+    showBackground = true
+)
+@Composable
+fun PreviewDetailHalamanTugas(modifier: Modifier = Modifier) {
+    MainDetailHalamanTugas()
+}
+
+@Composable
+fun IsiDetailTugas(paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -426,172 +453,170 @@ fun IsiTHalamanMataKuliah(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Mata Kuliah",
+                text = "Tugas",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
-
         Spacer(
             modifier = Modifier.padding(15.dp)
         )
-        LazyColumnCallerHalamanMataKuliah()
+//        KontainerTugas()
+        ListInstruksiTugas()
     }
 }
-
-@Preview(showBackground = true)
+//================================================
+//Fungsi pemanggil dataclass DetailTugasMatakuliah
+//================================================
 @Composable
-fun PreviewMainHalamanMataKuliah() {
-    MainHalamanMataKuliah()
-}
+fun ListInstruksiTugas() {
+    val detailInstruksiList = getDetailInstruksiTugas()
 
-// =======================
-// Lazy Colum untuk memanggil data class
-// =======================
-@Composable
-fun LazyColumnCallerHalamanMataKuliah() {
-    val mylist = getDetailMataKuliah()
-
-//==========================
-//CEK KONDISI LIST MATAKULIAH
-//===========================
-    if (mylist.isEmpty()) {
-        // Tampilkan pesan kosong
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                // Contoh menampilkan ikon gambar "kosong" seperti yang ada pada gambar
-                Image(
-                    painter = painterResource(R.drawable.icon_matakuliah_kosong), // Pastikan ada resource icon yang sesuai
-                    contentDescription = "Kosong",
-                    modifier = Modifier.size(250.dp).
-                    alpha(0.7f)
-
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Kamu belum mengambil mata kuliah",
-                    fontSize = 16.sp,
-                    color = Color.Gray
-                )
-            }
-            //==================================================
-            // Floating Action Button di bagian bawah layar
-            //==================================================
-            Surface(
-                onClick = {
-                    // Tambahkan aksi ketika FAB diklik
-                },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp)
-                    .width(200.dp), // Lebar FAB yang bisa disesuaikan
-                shape = RoundedCornerShape(50), // Membuat FAB dengan bentuk bulat
-                color = MaterialTheme.colorScheme.primary,
-                shadowElevation = 8.dp // Memberikan efek bayangan
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(vertical = 12.dp) // Tinggi FAB
-                ) {
-                    Text(text = "Ambil Mata Kuliah", color = Color.White)
-                }
-            }
-        }
-    } else {
-        // Tampilkan daftar mata kuliah jika tidak kosong
-        LazyColumn {
-            items(mylist) { item ->
-                CardMataKuliah(item)
-            }
-        }
-    }
-}
-// =======================
-// Kartu Mata Kulilah
-// =======================
-@Composable
-fun CardMataKuliah(item : DetailMataKuliah) {
-//    ===============================================
-//    Card dapat diklik untuk pindah activity lainnya
-//    ===============================================
-    Card(
-        onClick = {},
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.very_light_blue),
-        ),
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 15.dp)
-            .fillMaxWidth()
-            .size(height = 120.dp, width = 100.dp)
+    LazyColumn(modifier = Modifier
+        .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp)
-                .padding(bottom = 16.dp)
-                .padding(start = 16.dp), // Menambah padding untuk isi card
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        items(detailInstruksiList) { detailTugas ->
+            InstruksiTugas(detailTugas)
+            Spacer(modifier = Modifier.height(16.dp)) // Tambahkan jarak antar item
+        }
+    }
+}
 
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
+//=============================
+//Desain Card Detail Tugas Matakuliah
+//=============================
+@Composable
+fun InstruksiTugas(
+    detailTugas: DetailInstruksiTugas,
+    modifier: Modifier = Modifier
+) {
+    var showAlert by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.light_blue))
+    ){
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ){
+            //==========================
+            // Nama Mata Kuliah dan Icon
+            //==========================
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ){
                 Text(
-                    text = item.namaMataKuliah,
-                    fontSize = 18.sp,
+                    text = detailTugas.namaMatkul,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    fontSize = 18.sp,
+                    color = Color(0xFF091441)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    painter = painterResource(R.drawable.tugas_pribadi),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Unspecified
+                )
+            }
+            Column(
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ){
+                Spacer(modifier = Modifier.height(8.dp))
+                //====================================
+                // Tanggal Ditugaskan dan Dikumpulkan
+                //====================================
+                Text(
+                    text = "Tenggat : ${detailTugas.tanggalDikumpulkan}",
+                    fontSize = 14.sp,
+                    color = Color.Black
                 )
                 Text(
-                    text = item.namaKetuaKelas,
+                    text = "Ditugaskan :  ${detailTugas.tanggalDitugaskan}",
                     fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.9f)
+                    color = Color.Black
+                )
+            }
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+            Card(
+                modifier = Modifier
+                    .padding(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ){
+                Column(
+                    modifier = Modifier
+                        .size(width = 150.dp,30.dp)
+                ) {
+                    Text(
+                        text = "Catatan Tugas : ",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 10.dp)
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(10.dp),
+                        thickness = 2.dp,
+                        color = colorResource(R.color.very_light_blue),
+                    )
+                }
+                //===============
+                // Perintah Tugas
+                //===============
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = detailTugas.perintahTugas,
+                    color = Color(0xFF1A237E)
                 )
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                        .padding(end = 16.dp)
+
                 ){
-                    Image(
-                        painter = painterResource(R.drawable.icon_jumlahmahasiswa_),
-                        contentDescription = null,
-                        modifier = Modifier.size(15.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier.padding(5.dp)
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "Menu"
                     )
                     Text(
-                        text = item.jumlahMahasiswa,
-                        fontSize = 12.sp,
-                        color = Color.White.copy(alpha = 0.7f)
+                        text = detailTugas.linkTerkait,
+                        fontSize = 14.sp,
+                        color = Color(0xFF4B84FF),
+                        modifier = Modifier.clickable { /* Handle link click */ }
                     )
                 }
-                Spacer(
-                    modifier = Modifier.padding(5.dp)
-                )
-                Text(
-                    text = "Semester : ${item.semesterMataKuliah}",
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.9f)
-                )
             }
-            Image(
-                painter = painterResource(id = item.imageRes),
-                contentDescription = item.namaMataKuliah,
+            Spacer(modifier = Modifier.height(8.dp))
+            // Tombol "Tandai Sebagai Selesai"
+            Button(
+                onClick = { showAlert = true },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4B84FF)),
                 modifier = Modifier
-                    .size(100.dp)
-                    .padding(end = 8.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .padding(horizontal = 12.dp),
+                shape = RoundedCornerShape(16.dp)
+            ){
+                Text(text = "Tandai Sebagai Selesai", color = Color.White)
+            }
+        }
+        // Alert ketika tombol diklik
+        if (showAlert) {
+            AlertDialog(
+                onDismissRequest = { showAlert = false },
+                confirmButton = {
+                    TextButton(onClick = { showAlert = false }) {
+                        Text("OK")
+                    }
+                },
+                title = { Text("Notifikasi") },
+                text = { Text("Tugas telah selesai") }
             )
         }
     }

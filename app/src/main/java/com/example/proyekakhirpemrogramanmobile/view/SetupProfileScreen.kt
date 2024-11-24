@@ -110,7 +110,7 @@ fun SetupProfileScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             // Card
-            Card(
+            Card( // todo
                 colors = CardDefaults.cardColors(containerColor = colorResource(R.color.white)),
                 modifier = Modifier
                     .fillMaxWidth()

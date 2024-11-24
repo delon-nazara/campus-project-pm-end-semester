@@ -1,9 +1,7 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,11 +41,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -57,22 +57,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-
-class ProfilActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
+@Preview(showBackground = true)
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainProfil() {
+fun MainJadwal() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -289,17 +284,17 @@ fun MainProfil() {
 
 
                     }
-//
+
                     Spacer(modifier = Modifier.weight(1f))
 
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(colorResource(R.color.very_dark_blue))
+                            .background(colorResource(R.color.dark_blue))
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
 
-                    ) {
+                        ) {
                         //=================================================
                         //Button Profil paling bawah untuk Navigation Drawer
                         //=================================================
@@ -386,15 +381,17 @@ fun MainProfil() {
             }
 
         ) { contentPadding ->
-            IsiProfil(contentPadding)
+            IsiJadwal(contentPadding)
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun IsiProfil(paddingValues: PaddingValues) {
-    val listKelasUmum = remember { mutableStateListOf("Kom A Stambuk 2021", "Kom B Stambuk 2022", "Kom C Stambuk 2023") }
-    val listMataKuliah = remember { mutableStateListOf("Pemrograman Mobile", "Grafika Komputer", "Cloud Computing") }
+fun IsiJadwal(paddingValues: PaddingValues) {
+
+    val currentDateTime by remember { mutableStateOf(LocalDateTime.now()) }
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("in", "ID"))
 
     Column(
         modifier = Modifier
@@ -407,6 +404,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
             thickness = 1.dp,
             color = Color.Gray
         )
+
         //==========================
         //Ribbon
         //==========================
@@ -415,7 +413,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .background(
-                    color = colorResource(R.color.very_dark_blue),
+                    color = colorResource(R.color.dark_blue),
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
                         bottomEnd = 16.dp
@@ -425,7 +423,7 @@ fun IsiProfil(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Profil Anda",
+                text = "Jadwal",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
@@ -433,9 +431,12 @@ fun IsiProfil(paddingValues: PaddingValues) {
         }
 
         Spacer(
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier.padding(10.dp)
         )
 
+        //===================================
+        // Kalender
+        //===================================
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = colorResource(R.color.light_blue)
@@ -448,155 +449,226 @@ fun IsiProfil(paddingValues: PaddingValues) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(colorResource(R.color.very_dark_blue))
+                        .background(colorResource(R.color.dark_blue))
                 ) {
                     Text(
-                        text = "Kelas Umum Saya",
+                        text = "Kalender",
                         modifier = Modifier.padding(16.dp),
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
+
                 }
-                //==============================================
-                //LazyColumn untuk Kelas Umum
-                //==============================================
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp)
-                ) {
-                    items(listKelasUmum) { item ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 10.dp, vertical = 8.dp)
-                                .background(
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .padding(horizontal = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = item,
-                                modifier = Modifier
-                                    .padding(start = 15.dp)
-                                    .weight(1f),
-                                fontSize = 16.sp
-                            )
-                            //===========================================
-                            // Button Remove Kelas Umum
-                            //===========================================
-                            IconButton(onClick = { listKelasUmum.remove(item)/* Handle click here untuk button remove*/ }) {
-                                Icon(
-                                    painter = painterResource(R.drawable.icon_cancel),
-                                    contentDescription = "Cancel Icon",
-                                    tint = Color.Unspecified
-                                )
-                            }
-                        }
-                    }
+                Row{
+                    Text("hello world")
                 }
             }
         }
+
         Spacer(
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier.padding(10.dp)
         )
 
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.light_blue)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(colorResource(R.color.very_dark_blue))
-                ) {
-                    Text(
-                        text = "Kelas Mata Kuliah Saya",
-                        modifier = Modifier.padding(16.dp),
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                //============================================
-                //LazyColumn untuk Kelas Mata Kuliah
-                //============================================
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp)
-                ) {
-                    items(listMataKuliah) { item ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 10.dp, vertical = 8.dp)
-                                .background(
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .padding(horizontal = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = item,
-                                modifier = Modifier
-                                    .padding(start = 15.dp)
-                                    .weight(1f),
-                                fontSize = 16.sp
-                            )
-                            //=====================================
-                            // Button Remove Mata Kuliah
-                            //=====================================
-                            IconButton(onClick = { listMataKuliah.remove(item)/* Handle click here untuk button remove */ }) {
-                                Icon(
-                                    painter = painterResource(R.drawable.icon_cancel),
-                                    contentDescription = "Cancel Icon",
-                                    tint = Color.Unspecified
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //=======================================
-        //Button Pilih Kelas
-        //=======================================
-        TextButton(
-            onClick = { /* Handle click for Button Pilih Kelas */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .background(colorResource(R.color.very_dark_blue),
-                    RoundedCornerShape(15.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ){
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+            //===================================
+            // Button back atau button kiri
+            //===================================
+            IconButton(
+                onClick = { /* Handle click */ },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.buttonkiri),
+                    contentDescription = "Previous"
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(15.dp))
+                    .background(colorResource(R.color.dark_blue))
+                    .padding(15.dp),
+                contentAlignment = Alignment.Center
             ){
                 Text(
-                    text = "Pilih atau Buat Kelas Baru",
+                    text = currentDateTime.format(dateFormatter),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             }
+            //===================================
+            // Button Next atau buton kanan
+            //===================================
+            IconButton(
+                onClick = { /* Handle click */ },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.buttonkanan),
+                    contentDescription = "Next"
+                )
+            }
+        }
+        //====================================
+        // Pemanggilan function Lazy Column
+        //====================================
+        LazyColumnTodaySchedule()
+    }
+}
+
+//====================================
+// Fungsi pemangilan LazyColumn
+//====================================
+@Composable
+fun LazyColumnTodaySchedule() {
+    val mylist = getTodaySchedule()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        LazyColumn{
+            items(mylist){ item ->
+                JadwalHariIni(item)
+            }
         }
     }
 }
 
-
-@Preview(showBackground = true)
+//====================================
+// Card jadwal untuk lazycolumn
+//====================================
 @Composable
-fun PreviewMainProfil() {
-    MainProfil()
+fun JadwalHariIni(item : TodaySchedule) {
+    Card(
+        onClick = {
+            //====================================
+            //logic ke halaman selanjutnya
+            //====================================
+        },
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.white)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(12.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+
+        ) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults
+                    .cardColors(
+                        containerColor = Color.White
+                    )
+            ){
+                //======================================================================================
+                // Row pertama card, ganti warna sesuai boolean namun boolean belum di implementasikan
+                //=======================================================================================
+                Row(
+                    modifier = Modifier
+                        .background(colorResource(R.color.light_green))
+                        .fillMaxWidth()
+                ){
+                    //====================================
+                    // Text item nama mata kuliah
+                    //====================================
+                    Text(
+                        text = item.namaMatakuliah,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_jam),
+                        contentDescription = "icon jam"
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    //====================================
+                    // Text item jam kelas
+                    //====================================
+                    Text(
+                        text = item.jamKelas,
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_gedung),
+                        contentDescription = "icon jam"
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    //====================================
+                    // Text item Lokasi Kelas
+                    //====================================
+                    Text(
+                        text = item.lokasiKelas,
+                    )
+                }
+                Row(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_pencil),
+                        contentDescription = "icon jam",
+                        modifier = Modifier.size(25.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier.size(20.dp)
+                    )
+                    //====================================
+                    // text item Nota/Catatan
+                    //====================================
+                    Text(
+                        text = item.catatanDosen,
+                    )
+                }
+            }
+        }
+    }
+}
+//====================================
+//Data class untuk lazy column jadwal
+//====================================
+data class TodaySchedule(
+    var namaMatakuliah : String,
+    var jamKelas : String,
+    var lokasiKelas : String,
+    var catatanDosen : String,
+
+)
+
+//========================================
+// Fungsi untuk mengembalikan nilai list
+//========================================
+fun getTodaySchedule(): List<TodaySchedule> {
+    return listOf(
+        TodaySchedule("Pemrograman Mobile", "10.30-13.00", "Gedung D, 104","Makanlah yang banyak nak"),
+        TodaySchedule("Cloud Computing", "14.40-17.10", "Gedung D, 106", "Jangan Lupa Makan dan bersyukur"),
+        TodaySchedule("LAB Grafika Komputer","17.10=18.00","Gedung D, LAB Pemrograman 4", "Rawrr!"),
+    )
 }

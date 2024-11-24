@@ -9,3 +9,6 @@ val Poppins = FontFamily(
     Font(R.font.poppins_regular, FontWeight.Normal),
     Font(R.font.poppins_bold, FontWeight.Bold)
 )
+
+// todo: font size, font family, font weight
+// todo: all size in dimension resource

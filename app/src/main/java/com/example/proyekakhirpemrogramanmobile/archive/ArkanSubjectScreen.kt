@@ -1,9 +1,5 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -57,28 +53,16 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-
-class HalamanModul : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContent {
-
-        }
-    }
-}
-
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainModul() {
+fun ArkanSubjectScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -392,69 +376,65 @@ fun MainModul() {
             }
 
         ) { contentPadding ->
-            IsiModul(contentPadding)
+            IsiTHalamanMataKuliah(contentPadding)
         }
     }
 }
-
-//===================
-//KONTAINER ISI MODUL
-//===================
 @Composable
-fun IsiModul(paddingValues: PaddingValues){
+fun IsiTHalamanMataKuliah(paddingValues: PaddingValues) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(Color.White)
     ) {
         HorizontalDivider(
-            color = Color.Gray, // Warna divider, bisa disesuaikan
-            thickness = 1.dp, // Ketebalan divider
-            modifier = Modifier.fillMaxWidth() // Divider horizontal penuh
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = Color.Gray
         )
-        Column (
-        ){
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(
-                        color = colorResource(R.color.very_dark_blue),
-                        shape = RoundedCornerShape(
-                            bottomStart = 16.dp,
-                            bottomEnd = 16.dp
-                        )
+        //==========================
+        //Ribbon
+        //==========================
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .background(
+                    color = colorResource(R.color.very_dark_blue),
+                    shape = RoundedCornerShape(
+                        bottomStart = 16.dp,
+                        bottomEnd = 16.dp
                     )
-                    .padding(vertical = 16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Daftar Modul",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleLarge
                 )
-            }
+                .padding(vertical = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Mata Kuliah",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         }
-        LazyColumnCaller()
+
+        Spacer(
+            modifier = Modifier.padding(15.dp)
+        )
+        LazyColumnCallerHalamanMataKuliah()
     }
 }
-@Preview(showBackground = true)
+
+// =======================
+// Lazy Colum untuk memanggil data class
+// =======================
 @Composable
-fun PreviewMainModul() {
-    MainModul()
-}
-//====================================================
-//FUNGSI PEMANGGIL DATA CLASS DetailModulMataKuliah.kt
-//====================================================
-@Composable
-fun LazyColumnCaller() {
-    val mylist = getModulDetail()
-    //==========================
-//CEK KONDISI LIST Modul Mata Kuliah
+fun LazyColumnCallerHalamanMataKuliah() {
+    val mylist = getDetailMataKuliah()
+
+//==========================
+//CEK KONDISI LIST MATAKULIAH
 //===========================
     if (mylist.isEmpty()) {
         // Tampilkan pesan kosong
@@ -478,8 +458,7 @@ fun LazyColumnCaller() {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Tidak dapat menampilkan modul, Kamu belum mengambil mata kuliah!",
-                    textAlign = TextAlign.Center,
+                    text = "Kamu belum mengambil mata kuliah",
                     fontSize = 16.sp,
                     color = Color.Gray
                 )
@@ -512,67 +491,88 @@ fun LazyColumnCaller() {
         // Tampilkan daftar mata kuliah jika tidak kosong
         LazyColumn {
             items(mylist) { item ->
-                CardModul(item)
+                CardMataKuliah(item)
             }
         }
     }
-
 }
-//=====================
-//KONTAINER KARTU MODUL
-//=====================
+// =======================
+// Kartu Mata Kulilah
+// =======================
 @Composable
-fun CardModul(item : DetailMatkul,) {
+fun CardMataKuliah(item : DetailMataKuliah) {
+//    ===============================================
+//    Card dapat diklik untuk pindah activity lainnya
+//    ===============================================
     Card(
         onClick = {},
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),
         modifier = Modifier
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 15.dp)
             .fillMaxWidth()
-            .size(height = 100.dp, width = 100.dp)
+            .size(height = 120.dp, width = 100.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 16.dp)
                 .padding(bottom = 16.dp)
-                .padding(end = 16.dp), // Menambah padding untuk isi card
+                .padding(start = 16.dp), // Menambah padding untuk isi card
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                painter = painterResource(id = item.imageRes),
-                contentDescription = item.modulName,
-                modifier = Modifier
-                    .size(100.dp)
-                    .padding(end = 8.dp)
-            )
+
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
-                    text = item.modulName,
+                    text = item.namaMataKuliah,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
-                    text = "Jumlah Modul : ${item.jumlahModul}",
+                    text = item.namaKetuaKelas,
                     fontSize = 14.sp,
                     color = Color.White.copy(alpha = 0.9f)
                 )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.icon_jumlahmahasiswa_),
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier.padding(5.dp)
+                    )
+                    Text(
+                        text = item.jumlahMahasiswa,
+                        fontSize = 12.sp,
+                        color = Color.White.copy(alpha = 0.7f)
+                    )
+                }
+                Spacer(
+                    modifier = Modifier.padding(5.dp)
+                )
                 Text(
-                    text = "Semester : ${item.onSemester}",
-                    fontSize = 12.sp,
-                    color = Color.White.copy(alpha = 0.7f)
+                    text = "Semester : ${item.semesterMataKuliah}",
+                    fontSize = 14.sp,
+                    color = Color.White.copy(alpha = 0.9f)
                 )
             }
+            Image(
+                painter = painterResource(id = item.imageRes),
+                contentDescription = item.namaMataKuliah,
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(end = 8.dp)
+            )
         }
     }
 }
-
-
-
