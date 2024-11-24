@@ -58,9 +58,16 @@
     <string name="schedule_title">Jadwal Perkuliahan</string>
     <string name="schedule_empty">Tidak ada jadwal perkuliahan di tanggal ini.\nKamu bisa liburan sepuasnya!</string>
 
-    <!-- Subject Screen -->
-    <string name="subject_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
-    <string name="subject_take_course">Ambil Mata Kuliah</string>
+    <!-- Course Screen -->
+    <string name="course_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
+    <string name="course_take_course">Ambil Mata Kuliah</string>
+
+    <!-- Course Detail Screen -->
+    <string name="cds_general_information">Informasi Umum</string>
+    <string name="cds_lecturer_information">Informasi Perkuliahan</string>
+    <string name="cds_lecturer_summary">Rangkuman Perkuliahan</string>
+    <string name="cds_homework_list">Daftar Tugas</string>
+    <string name="cds_learning_module">Modul Pembelajaran</string>
 
     <!-- Final Section End -->
 
