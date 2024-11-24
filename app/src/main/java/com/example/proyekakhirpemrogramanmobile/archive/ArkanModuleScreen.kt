@@ -1,9 +1,5 @@
 package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,9 +32,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -54,28 +53,17 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
 import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-
-class HalamanDetailModul : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContent {
-
-        }
-    }
-}
-
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainDaftarDetailModul() {
+fun MainModul() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -87,9 +75,7 @@ fun MainDaftarDetailModul() {
                 // Drawer content
                 //===============
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(colorResource(R.color.very_light_blue)),
+                    modifier = Modifier.fillMaxSize().background(colorResource(R.color.very_light_blue)),
                     verticalArrangement = Arrangement.SpaceBetween
                 ){
                     Column(
@@ -143,9 +129,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Beranda",
@@ -165,9 +149,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Jadwal",
@@ -187,9 +169,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Mata Kuliah",
@@ -209,9 +189,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Tugas",
@@ -231,9 +209,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Modul",
@@ -253,9 +229,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Informasi",
@@ -275,9 +249,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Alat",
@@ -297,9 +269,7 @@ fun MainDaftarDetailModul() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Pengaturan",
@@ -407,79 +377,64 @@ fun MainDaftarDetailModul() {
             }
 
         ) { contentPadding ->
-            IsiDetailModul(contentPadding)
+            IsiModul(contentPadding)
         }
     }
 }
 
-
-
-//==========================
-//KONTAINER ISI DETAIL MODUL
-//==========================
+//===================
+//KONTAINER ISI MODUL
+//===================
 @Composable
-fun IsiDetailModul(paddingValues: PaddingValues) {
-
+fun IsiModul(paddingValues: PaddingValues){
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .background(Color.White)
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(),
-            thickness = 1.dp,
-            color = Color.Gray
+            color = Color.Gray, // Warna divider, bisa disesuaikan
+            thickness = 1.dp, // Ketebalan divider
+            modifier = Modifier.fillMaxWidth() // Divider horizontal penuh
         )
-        //==========================
-        //Ribbon
-        //==========================
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .background(
-                    color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .background(
+                        color = colorResource(R.color.very_dark_blue),
+                        shape = RoundedCornerShape(
+                            bottomStart = 16.dp,
+                            bottomEnd = 16.dp
+                        )
                     )
+                    .padding(vertical = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Daftar Modul",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleLarge
                 )
-                .padding(vertical = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Modul : Grafika Komputer",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+            }
         }
-
-        Spacer(
-            modifier = Modifier.padding(15.dp)
-        )
-        LazyColumnCallerDetailModul()
-
+        LazyColumnCaller()
     }
 }
 
-@Preview(
-    showBackground = true,
-)
+//====================================================
+//FUNGSI PEMANGGIL DATA CLASS DetailModulMataKuliah.kt
+//====================================================
 @Composable
-fun PreviewDaftarModul(modifier: Modifier = Modifier) {
-    MainDaftarDetailModul()
-}
-
-//================================================
-//FUNGSI PEMANGGIL DATA CLASS DetailDaftarModul.kt
-//================================================
-@Composable
-fun LazyColumnCallerDetailModul(modifier: Modifier = Modifier) {
-    val mylist = GetDaftarModul()
-//==========================
-//CEK KONDISI LIST DAFTAR MODUL
+fun LazyColumnCaller() {
+    val mylist = getModulDetail()
+    //==========================
+//CEK KONDISI LIST Modul Mata Kuliah
 //===========================
     if (mylist.isEmpty()) {
         // Tampilkan pesan kosong
@@ -503,59 +458,116 @@ fun LazyColumnCallerDetailModul(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Modul belum diberikan",
+                    text = "Tidak dapat menampilkan modul, Kamu belum mengambil mata kuliah!",
+                    textAlign = TextAlign.Center,
                     fontSize = 16.sp,
                     color = Color.Gray
                 )
+            }
+            //==================================================
+            // Floating Action Button di bagian bawah layar
+            //==================================================
+            Surface(
+                onClick = {
+                    // Tambahkan aksi ketika FAB diklik
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp)
+                    .width(200.dp), // Lebar FAB yang bisa disesuaikan
+                shape = RoundedCornerShape(50), // Membuat FAB dengan bentuk bulat
+                color = MaterialTheme.colorScheme.primary,
+                shadowElevation = 8.dp // Memberikan efek bayangan
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .padding(vertical = 12.dp) // Tinggi FAB
+                ) {
+                    Text(text = "Ambil Mata Kuliah", color = Color.White)
+                }
             }
         }
     } else {
         // Tampilkan daftar mata kuliah jika tidak kosong
         LazyColumn {
             items(mylist) { item ->
-                CardDaftarModul(item)
+                CardModul(item)
             }
         }
     }
-}
 
-            //================================
-            //Desain Kartu Desain daftar modul
-            //================================
+}
+//=====================
+//KONTAINER KARTU MODUL
+//=====================
 @Composable
-fun CardDaftarModul(item : DetailDaftarModul, modifier: Modifier = Modifier) {
-            //    ========================================================
-            //    Card dapat diklik untuk pindah ke activity tampilkan modul
-            //    ========================================================
+fun CardModul(item : DetailMatkul) {
     Card(
         onClick = {},
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.very_light_blue),
+            containerColor = colorResource(R.color.very_light_blue)
         ),
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
-            .size(height = 60.dp, width = 100.dp)
+            .size(height = 100.dp, width = 100.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp), // Menambah padding untuk isi card
+                .padding(top = 16.dp)
+                .padding(bottom = 16.dp)
+                .padding(end = 16.dp), // Menambah padding untuk isi card
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
             Image(
                 painter = painterResource(id = item.imageRes),
-                contentDescription = "ini gambar nyata",
+                contentDescription = item.modulName,
                 modifier = Modifier
+                    .size(100.dp)
                     .padding(end = 8.dp)
             )
-            Text(
-                text = item.namaModul,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = item.modulName,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Text(
+                    text = "Jumlah Modul : ${item.jumlahModul}",
+                    fontSize = 14.sp,
+                    color = Color.White.copy(alpha = 0.9f)
+                )
+                Text(
+                    text = "Semester : ${item.onSemester}",
+                    fontSize = 12.sp,
+                    color = Color.White.copy(alpha = 0.7f)
+                )
+            }
         }
     }
 }
+
+data class DetailMatkul(
+    var modulName : String,
+    var onSemester : String,
+    var jumlahModul : String,
+    var imageRes : Int,
+)
+
+fun getModulDetail() : List<DetailMatkul>{
+    return listOf(
+        DetailMatkul("Grafika Komputer", "5","9", R.drawable.laptop_icon),
+        DetailMatkul("Pemrograman Mobile", "5", "6", R.drawable.laptop_icon),
+        DetailMatkul("Struktur Data", "5","10", R.drawable.laptop_icon),
+        DetailMatkul("Pemrograman Web", "3","50", R.drawable.laptop_icon),
+    )
+}
+
+

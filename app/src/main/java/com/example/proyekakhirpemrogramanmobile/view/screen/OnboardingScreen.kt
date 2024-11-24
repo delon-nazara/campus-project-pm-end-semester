@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.view
+package com.example.proyekakhirpemrogramanmobile.view.screen
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -39,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.utils.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.launch
 
 @Preview

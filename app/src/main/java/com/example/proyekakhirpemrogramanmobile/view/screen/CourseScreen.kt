@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.view
+package com.example.proyekakhirpemrogramanmobile.view.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +40,10 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.listCourse
 import com.example.proyekakhirpemrogramanmobile.model.CourseModel
-import com.example.proyekakhirpemrogramanmobile.utils.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.view.component.SideBar
+import com.example.proyekakhirpemrogramanmobile.view.component.Title
+import com.example.proyekakhirpemrogramanmobile.view.component.TopBar
 
 @Preview
 @Composable
@@ -68,7 +71,7 @@ fun CourseScreen() {
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(22.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))

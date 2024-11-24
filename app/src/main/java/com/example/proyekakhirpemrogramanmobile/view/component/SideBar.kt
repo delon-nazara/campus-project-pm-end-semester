@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.view
+package com.example.proyekakhirpemrogramanmobile.view.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.listMenu
-import com.example.proyekakhirpemrogramanmobile.utils.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
