@@ -1,6 +1,5 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
-import androidx.compose.foundation.lazy.items
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,15 +18,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,10 +38,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -63,23 +60,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanTugas : ComponentActivity() {
+class HalamanDetailMataKuliah : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            
+
         }
     }
 }
-//==================================
-//     SIDEBAR DAN TOP APP BAR
-//==================================
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanTugas() {
+fun MainHalamanDetailMataKuliah() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -313,9 +309,7 @@ fun MainHalamanTugas() {
 
 
                     }
-//
                     Spacer(modifier = Modifier.weight(1f))
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -342,7 +336,6 @@ fun MainHalamanTugas() {
                                         .size(50.dp)
                                         .padding(end = 20.dp)
                                         .padding(start = 10.dp)
-
                                 )
                                 Column {
                                     Text(
@@ -410,21 +403,21 @@ fun MainHalamanTugas() {
             }
 
         ) { contentPadding ->
-            IsiTugas(contentPadding)
+            IsiDetailMataKuliah(contentPadding)
         }
     }
 }
-@Preview
-    (showBackground = true)
-//==============================
-//   KONTAINER HALAMAN TUGAS
-//==============================
+
+@Preview(
+    showBackground = true
+)
 @Composable
-fun PreviewTugas(modifier: Modifier = Modifier) {
-    MainHalamanTugas()
+fun PreviewHalamanDetailMataKuliah(modifier: Modifier = Modifier) {
+    MainHalamanDetailMataKuliah()
 }
+
 @Composable
-fun IsiTugas(paddingValues: PaddingValues) {
+fun IsiDetailMataKuliah(paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -454,172 +447,137 @@ fun IsiTugas(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Tugas",
+                text = "Pemrogaraman Mobile",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
-        Spacer(
-            modifier = Modifier.padding(15.dp)
-        )
-        KontainerTugas()
-//            ListInstruksiTugas()
+            DetailMatakuliahScreen()
     }
 }
-//=========================
-//KONTAINER CARD TUGAS
-//=========================
+//==============================
+//Detail Matakuliah Dengan Dropdown
+//==============================
 @Composable
-fun KontainerTugas() {
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Tugas Aktif", "Tugas Lampau")
+fun DetailMatakuliahScreen() {
+    val dropdownItems = listOf("Informasi Umum Mata Kuliah", "Jadwal Perkuliahan", "Rangkuman Perkuliahan", "Tugas Aktif")
+    var expandedItem by remember { mutableStateOf<String?>(null) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        // Bagian Tab
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            containerColor = Color(0xFFABD2FA), // Warna background tab
-            contentColor = Color(0xFF1A237E), // Warna teks tab
-            indicator = { tabPositions ->
-                SecondaryIndicator(
-                    Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                    color = Color(0xFF4B84FF)
-                )
-            }
+        dropdownItems.forEach { item ->
+            DropdownItem(
+                title = item,
+                expanded = expandedItem == item,
+                onClick = { expandedItem = if (expandedItem == item) null else item }
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Button(
+            onClick = { /* Implementasikan navigasi atau tindakan lainnya */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
+            shape = RoundedCornerShape(12.dp)
         ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
+            Text(text = "Modul Pembelajaran", color = Color.White)
+        }
+    }
+}
+//======================
+//ISI DROPDOWN ITEM
+//======================
+@Composable
+fun DropdownItem(title: String, expanded: Boolean, onClick: () -> Unit) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Icon(
+                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, // Ubah dengan ikon sesuai kebutuhan Anda
+                    contentDescription = null,
+                    tint = colorResource(R.color.very_dark_blue),
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(text = title, color = colorResource(R.color.very_dark_blue))
+                Spacer(modifier = Modifier.width(5.dp))
+            }
+        }
 
-                    selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
-                    text = {
+        if (expanded) {
+            when (title) {
+                "Informasi Umum Mata Kuliah" -> InformasiUmumContent(mataKuliahData)
+                // Tambahkan konten lainnya sesuai dengan menu yang lain
+            }
+        }
+    }
+}
+//================
+//Data Class Dummy
+//================
+data class MataKuliahInfo(
+    val label: String,
+    val value: String
+)
+val mataKuliahData = listOf(
+    MataKuliahInfo("Nama Mata Kuliah", "Pemrograman Mobile"),
+    MataKuliahInfo("Kode Mata Kuliah", "ILK3105"),
+    MataKuliahInfo("Jumlah SKS", "3 SKS"),
+    MataKuliahInfo("Semester", "5"),
+    MataKuliahInfo("Nama Dosen", "Sri Melvani Hardi S.Kom., M.Kom \n Nurrahmadayeni M.Kom"),
+    MataKuliahInfo("Jumlah Mahasiswa", "33 Mahasiswa")
+)
+
+//==================================
+//Lazy Column untuk data class dummy
+//==================================
+@Composable
+fun InformasiUmumContent(infoList: List<MataKuliahInfo>) {
+    Card(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp)
+    ){
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFE0E7FF))
+                .padding(16.dp),
+
+        ) {
+            items(infoList) { info ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                ) {
+                    Column{
                         Text(
-                            title, fontWeight = FontWeight.Bold,
-                            color = if (selectedTabIndex == index) Color(0xFF4B84FF) else Color.Gray
+                            text = "${info.label} : ",
+                        )
+                        Text(
+                            text = info.value,
+                            fontWeight = FontWeight.Bold,
                         )
                     }
-                )
+                }
             }
         }
-        // Konten sesuai tab yang dipilih
-        when (selectedTabIndex) {
-            0 -> TugasAktifContent() // Konten untuk "Tugas Aktif"
-            1 -> TugasLampauContent() // Konten untuk "Tugas Lampau"
-        }
     }
 }
-//=============================================
-//Fungsi pemanggil data class dengan lazy column
-//=============================================
-@Composable
-fun TugasAktifContent() {
-    val mylist = getTugasAktif()
-    LazyColumn(
-        modifier = Modifier
-            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-    ){
-        items(mylist){ item ->
-            CardTugas(item)
-        }
-    }
-}
-@Composable
-fun TugasLampauContent() {
-    val mylist = getTugasLampau()
-    LazyColumn(
-        modifier = Modifier
-            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
-    ){
-        items(mylist){ item ->
-            CardTugas(item)
-        }
-    }
-}
-//========================================
-//Desain card tugas aktif dan tugas lampau
-//========================================
-@Composable
-fun CardTugas(item : TugasAktif) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE1F5FE)
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f))
-            {
-                Text(
-                    text = item.namaMatakuliah,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color(0xFF1A237E)
-                )
-                Text(
-                    text = item.deadlineDate,
-                    fontSize = 12.sp,
-                    color = Color(0xFF757575)
-                )
-            }
-            Image(
-                painter = painterResource(id = item.iconJenisTugas),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-    }
-}
-@Composable
-fun CardTugas(item : TugasLampau) {
-    Card(
-        onClick = {
-//            logic ke halaman selanjutnya
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE1F5FE)
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = item.namaMatakuliah,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color(0xFF1A237E)
-                )
-                Text(
-                    text = item.deadlineDate,
-                    fontSize = 12.sp,
-                    color = Color(0xFF757575)
-                )
-            }
-            Image(
-                painter = painterResource(id = item.iconJenisTugas),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-    }
-}
+
+

@@ -2,6 +2,8 @@
 
     <!-- Final Section Start -->
 
+    <!-- todo: fix string name -->
+
     <!-- General -->
     <string name="app_name">Central Class</string>
 
@@ -46,11 +48,15 @@
     <string name="sidebar_tool">Alat</string>
     <string name="sidebar_setting">Pengaturan</string>
 
-    <!-- SideBar -->
+    <!-- Home Screen -->
     <string name="home_today_schedule">Jadwal Hari ini</string>
     <string name="home_today_schedule_empty">Tidak ada jadwal perkuliahan hari ini.\nKamu bisa melanjutkan tidurmu!</string>
     <string name="home_active_homework">Tugas Aktif</string>
     <string name="home_active_homework_empty">Tidak ada tugas aktif saat ini.\nKamu bisa bermain game sekarang!</string>
+
+    <!-- Schedule Screen -->
+    <string name="schedule_title">Jadwal Perkuliahan</string>
+    <string name="schedule_empty">Tidak ada jadwal perkuliahan di tanggal ini.\nKamu bisa liburan sepuasnya!</string>
 
     <!-- Final Section End -->
 

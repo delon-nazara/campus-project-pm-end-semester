@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -60,24 +59,26 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanDetailTugas : ComponentActivity() {
+class InformasiActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            
+
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainDetailHalamanTugas() {
+fun MainInformasi() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -89,9 +90,7 @@ fun MainDetailHalamanTugas() {
                 // Drawer content
                 //===============
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(colorResource(R.color.very_light_blue)),
+                    modifier = Modifier.fillMaxSize().background(colorResource(R.color.very_light_blue)),
                     verticalArrangement = Arrangement.SpaceBetween
                 ){
                     Column(
@@ -119,6 +118,7 @@ fun MainDetailHalamanTugas() {
                                     modifier = Modifier.size(48.dp)
                                 )
                             }
+
                             Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
@@ -144,9 +144,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Beranda",
@@ -166,9 +164,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Jadwal",
@@ -188,9 +184,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Mata Kuliah",
@@ -210,9 +204,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Tugas",
@@ -232,9 +224,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Modul",
@@ -254,9 +244,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Informasi",
@@ -276,9 +264,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Alat",
@@ -298,9 +284,7 @@ fun MainDetailHalamanTugas() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Pengaturan",
@@ -311,7 +295,7 @@ fun MainDetailHalamanTugas() {
 
 
                     }
-//
+
                     Spacer(modifier = Modifier.weight(1f))
 
                     Row(
@@ -408,21 +392,21 @@ fun MainDetailHalamanTugas() {
             }
 
         ) { contentPadding ->
-            IsiDetailTugas(contentPadding)
+            IsiInformasi(contentPadding)
         }
     }
 }
-
-@Preview(
-    showBackground = true
-)
 @Composable
-fun PreviewDetailHalamanTugas(modifier: Modifier = Modifier) {
-    MainDetailHalamanTugas()
-}
+fun IsiInformasi(paddingValues: PaddingValues) {
+    val listBerita = listOf(
+        "Besok Berenang di Retensi USU" to listOf("Bawa baju", "Bawa Kacamata renang", "Bawa uang Rp. 25.000,- untuk sdhauhduhshduahushdhasuhduahsduhasuihduiashdiuhasiudhaushdiuashdiuh"),
+        "Besok Jualan di PISD USU" to listOf("Siapin barang dagangan", "Bawa pembukuan", "Jaga Stand")
+    )
 
-@Composable
-fun IsiDetailTugas(paddingValues: PaddingValues) {
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogTitle by remember { mutableStateOf("") }
+    var dialogDetails by remember { mutableStateOf(listOf<String>()) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -452,171 +436,129 @@ fun IsiDetailTugas(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Tugas",
+                text = "Informasi",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
-        Spacer(
-            modifier = Modifier.padding(15.dp)
-        )
-//        KontainerTugas()
-        ListInstruksiTugas()
-    }
-}
-//================================================
-//Fungsi pemanggil dataclass DetailTugasMatakuliah
-//================================================
-@Composable
-fun ListInstruksiTugas() {
-    val detailInstruksiList = getDetailInstruksiTugas()
 
-    LazyColumn(modifier = Modifier
-        .padding(16.dp)
-    ) {
-        items(detailInstruksiList) { detailTugas ->
-            InstruksiTugas(detailTugas)
-            Spacer(modifier = Modifier.height(16.dp)) // Tambahkan jarak antar item
-        }
-    }
-}
-
-//=============================
-//Desain Card Detail Tugas Matakuliah
-//=============================
-@Composable
-fun InstruksiTugas(
-    detailTugas: DetailInstruksiTugas,
-    modifier: Modifier = Modifier
-) {
-    var showAlert by remember { mutableStateOf(false) }
-
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = colorResource(R.color.light_blue))
-    ){
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ){
-            //==========================
-            // Nama Mata Kuliah dan Icon
-            //==========================
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 12.dp)
-            ){
-                Text(
-                    text = detailTugas.namaMatkul,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    color = Color(0xFF091441)
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    painter = painterResource(R.drawable.tugas_pribadi),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = Color.Unspecified
-                )
-            }
-            Column(
-                modifier = Modifier.padding(horizontal = 12.dp)
-            ){
-                Spacer(modifier = Modifier.height(8.dp))
-                //====================================
-                // Tanggal Ditugaskan dan Dikumpulkan
-                //====================================
-                Text(
-                    text = "Tenggat : ${detailTugas.tanggalDikumpulkan}",
-                    fontSize = 14.sp,
-                    color = Color.Black
-                )
-                Text(
-                    text = "Ditugaskan :  ${detailTugas.tanggalDitugaskan}",
-                    fontSize = 14.sp,
-                    color = Color.Black
-                )
-            }
-            Spacer(
-                modifier = Modifier.height(16.dp)
-            )
-            Card(
-                modifier = Modifier
-                    .padding(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
-            ){
-                Column(
-                    modifier = Modifier
-                        .size(width = 150.dp,30.dp)
-                ) {
-                    Text(
-                        text = "Catatan Tugas : ",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 10.dp)
-                    )
-                    HorizontalDivider(
-                        modifier = Modifier.padding(10.dp),
-                        thickness = 2.dp,
-                        color = colorResource(R.color.very_light_blue),
-                    )
-                }
-                //===============
-                // Perintah Tugas
-                //===============
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = detailTugas.perintahTugas,
-                    color = Color(0xFF1A237E)
-                )
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.light_blue)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Column {
                 Row(
-                    modifier = Modifier.padding(vertical = 16.dp)
-                        .padding(end = 16.dp)
-
-                ){
-                    Icon(
-                        imageVector = Icons.Filled.MoreVert,
-                        contentDescription = "Menu"
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.pengumuman),
+                        contentDescription = "Pengumuman",
+                        modifier = Modifier.padding(top = 15.dp)
                     )
                     Text(
-                        text = detailTugas.linkTerkait,
-                        fontSize = 14.sp,
-                        color = Color(0xFF4B84FF),
-                        modifier = Modifier.clickable { /* Handle link click */ }
+                        text = "Notes",
+                        modifier = Modifier.padding(16.dp),
+                        color = Color.Black,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(
+                        modifier = Modifier.padding(16.dp)
                     )
                 }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            // Tombol "Tandai Sebagai Selesai"
-            Button(
-                onClick = { showAlert = true },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4B84FF)),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .padding(horizontal = 12.dp),
-                shape = RoundedCornerShape(16.dp)
-            ){
-                Text(text = "Tandai Sebagai Selesai", color = Color.White)
-            }
-        }
-        // Alert ketika tombol diklik
-        if (showAlert) {
-            AlertDialog(
-                onDismissRequest = { showAlert = false },
-                confirmButton = {
-                    TextButton(onClick = { showAlert = false }) {
-                        Text("OK")
+                Spacer(modifier = Modifier.padding(15.dp))
+                //========================================
+                //LazyColumn untuk card putih
+                //========================================
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    items(listBerita) { (title, details) ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 15.dp)
+                                .clickable {
+                                    dialogTitle = title
+                                    dialogDetails = details
+                                    showDialog = true
+                                },
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                //=====================================
+                                // Judul Berita
+                                //=====================================
+                                Text(
+                                    text = title,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.Black,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                //=====================================
+                                // Bullet untuk detail
+                                //=====================================
+                                details.forEachIndexed { index, detail ->
+                                    Text(
+                                        text = "\u2022    $detail",
+                                        fontSize = 14.sp,
+                                        color = Color.DarkGray,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        modifier = Modifier.padding(start = 15.dp).padding(vertical = 2.dp)
+                                    )
+                                }
+                            }
+                        }
                     }
-                },
-                title = { Text("Notifikasi") },
-                text = { Text("Tugas telah selesai") }
-            )
+                }
+            }
         }
     }
+
+    //=====================================
+    // Pop up Detail untuk detail
+    //=====================================
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = {
+                Text(text = dialogTitle, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            },
+            text = {
+                Column {
+                    dialogDetails.forEach { detail ->
+                        Text(text = "• $detail", fontSize = 14.sp, color = Color.Black)
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Close")
+                }
+            }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewMainInformasi() {
+    MainInformasi()
 }

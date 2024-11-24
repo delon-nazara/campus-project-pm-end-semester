@@ -1,5 +1,6 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
+import androidx.compose.foundation.lazy.items
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -35,13 +37,21 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,20 +63,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanAlat : ComponentActivity() {
+class HalamanTugas : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            
         }
     }
 }
-
+//==================================
+//     SIDEBAR DAN TOP APP BAR
+//==================================
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanAlat() {
+fun MainHalamanTugas() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -108,7 +122,6 @@ fun MainHalamanAlat() {
                                     modifier = Modifier.size(48.dp)
                                 )
                             }
-
                             Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
@@ -298,7 +311,10 @@ fun MainHalamanAlat() {
                                 )
                             }
                         }
+
+
                     }
+//
                     Spacer(modifier = Modifier.weight(1f))
 
                     Row(
@@ -395,24 +411,21 @@ fun MainHalamanAlat() {
             }
 
         ) { contentPadding ->
-            //=========================
-            //Memanggil Halaman kontainer ALat
-            //=========================
-            IsiTHalamanAlat(contentPadding)
+            IsiTugas(contentPadding)
         }
     }
 }
-@Preview(
-    showBackground = true
-)
+@Preview
+    (showBackground = true)
+//==============================
+//   KONTAINER HALAMAN TUGAS
+//==============================
 @Composable
-fun PreviewHalamanAlat(){
-    MainHalamanAlat()
+fun PreviewTugas(modifier: Modifier = Modifier) {
+    MainHalamanTugas()
 }
-
 @Composable
-fun IsiTHalamanAlat(paddingValues: PaddingValues) {
-
+fun IsiTugas(paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -442,88 +455,172 @@ fun IsiTHalamanAlat(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Alat",
+                text = "Tugas",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
-
-//        Spacer(
-//            modifier = Modifier.padding(15.dp)
-//        )
-        //====================================
-        //Pemanggilan Isi Konten dari Halaman
-        //===================================
-        AlatKeren()
+        Spacer(
+            modifier = Modifier.padding(15.dp)
+        )
+        KontainerTugas()
+//            ListInstruksiTugas()
     }
-
 }
-
+//=========================
+//KONTAINER CARD TUGAS
+//=========================
 @Composable
-fun AlatKeren() {
-    Spacer(
-        modifier = Modifier.padding(top = 16.dp)
-    )
-    Column(
+fun KontainerTugas() {
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    val tabs = listOf("Tugas Aktif", "Tugas Lampau")
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(horizontal = 16.dp)
+    ) {
+        // Bagian Tab
+        TabRow(
+            selectedTabIndex = selectedTabIndex,
+            containerColor = Color(0xFFABD2FA), // Warna background tab
+            contentColor = Color(0xFF1A237E), // Warna teks tab
+            indicator = { tabPositions ->
+                SecondaryIndicator(
+                    Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                    color = Color(0xFF4B84FF)
+                )
+            }
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+
+                    selected = selectedTabIndex == index,
+                    onClick = { selectedTabIndex = index },
+                    text = {
+                        Text(
+                            title, fontWeight = FontWeight.Bold,
+                            color = if (selectedTabIndex == index) Color(0xFF4B84FF) else Color.Gray
+                        )
+                    }
+                )
+            }
+        }
+        // Konten sesuai tab yang dipilih
+        when (selectedTabIndex) {
+            0 -> TugasAktifContent() // Konten untuk "Tugas Aktif"
+            1 -> TugasLampauContent() // Konten untuk "Tugas Lampau"
+        }
+    }
+}
+//=============================================
+//Fungsi pemanggil data class dengan lazy column
+//=============================================
+@Composable
+fun TugasAktifContent() {
+    val mylist = getTugasAktif()
+    LazyColumn(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
+            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
     ){
+        items(mylist){ item ->
+            CardTugas(item)
+        }
+    }
+}
+@Composable
+fun TugasLampauContent() {
+    val mylist = getTugasLampau()
+    LazyColumn(
+        modifier = Modifier
+            .background(Color(0xFF7692FF), shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp))
+    ){
+        items(mylist){ item ->
+            CardTugas(item)
+        }
+    }
+}
+//========================================
+//Desain card tugas aktif dan tugas lampau
+//========================================
+@Composable
+fun CardTugas(item : TugasAktif) {
+    Card(
+        onClick = {
+//            logic ke halaman selanjutnya
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFE1F5FE)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.light_blue)
-                ),
-
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
-
-                ){
-                    Image(
-                        modifier = Modifier.size(125.dp),
-                        painter = painterResource(R.drawable.icon_vote),
-                        contentDescription = "gambar vote"
-                    )
-                    Text(
-                        text = "Voting",
-                        modifier = Modifier.padding(16.dp),
-                         fontWeight = FontWeight.SemiBold
-                    )
-
-                }
-
+            modifier = Modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f))
+            {
+                Text(
+                    text = item.namaMatakuliah,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = Color(0xFF1A237E)
+                )
+                Text(
+                    text = item.deadlineDate,
+                    fontSize = 12.sp,
+                    color = Color(0xFF757575)
+                )
             }
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.light_blue)
-                ),
-            ){
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
-
-                ){
-                    Image(
-                        modifier = Modifier.size(125.dp),
-                        painter = painterResource(R.drawable.icon_speenwheel),
-                        contentDescription = "gambar Spin Wheel"
-                    )
-                    Text(
-                        text = "Spin Wheel",
-                        modifier = Modifier.padding(16.dp),
-                        fontWeight = FontWeight.SemiBold
-                    )
-
-                }
+            Image(
+                painter = painterResource(id = item.iconJenisTugas),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+@Composable
+fun CardTugas(item : TugasLampau) {
+    Card(
+        onClick = {
+//            logic ke halaman selanjutnya
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFE1F5FE)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = item.namaMatakuliah,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = Color(0xFF1A237E)
+                )
+                Text(
+                    text = item.deadlineDate,
+                    fontSize = 12.sp,
+                    color = Color(0xFF757575)
+                )
             }
+            Image(
+                painter = painterResource(id = item.iconJenisTugas),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }

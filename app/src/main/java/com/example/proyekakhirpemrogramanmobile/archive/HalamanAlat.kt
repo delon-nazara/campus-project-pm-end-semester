@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,18 +17,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,11 +41,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,21 +53,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanDetailMataKuliah : ComponentActivity() {
+class HalamanAlat : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanDetailMataKuliah() {
+fun MainHalamanAlat() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -116,6 +109,7 @@ fun MainHalamanDetailMataKuliah() {
                                     modifier = Modifier.size(48.dp)
                                 )
                             }
+
                             Spacer(modifier = Modifier.width(50.dp))
                         }
                     }
@@ -305,10 +299,9 @@ fun MainHalamanDetailMataKuliah() {
                                 )
                             }
                         }
-
-
                     }
                     Spacer(modifier = Modifier.weight(1f))
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -335,6 +328,7 @@ fun MainHalamanDetailMataKuliah() {
                                         .size(50.dp)
                                         .padding(end = 20.dp)
                                         .padding(start = 10.dp)
+
                                 )
                                 Column {
                                     Text(
@@ -402,21 +396,24 @@ fun MainHalamanDetailMataKuliah() {
             }
 
         ) { contentPadding ->
-            IsiDetailMataKuliah(contentPadding)
+            //=========================
+            //Memanggil Halaman kontainer ALat
+            //=========================
+            IsiTHalamanAlat(contentPadding)
         }
     }
 }
-
 @Preview(
     showBackground = true
 )
 @Composable
-fun PreviewHalamanDetailMataKuliah(modifier: Modifier = Modifier) {
-    MainHalamanDetailMataKuliah()
+fun PreviewHalamanAlat(){
+    MainHalamanAlat()
 }
 
 @Composable
-fun IsiDetailMataKuliah(paddingValues: PaddingValues) {
+fun IsiTHalamanAlat(paddingValues: PaddingValues) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -446,137 +443,88 @@ fun IsiDetailMataKuliah(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Pemrogaraman Mobile",
+                text = "Alat",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
-            DetailMatakuliahScreen()
-    }
-}
-//==============================
-//Detail Matakuliah Dengan Dropdown
-//==============================
-@Composable
-fun DetailMatakuliahScreen() {
-    val dropdownItems = listOf("Informasi Umum Mata Kuliah", "Jadwal Perkuliahan", "Rangkuman Perkuliahan", "Tugas Aktif")
-    var expandedItem by remember { mutableStateOf<String?>(null) }
 
+//        Spacer(
+//            modifier = Modifier.padding(15.dp)
+//        )
+        //====================================
+        //Pemanggilan Isi Konten dari Halaman
+        //===================================
+        AlatKeren()
+    }
+
+}
+
+@Composable
+fun AlatKeren() {
+    Spacer(
+        modifier = Modifier.padding(top = 16.dp)
+    )
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        dropdownItems.forEach { item ->
-            DropdownItem(
-                title = item,
-                expanded = expandedItem == item,
-                onClick = { expandedItem = if (expandedItem == item) null else item }
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        Button(
-            onClick = { /* Implementasikan navigasi atau tindakan lainnya */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text(text = "Modul Pembelajaran", color = Color.White)
-        }
-    }
-}
-//======================
-//ISI DROPDOWN ITEM
-//======================
-@Composable
-fun DropdownItem(title: String, expanded: Boolean, onClick: () -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Button(
-            onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Icon(
-                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, // Ubah dengan ikon sesuai kebutuhan Anda
-                    contentDescription = null,
-                    tint = colorResource(R.color.very_dark_blue),
-                    modifier = Modifier.size(20.dp)
-                )
-                Text(text = title, color = colorResource(R.color.very_dark_blue))
-                Spacer(modifier = Modifier.width(5.dp))
-            }
-        }
-
-        if (expanded) {
-            when (title) {
-                "Informasi Umum Mata Kuliah" -> InformasiUmumContent(mataKuliahData)
-                // Tambahkan konten lainnya sesuai dengan menu yang lain
-            }
-        }
-    }
-}
-//================
-//Data Class Dummy
-//================
-data class MataKuliahInfo(
-    val label: String,
-    val value: String
-)
-val mataKuliahData = listOf(
-    MataKuliahInfo("Nama Mata Kuliah", "Pemrograman Mobile"),
-    MataKuliahInfo("Kode Mata Kuliah", "ILK3105"),
-    MataKuliahInfo("Jumlah SKS", "3 SKS"),
-    MataKuliahInfo("Semester", "5"),
-    MataKuliahInfo("Nama Dosen", "Sri Melvani Hardi S.Kom., M.Kom \n Nurrahmadayeni M.Kom"),
-    MataKuliahInfo("Jumlah Mahasiswa", "33 Mahasiswa")
-)
-
-//==================================
-//Lazy Column untuk data class dummy
-//==================================
-@Composable
-fun InformasiUmumContent(infoList: List<MataKuliahInfo>) {
-    Card(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(12.dp)
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
     ){
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = colorResource(R.color.light_blue)
+                ),
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFE0E7FF))
-                .padding(16.dp),
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp)
 
-        ) {
-            items(infoList) { info ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                ) {
-                    Column{
-                        Text(
-                            text = "${info.label} : ",
-                        )
-                        Text(
-                            text = info.value,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
+                ){
+                    Image(
+                        modifier = Modifier.size(125.dp),
+                        painter = painterResource(R.drawable.icon_vote),
+                        contentDescription = "gambar vote"
+                    )
+                    Text(
+                        text = "Voting",
+                        modifier = Modifier.padding(16.dp),
+                         fontWeight = FontWeight.SemiBold
+                    )
+
+                }
+
+            }
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = colorResource(R.color.light_blue)
+                ),
+            ){
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp)
+
+                ){
+                    Image(
+                        modifier = Modifier.size(125.dp),
+                        painter = painterResource(R.drawable.icon_speenwheel),
+                        contentDescription = "gambar Spin Wheel"
+                    )
+                    Text(
+                        text = "Spin Wheel",
+                        modifier = Modifier.padding(16.dp),
+                        fontWeight = FontWeight.SemiBold
+                    )
+
                 }
             }
         }
     }
 }
-
-

@@ -1,4 +1,4 @@
- package com.example.proyekakhirpemrogramanmobile
+ package com.example.proyekakhirpemrogramanmobile.archive
 
  import android.os.Bundle
  import androidx.activity.ComponentActivity
@@ -57,6 +57,7 @@
  import androidx.compose.ui.tooling.preview.Preview
  import androidx.compose.ui.unit.dp
  import androidx.compose.ui.unit.sp
+ import com.example.proyekakhirpemrogramanmobile.R
  import kotlinx.coroutines.launch
 
 class KelompokActivity : ComponentActivity() {

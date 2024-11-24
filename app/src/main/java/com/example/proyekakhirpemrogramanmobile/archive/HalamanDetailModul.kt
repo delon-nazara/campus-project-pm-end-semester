@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -24,6 +27,8 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +47,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -52,10 +58,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
 
-class TemplateNavTopBar : ComponentActivity() {
+class HalamanDetailModul : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -68,7 +75,7 @@ class TemplateNavTopBar : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainTemplate() {
+fun MainDaftarDetailModul() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -80,7 +87,9 @@ fun MainTemplate() {
                 // Drawer content
                 //===============
                 Column(
-                    modifier = Modifier.fillMaxSize().background(colorResource(R.color.very_light_blue)),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(colorResource(R.color.very_light_blue)),
                     verticalArrangement = Arrangement.SpaceBetween
                 ){
                     Column(
@@ -134,7 +143,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Beranda",
@@ -154,7 +165,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Jadwal",
@@ -174,7 +187,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Mata Kuliah",
@@ -194,7 +209,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Tugas",
@@ -214,7 +231,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Modul",
@@ -234,7 +253,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Informasi",
@@ -254,7 +275,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Alat",
@@ -274,7 +297,9 @@ fun MainTemplate() {
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp)
                             ){
                                 Text(
                                     text = "Pengaturan",
@@ -382,12 +407,18 @@ fun MainTemplate() {
             }
 
         ) { contentPadding ->
-            IsiTemplate(contentPadding)
+            IsiDetailModul(contentPadding)
         }
     }
 }
+
+
+
+//==========================
+//KONTAINER ISI DETAIL MODUL
+//==========================
 @Composable
-fun IsiTemplate(paddingValues: PaddingValues) {
+fun IsiDetailModul(paddingValues: PaddingValues) {
 
     Column(
         modifier = Modifier
@@ -418,7 +449,7 @@ fun IsiTemplate(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Profil Anda",
+                text = "Modul : Grafika Komputer",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
@@ -428,11 +459,103 @@ fun IsiTemplate(paddingValues: PaddingValues) {
         Spacer(
             modifier = Modifier.padding(15.dp)
         )
+        LazyColumnCallerDetailModul()
+
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+)
 @Composable
-fun PreviewMainTemplate() {
-    MainTemplate()
+fun PreviewDaftarModul(modifier: Modifier = Modifier) {
+    MainDaftarDetailModul()
+}
+
+//================================================
+//FUNGSI PEMANGGIL DATA CLASS DetailDaftarModul.kt
+//================================================
+@Composable
+fun LazyColumnCallerDetailModul(modifier: Modifier = Modifier) {
+    val mylist = GetDaftarModul()
+//==========================
+//CEK KONDISI LIST DAFTAR MODUL
+//===========================
+    if (mylist.isEmpty()) {
+        // Tampilkan pesan kosong
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                // Contoh menampilkan ikon gambar "kosong" seperti yang ada pada gambar
+                Image(
+                    painter = painterResource(R.drawable.icon_matakuliah_kosong), // Pastikan ada resource icon yang sesuai
+                    contentDescription = "Kosong",
+                    modifier = Modifier.size(250.dp).
+                    alpha(0.7f)
+
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Modul belum diberikan",
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+    } else {
+        // Tampilkan daftar mata kuliah jika tidak kosong
+        LazyColumn {
+            items(mylist) { item ->
+                CardDaftarModul(item)
+            }
+        }
+    }
+}
+
+            //================================
+            //Desain Kartu Desain daftar modul
+            //================================
+@Composable
+fun CardDaftarModul(item : DetailDaftarModul, modifier: Modifier = Modifier) {
+            //    ========================================================
+            //    Card dapat diklik untuk pindah ke activity tampilkan modul
+            //    ========================================================
+    Card(
+        onClick = {},
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.very_light_blue),
+        ),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .size(height = 60.dp, width = 100.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp), // Menambah padding untuk isi card
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Image(
+                painter = painterResource(id = item.imageRes),
+                contentDescription = "ini gambar nyata",
+                modifier = Modifier
+                    .padding(end = 8.dp)
+            )
+            Text(
+                text = item.namaModul,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        }
+    }
 }

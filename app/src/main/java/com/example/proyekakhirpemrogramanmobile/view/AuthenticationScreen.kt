@@ -124,7 +124,7 @@ fun AuthenticationScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         // Card
-        Card(
+        Card( // todo
             colors = CardDefaults.cardColors(containerColor = colorResource(R.color.white)),
             modifier = Modifier
                 .fillMaxWidth()

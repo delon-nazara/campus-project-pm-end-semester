@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile
+package com.example.proyekakhirpemrogramanmobile.archive
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,18 +18,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,6 +34,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -53,19 +50,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class InformasiActivity : ComponentActivity() {
+class PengaturanActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -77,7 +76,7 @@ class InformasiActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainInformasi() {
+fun MainPengaturan() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -391,21 +390,16 @@ fun MainInformasi() {
             }
 
         ) { contentPadding ->
-            IsiInformasi(contentPadding)
+            IsiPengaturan(contentPadding)
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IsiInformasi(paddingValues: PaddingValues) {
-    val listBerita = listOf(
-        "Besok Berenang di Retensi USU" to listOf("Bawa baju", "Bawa Kacamata renang", "Bawa uang Rp. 25.000,- untuk sdhauhduhshduahushdhasuhduahsduhasuihduiashdiuhasiudhaushdiuashdiuh"),
-        "Besok Jualan di PISD USU" to listOf("Siapin barang dagangan", "Bawa pembukuan", "Jaga Stand")
-    )
-
-    var showDialog by remember { mutableStateOf(false) }
-    var dialogTitle by remember { mutableStateOf("") }
-    var dialogDetails by remember { mutableStateOf(listOf<String>()) }
-
+fun IsiPengaturan(paddingValues: PaddingValues) {
+    var name by remember { mutableStateOf("Delon Nazara") }
+    var nim by remember { mutableStateOf("221401073") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -435,129 +429,256 @@ fun IsiInformasi(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Informasi",
+                text = "Pengaturan",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
 
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.light_blue)
-            ),
+        Spacer(
+            modifier = Modifier.padding(5.dp)
+        )
+        //=========================================
+        //Row yang berisi Hai
+        //=========================================
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text = "Hai, $name!",
+                color = Color.Black,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        //=========================================
+        //Row yang berisi Image profil
+        //=========================================
+        Row(
+            modifier = Modifier.fillMaxWidth().height(150.dp).padding(bottom = 15.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.profil_arkan),
+                contentDescription = "Profile Image",
+                modifier = Modifier
+                    .scale(1f)
+            )
+        }
+        //=========================================
+        //Form Nama
+        //=========================================
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(end=16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Text(
+                text = "Nama",
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(vertical = 15.dp)
+                    .padding(start = 16.dp)
+                    .weight(1f)
+            )
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(horizontal = 8.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF7F9FC),
+                    unfocusedContainerColor = Color(0xFFF7F9FC),
+                    focusedBorderColor = Color.Gray,
+                    unfocusedBorderColor = Color.LightGray
+                ),
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    containerColor = Color(0xFFF7F9FC),
+//                    focusedBorderColor = Color.Gray,
+//                    unfocusedBorderColor = Color.LightGray
+//                ),
+                shape = RoundedCornerShape(8.dp)
+            )
+        }
+        //=========================================
+        //Form NIM
+        //=========================================
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end=16.dp)
+                .padding(vertical = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "NIM",
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(vertical = 15.dp)
+                    .padding(start = 16.dp)
+                    .weight(1f)
+            )
+            OutlinedTextField(
+                value = nim,
+                onValueChange = { newValue ->
+                    if (newValue.length <= 9 && newValue.all { it.isDigit() }) {
+                        nim = newValue
+                    }
+                },
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(horizontal = 8.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF7F9FC),
+                    unfocusedContainerColor = Color(0xFFF7F9FC),
+                    focusedBorderColor = Color.Gray,
+                    unfocusedBorderColor = Color.LightGray
+                ),
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    containerColor = Color(0xFFF7F9FC),
+//                    focusedBorderColor = Color.Gray,
+//                    unfocusedBorderColor = Color.LightGray
+//                ),
+                shape = RoundedCornerShape(8.dp)
+            )
+        }
+        //========================================================
+        //Row yang berisi 2 tombol yaitu logout dan delete account
+        //========================================================
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            //=========================================
+            //Button Log out
+            //=========================================
+            TextButton(
+                onClick = { /* Handle click for Button Log out Account */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .weight(1f),
+                colors = ButtonDefaults.buttonColors(Color.Red),
+                shape = RoundedCornerShape(15.dp)
+            ){
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.pengumuman),
-                        contentDescription = "Pengumuman",
-                        modifier = Modifier.padding(top = 15.dp)
-                    )
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
+                ){
                     Text(
-                        text = "Notes",
-                        modifier = Modifier.padding(16.dp),
-                        color = Color.Black,
-                        fontSize = 24.sp,
+                        text = "Log out",
+                        color = Color.White,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold
                     )
-                    Spacer(
-                        modifier = Modifier.padding(16.dp)
-                    )
                 }
-                Spacer(modifier = Modifier.padding(15.dp))
-                //========================================
-                //LazyColumn untuk card putih
-                //========================================
-                LazyColumn(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
-                    items(listBerita) { (title, details) ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 15.dp)
-                                .clickable {
-                                    dialogTitle = title
-                                    dialogDetails = details
-                                    showDialog = true
-                                },
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color.White
-                            ),
-                            shape = RoundedCornerShape(12.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                //=====================================
-                                // Judul Berita
-                                //=====================================
-                                Text(
-                                    text = title,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.Black,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                //=====================================
-                                // Bullet untuk detail
-                                //=====================================
-                                details.forEachIndexed { index, detail ->
-                                    Text(
-                                        text = "\u2022    $detail",
-                                        fontSize = 14.sp,
-                                        color = Color.DarkGray,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier.padding(start = 15.dp).padding(vertical = 2.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
+            }
+            //=========================================
+            //Button Delete
+            //=========================================
+            TextButton(
+                onClick = { /* Handle click for Button Delete Account */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 10.dp),
+                colors = ButtonDefaults.buttonColors(Color.Red),
+                shape = RoundedCornerShape(15.dp)
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
+                ){
+                    Text(
+                        text = "Delete Account",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
         }
-    }
 
-    //=====================================
-    // Pop up Detail untuk detail
-    //=====================================
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = {
-                Text(text = dialogTitle, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            },
-            text = {
-                Column {
-                    dialogDetails.forEach { detail ->
-                        Text(text = "• $detail", fontSize = 14.sp, color = Color.Black)
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text("Close")
+        Spacer(
+            modifier = Modifier.padding(vertical = 100.dp)
+        )
+        //==========================================
+        //Row yang berisi button batal dan save
+        //==========================================
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            //=========================================
+            //Button Batal
+            //=========================================
+            TextButton(
+                onClick = { /* Handle click for Button Batal */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .weight(1f)
+                    .padding(vertical = 5.dp),
+                colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
+                shape = RoundedCornerShape(15.dp)
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
+                ){
+                    Text(
+                        text = "Batal",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
-        )
+            //=========================================
+            //Button Save
+            //=========================================
+            TextButton(
+                onClick = { /* Handle click for Button Save */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 10.dp)
+                    .padding(vertical = 5.dp),
+                colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
+                shape = RoundedCornerShape(15.dp)
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)
+                ){
+                    Text(
+                        text = "Save",
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewMainInformasi() {
-    MainInformasi()
+fun PreviewMainPengaturan() {
+    MainPengaturan()
 }

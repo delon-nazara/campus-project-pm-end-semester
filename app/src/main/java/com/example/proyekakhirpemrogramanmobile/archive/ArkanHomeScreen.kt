@@ -63,12 +63,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.getTugasBesok
-import com.example.proyekakhirpemrogramanmobile.getTugasHariIni
-import com.example.proyekakhirpemrogramanmobile.getjadwalHariIni
-import com.example.proyekakhirpemrogramanmobile.jadwalHariIni
-import com.example.proyekakhirpemrogramanmobile.tugasBesok
-import com.example.proyekakhirpemrogramanmobile.tugasHariIni
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -80,7 +74,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArkanHomeScreen() {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
@@ -532,7 +526,7 @@ fun IsiHome(paddingValues: PaddingValues) {
 }
 @Composable
 fun LazyCallerJadwalHariIni() {
-    val mylist = getjadwalHariIni()
+    val mylist = getJadwalHariIni()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -572,7 +566,7 @@ fun LazyCallerJadwalHariIni() {
 }
 
 @Composable
-fun JadwalHariIni(item : jadwalHariIni) {
+fun JadwalHariIni(item : JadwalHariIni) {
     Card(
         onClick = {
 //            logic ke halaman selanjutnya isi ya bang backend awkaowkoa
@@ -702,7 +696,7 @@ fun LazyCallerTugasHariIni() {
     }
 }
 @Composable
-fun TugasHariIni(item : tugasHariIni) {
+fun TugasHariIni(item : TugasHariIni) {
     Card(
         onClick = {
 //            logic ke halaman selanjutnya usahakan ya bang hehe
@@ -824,7 +818,7 @@ fun LazyCallerTugasBesok() {
     }
 }
 @Composable
-fun TugasBesok(item : tugasBesok) {
+fun TugasBesok(item : TugasBesok) {
     Card(
         onClick = {
 //            logic ke halaman selanjutnya janji ini yang terakhir hjehe
@@ -903,4 +897,48 @@ fun TugasBesok(item : tugasBesok) {
             }
         }
     }
+}
+
+data class JadwalHariIni(
+    var namaMatakuliah : String,
+    var jamKelas : String,
+    var lokasiKelas : String,
+    var catatanDosen : String,
+//    var statusKelas : Boolean
+)
+
+fun getJadwalHariIni(): List<JadwalHariIni> {
+    return listOf(
+        JadwalHariIni("Pemrograman Mobile", "10.30-13.00", "Gedung D, 104","Makanlah yang banyak nak"),
+        JadwalHariIni("Cloud Computing", "14.40-17.10", "Gedung D, 106", "Jangan Lupa Makan dan bersyukur"),
+        JadwalHariIni("LAB Grafika Komputer","17.10=18.00","Gedung D, LAB Pemrograman 4", "Rawrr!"),
+    )
+}
+
+data class TugasHariIni(
+    var namaMatakuliah: String,
+    var jenisTugas : Int,
+    var deadlineTugas : String,
+    var perintahTugas : String,
+)
+
+fun getTugasHariIni(): List<TugasHariIni>{
+    return listOf(
+        TugasHariIni("Pemrograman Mobile", R.drawable.tugas_kelompok,"Kamis, 28 November 2024, 23.59","Buatlah aplikasi yang dapat menggeser satelit Voyager II"),
+        TugasHariIni("Grafika Komputer", R.drawable.tugas_pribadi,"Senin, 26 November 2024, 23.59","Buatlah PPT mengenain konsep morphing")
+    )
+}
+
+data class TugasBesok(
+    var namaMatakuliah: String,
+    var jenisTugas : Int,
+    var deadlineTugas : String,
+    var perintahTugas : String,
+)
+
+fun getTugasBesok(): List<TugasBesok>{
+    return listOf(
+        TugasBesok("Kripto", R.drawable.tugas_kelompok,"Kamis, 28 November 2024, 23.59","Buatlah aplikasi yang dapat menggeser satelit Voyager II"),
+        TugasBesok("Analisis", R.drawable.tugas_pribadi,"Senin, 26 November 2024, 23.59","Buatlah PPT mengenain konsep morphing")
+    )
 }

@@ -18,6 +18,11 @@ fun formatDate(milliseconds: Long): String {
     return formatter.format(milliseconds)
 }
 
+fun formatDateWithoutDay(milliseconds: Long): String {
+    val formatter = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
+    return formatter.format(milliseconds)
+}
+
 fun formatTime(milliseconds: Long): String {
     val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
     return formatter.format(milliseconds)
