@@ -38,13 +38,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.listSubject
-import com.example.proyekakhirpemrogramanmobile.model.SubjectModel
+import com.example.proyekakhirpemrogramanmobile.data.listCourse
+import com.example.proyekakhirpemrogramanmobile.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 
 @Preview
 @Composable
-fun SubjectScreen() {
+fun CourseScreen() {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val selectedMenu = R.string.sidebar_course
@@ -76,16 +76,16 @@ fun SubjectScreen() {
                     .padding(horizontal =  16.dp)
                     .padding(bottom = 16.dp)
             ) {
-                Title(title = R.string.sidebar_course)
-                SubjectList()
+                Title(title = stringResource(R.string.sidebar_course))
+                CourseList()
             }
         }
     }
 }
 
 @Composable
-fun SubjectList() {
-    if (listSubject.isEmpty()) {
+fun CourseList() {
+    if (listCourse.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
@@ -103,7 +103,7 @@ fun SubjectList() {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.subject_empty),
+                    text = stringResource(R.string.course_empty),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     fontFamily = Poppins,
@@ -124,7 +124,7 @@ fun SubjectList() {
                     modifier = Modifier.size(28.dp)
                 )
                 Text(
-                    text = stringResource(R.string.subject_take_course),
+                    text = stringResource(R.string.course_take_course),
                     fontSize = 16.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
@@ -138,15 +138,15 @@ fun SubjectList() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(listSubject) { item ->
-                SubjectListItem(item)
+            items(listCourse) { item ->
+                CourseListItem(item)
             }
         }
     }
 }
 
 @Composable
-fun SubjectListItem(item : SubjectModel) {
+fun CourseListItem(item : CourseModel) {
     Card(
         onClick = {},
         colors = CardDefaults.cardColors(

@@ -18,7 +18,7 @@ import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 
 @Composable
 fun Title(
-    title: Int
+    title: String
 ) {
     Surface(
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
@@ -27,7 +27,7 @@ fun Title(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(title),
+            text = title,
             textAlign = TextAlign.Center,
             fontSize = 18.sp,
             fontFamily = Poppins,

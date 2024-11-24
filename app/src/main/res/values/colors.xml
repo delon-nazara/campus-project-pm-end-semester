@@ -11,6 +11,7 @@
     <color name="light_yellow">#FFFEEE91</color>
     <color name="light_blue">#FFABD2FA</color>
     <color name="very_light_blue">#FF7692FF</color>
+    <color name="blue">#FF0000FF</color>
     <color name="dark_blue">#FF3D518C</color>
     <color name="very_dark_blue">#FF091441</color>
     <color name="very_light_gray">#FFF0F0F0</color>

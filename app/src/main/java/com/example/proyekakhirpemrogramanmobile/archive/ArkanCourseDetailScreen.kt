@@ -63,16 +63,7 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanDetailMataKuliah : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainHalamanDetailMataKuliah() {
@@ -406,14 +397,6 @@ fun MainHalamanDetailMataKuliah() {
             IsiDetailMataKuliah(contentPadding)
         }
     }
-}
-
-@Preview(
-    showBackground = true
-)
-@Composable
-fun PreviewHalamanDetailMataKuliah(modifier: Modifier = Modifier) {
-    MainHalamanDetailMataKuliah()
 }
 
 @Composable

@@ -1,6 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.model
 
-data class SubjectModel(
+data class CourseModel(
     val course: String,
     val lecture: String,
     val students: Int,
