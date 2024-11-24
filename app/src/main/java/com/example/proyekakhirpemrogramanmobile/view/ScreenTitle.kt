@@ -17,15 +17,17 @@ import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.utils.Poppins
 
 @Composable
-fun Title() {
+fun Title(
+    title: Int
+) {
     Surface(
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-        shadowElevation = 25.dp, // todo
+//        shadowElevation = 25.dp, todo
         color = colorResource(R.color.very_dark_blue),
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(R.string.sidebar_schedule),
+            text = stringResource(title),
             textAlign = TextAlign.Center,
             fontSize = 18.sp,
             fontFamily = Poppins,

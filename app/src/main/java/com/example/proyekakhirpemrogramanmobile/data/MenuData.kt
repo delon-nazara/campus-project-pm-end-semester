@@ -13,7 +13,7 @@ val listMenu = listOf(
         icon = R.drawable.schedule_icon
     ),
     MenuModel(
-        name = R.string.sidebar_subject,
+        name = R.string.sidebar_course,
         icon = R.drawable.subject_icon
     ),
     MenuModel(

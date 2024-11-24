@@ -41,7 +41,7 @@
     <!-- SideBar -->
     <string name="sidebar_home">Beranda</string>
     <string name="sidebar_schedule">Jadwal</string>
-    <string name="sidebar_subject">Mata Kuliah</string>
+    <string name="sidebar_course">Mata Kuliah</string>
     <string name="sidebar_homework">Tugas</string>
     <string name="sidebar_module">Modul</string>
     <string name="sidebar_announcement">Pengumuman</string>
@@ -57,6 +57,10 @@
     <!-- Schedule Screen -->
     <string name="schedule_title">Jadwal Perkuliahan</string>
     <string name="schedule_empty">Tidak ada jadwal perkuliahan di tanggal ini.\nKamu bisa liburan sepuasnya!</string>
+
+    <!-- Subject Screen -->
+    <string name="subject_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
+    <string name="subject_take_course">Ambil Mata Kuliah</string>
 
     <!-- Final Section End -->
 

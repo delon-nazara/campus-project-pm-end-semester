@@ -76,7 +76,7 @@ fun ScheduleScreen() {
                     .padding(bottom = 16.dp)
             ) {
                 // Title
-                Title()
+                Title(title = R.string.sidebar_schedule)
 
                 // Date and Time
                 Date()
