@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.utils
+package com.example.proyekakhirpemrogramanmobile.util
 
 import android.content.Context
 import android.widget.Toast

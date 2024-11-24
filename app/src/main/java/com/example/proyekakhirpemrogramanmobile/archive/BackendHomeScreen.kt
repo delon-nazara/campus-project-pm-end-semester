@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.proyekakhirpemrogramanmobile.R
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun BackendHomeScreenPreview() {
     BackendHomeScreen(

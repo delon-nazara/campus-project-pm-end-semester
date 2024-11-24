@@ -69,6 +69,10 @@
     <string name="cds_homework_list">Daftar Tugas</string>
     <string name="cds_learning_module">Modul Pembelajaran</string>
 
+    <!-- Module Screen -->
+    <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
+    <string name="ms_take_course">Ambil Mata Kuliah</string>
+
     <!-- Final Section End -->
 
     <string name="go_to_base_screen">Go to Base Screen</string>

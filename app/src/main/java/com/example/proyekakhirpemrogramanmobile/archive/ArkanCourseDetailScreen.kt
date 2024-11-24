@@ -1,9 +1,5 @@
 package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -66,7 +62,7 @@ import kotlinx.coroutines.launch
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanDetailMataKuliah() {
+fun ArkanCourseDetailScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 

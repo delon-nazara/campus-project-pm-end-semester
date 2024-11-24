@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun BackendSetupProfileScreenPreview() {
     BackendSetupProfileScreen(

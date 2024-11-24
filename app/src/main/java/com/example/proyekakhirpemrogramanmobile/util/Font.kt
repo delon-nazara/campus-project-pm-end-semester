@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.utils
+package com.example.proyekakhirpemrogramanmobile.util
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily

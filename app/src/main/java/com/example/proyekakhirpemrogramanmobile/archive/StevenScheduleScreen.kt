@@ -67,7 +67,7 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainJadwal() {
+fun StevenScheduleScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 

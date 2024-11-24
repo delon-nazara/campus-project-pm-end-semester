@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.utils
+package com.example.proyekakhirpemrogramanmobile.util
 
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -10,10 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.Route
-import com.example.proyekakhirpemrogramanmobile.view.AuthenticationScreen
-import com.example.proyekakhirpemrogramanmobile.view.HomeScreen
-import com.example.proyekakhirpemrogramanmobile.view.OnboardingScreen
-import com.example.proyekakhirpemrogramanmobile.view.SetupProfileScreen
+import com.example.proyekakhirpemrogramanmobile.view.screen.AuthenticationScreen
+import com.example.proyekakhirpemrogramanmobile.view.screen.HomeScreen
+import com.example.proyekakhirpemrogramanmobile.view.screen.OnboardingScreen
+import com.example.proyekakhirpemrogramanmobile.view.screen.SetupProfileScreen
 
 @Composable
 fun App() {

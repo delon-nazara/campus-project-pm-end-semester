@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArkanSubjectScreen() {
+fun ArkanCourseScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
