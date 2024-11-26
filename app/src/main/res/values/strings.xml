@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProyekAkhirPemrogramanMobile</string>
+    <string name="title_activity_spin_wheel">SpinWheel</string>
 </resources>

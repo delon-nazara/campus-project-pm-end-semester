@@ -13,6 +13,11 @@
         android:theme="@style/Theme.ProyekAkhirPemrogramanMobile"
         tools:targetApi="31">
         <activity
+            android:name=".SpinWheel"
+            android:exported="false"
+            android:label="@string/title_activity_spin_wheel"
+            android:theme="@style/Theme.ProyekAkhirPemrogramanMobile" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
