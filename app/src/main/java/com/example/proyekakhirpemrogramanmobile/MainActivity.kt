@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.proyekakhirpemrogramanmobile.ui.screen.TestWheel
 import com.example.proyekakhirpemrogramanmobile.ui.theme.ProyekAkhirPemrogramanMobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,30 +21,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProyekAkhirPemrogramanMobileTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    TestWheel(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(
     showBackground = true,
-    showSystemUi = true)
+    showSystemUi = true
+)
 @Composable
-fun GreetingPreview() {
+fun PreviewWheel() {
     ProyekAkhirPemrogramanMobileTheme {
-        Greeting("Android")
+        Scaffold (modifier = Modifier.fillMaxSize() ){ innerPadding ->
+            TestWheel(modifier = Modifier.padding(innerPadding))
+        }
     }
 }
