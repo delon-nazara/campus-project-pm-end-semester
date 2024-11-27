@@ -42,7 +42,7 @@
     <string name="sidebar_home">Beranda</string>
     <string name="sidebar_schedule">Jadwal</string>
     <string name="sidebar_course">Mata Kuliah</string>
-    <string name="sidebar_homework">Tugas</string>
+    <string name="sidebar_task">Tugas</string>
     <string name="sidebar_module">Modul</string>
     <string name="sidebar_announcement">Pengumuman</string>
     <string name="sidebar_tool">Alat</string>
@@ -51,8 +51,8 @@
     <!-- Home Screen -->
     <string name="home_today_schedule">Jadwal Hari ini</string>
     <string name="home_today_schedule_empty">Tidak ada jadwal perkuliahan hari ini.\nKamu bisa melanjutkan tidurmu!</string>
-    <string name="home_active_homework">Tugas Aktif</string>
-    <string name="home_active_homework_empty">Tidak ada tugas aktif saat ini.\nKamu bisa bermain game sekarang!</string>
+    <string name="home_active_task">Tugas Aktif</string>
+    <string name="home_active_task_empty">Tidak ada tugas saat ini.\nKamu bisa bermain game sekarang!</string>
 
     <!-- Schedule Screen -->
     <string name="schedule_title">Jadwal Perkuliahan</string>
@@ -66,8 +66,12 @@
     <string name="cds_general_information">Informasi Umum</string>
     <string name="cds_lecturer_information">Informasi Perkuliahan</string>
     <string name="cds_lecturer_summary">Rangkuman Perkuliahan</string>
-    <string name="cds_homework_list">Daftar Tugas</string>
+    <string name="cds_task_list">Daftar Tugas</string>
     <string name="cds_learning_module">Modul Pembelajaran</string>
+
+    <!-- Task Screen -->
+    <string name="active_task">Tugas Aktif</string>
+    <string name="past_task">Tugas Lewat</string>
 
     <!-- Module Screen -->
     <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
@@ -86,9 +90,9 @@
     <string name="ss_profile">Profil</string>
     <string name="ss_account">Akun</string>
     <string name="ss_notification">Notifikasi</string>
-    <string name="ss_about">Tentang Aplikasi</string>
     <string name="ss_contact">Hubungi Developer</string>
     <string name="ss_privacy">Privasi dan Keamanan</string>
+    <string name="ss_about">Tentang Aplikasi</string>
     <string name="ss_logout">Keluar</string>
 
     <!-- Final Section End -->
