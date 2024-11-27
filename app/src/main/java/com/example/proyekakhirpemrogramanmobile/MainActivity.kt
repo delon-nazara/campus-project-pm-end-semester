@@ -4,14 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.proyekakhirpemrogramanmobile.ui.screen.TestWheel
 import com.example.proyekakhirpemrogramanmobile.ui.theme.ProyekAkhirPemrogramanMobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,23 +17,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyekAkhirPemrogramanMobileTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TestWheel(modifier = Modifier.padding(innerPadding))
+                Scaffold { innerPadding ->
+                    Greeting(
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
 @Composable
-fun PreviewWheel() {
-    ProyekAkhirPemrogramanMobileTheme {
-        Scaffold (modifier = Modifier.fillMaxSize() ){ innerPadding ->
-            TestWheel(modifier = Modifier.padding(innerPadding))
-        }
-    }
+fun Greeting (
+    modifier: Modifier = Modifier
+) {
+    Text("Hello World!")
 }

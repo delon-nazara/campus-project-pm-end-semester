@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +41,7 @@ import kotlin.random.Random
     showSystemUi = true
 )
 @Composable
-fun TestWheel(
+fun SpinWheelTool(
     modifier: Modifier = Modifier
 ) {
     var showDialog by remember { mutableStateOf(true) }
@@ -109,7 +110,7 @@ fun TestWheel(
             val scope = rememberCoroutineScope()
 
             var resultDialog by remember { mutableStateOf(false) }
-            var resultIndex by remember { mutableStateOf(-1) }
+            var resultIndex by remember { mutableIntStateOf(-1) }
 
             SpinWheel(
                 state = spinWheelState,
