@@ -73,6 +73,24 @@
     <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
     <string name="ms_take_course">Ambil Mata Kuliah</string>
 
+    <!-- Announcement Screen -->
+    <string name="as_empty">Tidak ada pengumuman untuk saat ini!</string>
+
+    <!-- Tool Screen -->
+    <string name="ts_spin_wheel">Spin Wheel</string>
+    <string name="ts_voting">Voting</string>
+
+    <!-- Setting Screen -->
+    <string name="ss_setting">Pengaturan</string>
+    <string name="ss_my_class">Kelas Saya</string>
+    <string name="ss_profile">Profil</string>
+    <string name="ss_account">Akun</string>
+    <string name="ss_notification">Notifikasi</string>
+    <string name="ss_about">Tentang Aplikasi</string>
+    <string name="ss_contact">Hubungi Developer</string>
+    <string name="ss_privacy">Privasi dan Keamanan</string>
+    <string name="ss_logout">Keluar</string>
+
     <!-- Final Section End -->
 
     <string name="go_to_base_screen">Go to Base Screen</string>
