@@ -1,9 +1,5 @@
 package com.example.proyekakhirpemrogramanmobile.archive
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -70,19 +66,10 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanPembuatanKelas : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-
-        }
-    }
-}
-
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPembuatanKelas() {
+fun ArkanCreateClassScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -417,11 +404,7 @@ fun MainPembuatanKelas() {
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun PreviewPembuatanKelas() {
-    MainPembuatanKelas()
-}
+
 @Composable
 fun IsiPembuatanKelas(paddingValues: PaddingValues) {
     Column(

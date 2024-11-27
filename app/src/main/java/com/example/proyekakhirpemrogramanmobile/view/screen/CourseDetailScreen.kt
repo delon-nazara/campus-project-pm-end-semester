@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.generalInformationData
-import com.example.proyekakhirpemrogramanmobile.data.homeworkListData
+import com.example.proyekakhirpemrogramanmobile.data.taskListData
 import com.example.proyekakhirpemrogramanmobile.data.learningModuleData
 import com.example.proyekakhirpemrogramanmobile.data.lecturerInformationData
 import com.example.proyekakhirpemrogramanmobile.data.lecturerSummaryData
@@ -98,8 +98,8 @@ fun CourseDetailScreen() {
                     listData = lecturerSummaryData
                 )
                 DropdownData(
-                    title = R.string.cds_homework_list,
-                    listData = homeworkListData
+                    title = R.string.cds_task_list,
+                    listData = taskListData
                 )
                 DropdownData(
                     title = R.string.cds_learning_module,

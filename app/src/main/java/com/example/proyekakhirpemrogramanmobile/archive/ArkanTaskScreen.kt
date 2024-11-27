@@ -66,21 +66,13 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanTugas : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            
-        }
-    }
-}
 //==================================
 //     SIDEBAR DAN TOP APP BAR
 //==================================
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainHalamanTugas() {
+fun ArkanTaskScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -415,15 +407,7 @@ fun MainHalamanTugas() {
         }
     }
 }
-@Preview
-    (showBackground = true)
-//==============================
-//   KONTAINER HALAMAN TUGAS
-//==============================
-@Composable
-fun PreviewTugas(modifier: Modifier = Modifier) {
-    MainHalamanTugas()
-}
+
 @Composable
 fun IsiTugas(paddingValues: PaddingValues) {
     Column(
@@ -494,7 +478,6 @@ fun KontainerTugas() {
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
-
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
                     text = {
@@ -623,4 +606,31 @@ fun CardTugas(item : TugasLampau) {
             )
         }
     }
+}
+
+data class TugasAktif(
+    var namaMatakuliah : String,
+    var deadlineDate : String,
+    var iconJenisTugas : Int,
+)
+
+data class TugasLampau(
+    var namaMatakuliah : String,
+    var deadlineDate : String,
+    var iconJenisTugas : Int,
+)
+
+fun getTugasAktif(): List<TugasAktif> {
+    return listOf<TugasAktif>(
+        TugasAktif("Kriptografi", "Rabu, 24 Januari 2025", R.drawable.tugas_pribadi),
+        TugasAktif("Cloud Computing", "Rabu, 9 Oktober 2024", R.drawable.tugas_kelompok),
+        TugasAktif("Grafika Komputer", "Kamis, 12 Desember 2024", R.drawable.tugas_pribadi),
+    )
+}
+
+fun getTugasLampau(): List<TugasLampau> {
+    return listOf<TugasLampau>(
+        TugasLampau("Pemrograman Mobile", "Rabu, 24 Januari 2025", R.drawable.tugas_pribadi),
+        TugasLampau("Cloud Computing", "Rabu, 9 Oktober 2024", R.drawable.tugas_kelompok),
+    )
 }

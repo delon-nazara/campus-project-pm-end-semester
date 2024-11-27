@@ -66,19 +66,10 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import kotlinx.coroutines.launch
 
-class HalamanDetailTugas : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            
-        }
-    }
-}
-
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainDetailHalamanTugas() {
+fun ArkanTaskDetailScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -414,14 +405,6 @@ fun MainDetailHalamanTugas() {
     }
 }
 
-@Preview(
-    showBackground = true
-)
-@Composable
-fun PreviewDetailHalamanTugas(modifier: Modifier = Modifier) {
-    MainDetailHalamanTugas()
-}
-
 @Composable
 fun IsiDetailTugas(paddingValues: PaddingValues) {
     Column(
@@ -620,4 +603,26 @@ fun InstruksiTugas(
             )
         }
     }
+}
+
+data class DetailInstruksiTugas(
+    var namaMatkul : String,
+    var tanggalDitugaskan : String,
+    var tanggalDikumpulkan : String,
+    var perintahTugas : String,
+    var linkTerkait : String,
+    var iconJenisTugas : Int
+)
+
+fun getDetailInstruksiTugas(): List<DetailInstruksiTugas>{
+    return listOf<DetailInstruksiTugas>(
+        DetailInstruksiTugas(
+            "Grafika Komputer",
+            "Rabu, 20 November 2024",
+            "Rabu, 27 November 2024",
+            "Buatlah objek 3 dimensi menggunakan library freeglut",
+            "https://youtu.be/NH9yuZUrJVc?si=AvlSa91HOEnXXbOK",
+            R.drawable.tugas_pribadi
+        ),
+    )
 }

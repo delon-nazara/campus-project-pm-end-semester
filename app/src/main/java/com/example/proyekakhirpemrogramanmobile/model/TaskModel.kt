@@ -1,13 +1,13 @@
 package com.example.proyekakhirpemrogramanmobile.model
 
-enum class HomeworkType {
+enum class TaskType {
     PERSONAL,
     GROUP
 }
 
-data class HomeworkModel(
+data class TaskModel(
     val subject: String,
     val deadline: String, // todo
     val title: String,
-    val type: HomeworkType
+    val type: TaskType
 )

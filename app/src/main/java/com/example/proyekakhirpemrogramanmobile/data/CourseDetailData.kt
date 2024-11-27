@@ -33,7 +33,7 @@ val lecturerSummaryData = mapOf(
     "Pertemuan 8" to "-",
 )
 
-val homeworkListData = mapOf(
+val taskListData = mapOf(
     "Tugas 1" to "Membuat aplikasi kalkulator sederhana",
     "Tugas 2" to "Presentasi jenis-jenis sistem operasi",
     "Tugas 3" to "Proyek akhir pembuatan aplikasi mobile",

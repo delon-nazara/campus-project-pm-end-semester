@@ -17,8 +17,8 @@ val listMenu = listOf(
         icon = R.drawable.subject_icon
     ),
     MenuModel(
-        name = R.string.sidebar_homework,
-        icon = R.drawable.homework_icon
+        name = R.string.sidebar_task,
+        icon = R.drawable.task_icon
     ),
     MenuModel(
         name = R.string.sidebar_module,

@@ -38,10 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.listHomework
+import com.example.proyekakhirpemrogramanmobile.data.listTask
 import com.example.proyekakhirpemrogramanmobile.data.listSchedule
-import com.example.proyekakhirpemrogramanmobile.model.HomeworkModel
-import com.example.proyekakhirpemrogramanmobile.model.HomeworkType
+import com.example.proyekakhirpemrogramanmobile.model.TaskModel
+import com.example.proyekakhirpemrogramanmobile.model.TaskType
 import com.example.proyekakhirpemrogramanmobile.model.ScheduleModel
 import com.example.proyekakhirpemrogramanmobile.model.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
@@ -91,8 +91,8 @@ fun HomeScreen() {
                 // Today Schedule
                 TodaySchedule(modifier = Modifier.weight(1f)) // todo
 
-                // Active Homework
-                ActiveHomework(modifier = Modifier.weight(1f))
+                // Active Task
+                ActiveTask(modifier = Modifier.weight(1f))
             }
         }
     }
@@ -301,7 +301,7 @@ fun TodayScheduleItem(item: ScheduleModel) {
 }
 
 @Composable
-fun ActiveHomework(modifier: Modifier = Modifier) {
+fun ActiveTask(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -315,7 +315,7 @@ fun ActiveHomework(modifier: Modifier = Modifier) {
                 )
         ) {
             Text(
-                text = stringResource(R.string.home_active_homework),
+                text = stringResource(R.string.home_active_task),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -323,8 +323,7 @@ fun ActiveHomework(modifier: Modifier = Modifier) {
             )
         }
 
-        // Content
-        if (listHomework.isEmpty()) {
+        if (listTask.isEmpty()) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -344,7 +343,7 @@ fun ActiveHomework(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.home_active_homework_empty),
+                    text = stringResource(R.string.home_active_task_empty),
                     textAlign = TextAlign.Center,
                     fontFamily = Poppins,
                     fontSize = 14.sp,
@@ -362,8 +361,8 @@ fun ActiveHomework(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
             ) {
-                items(listHomework) { item ->
-                    ActiveHomeworkItem(item)
+                items(listTask) { item ->
+                    ActiveTaskItem(item)
                 }
             }
         }
@@ -371,7 +370,7 @@ fun ActiveHomework(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ActiveHomeworkItem(item: HomeworkModel) {
+fun ActiveTaskItem(item: TaskModel) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
@@ -396,8 +395,8 @@ fun ActiveHomeworkItem(item: HomeworkModel) {
             Icon(
                 painter = painterResource(
                     when (item.type) {
-                        HomeworkType.PERSONAL -> R.drawable.person_icon
-                        HomeworkType.GROUP -> R.drawable.group_icon
+                        TaskType.PERSONAL -> R.drawable.person_icon
+                        TaskType.GROUP -> R.drawable.group_icon
                     }
                 ),
                 contentDescription = "Type icon",
