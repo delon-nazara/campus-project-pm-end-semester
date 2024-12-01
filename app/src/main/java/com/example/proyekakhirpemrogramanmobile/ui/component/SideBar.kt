@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listMenu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.CoroutineScope
@@ -42,19 +43,10 @@ import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun SideBarPreview() {
-    SideBar(
-        coroutineScope = rememberCoroutineScope(),
-        drawerState = rememberDrawerState(DrawerValue.Closed),
-        selectedMenu = R.string.sidebar_home
-    )
-}
-
-@Composable
 fun SideBar(
-    coroutineScope: CoroutineScope,
-    drawerState: DrawerState,
-    selectedMenu: Int,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    selectedMenu: Int = Menu.HOME.title
 ) {
     ModalDrawerSheet{
         Column(
@@ -118,11 +110,11 @@ fun SideBar(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             ){
-                listMenu.forEach { menu ->
+                Menu.entries.forEach { menu ->
                     MenuItem(
                         menuIcon = menu.icon,
-                        menuText = menu.name,
-                        isSelected = menu.name == selectedMenu,
+                        menuTitle = menu.title,
+                        isSelected = menu.title == selectedMenu,
                         onClicked = {}
                     )
                 }
@@ -176,7 +168,7 @@ fun SideBar(
 @Composable
 fun MenuItem(
     menuIcon: Int,
-    menuText: Int,
+    menuTitle: Int,
     isSelected: Boolean,
     onClicked: () -> Unit
 ) {
@@ -202,7 +194,7 @@ fun MenuItem(
         // Menu Icon
         Icon(
             painter = painterResource(menuIcon),
-            contentDescription = "$menuText icon",
+            contentDescription = "$menuTitle icon",
             tint = colorResource(R.color.white),
             modifier = Modifier.size(22.dp)
         )
@@ -211,7 +203,7 @@ fun MenuItem(
 
         // Menu Text
         Text(
-            text = stringResource(menuText),
+            text = stringResource(menuTitle),
             fontSize = 16.sp,
             textAlign = TextAlign.Start,
             color = Color.White,

@@ -27,20 +27,12 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TopBarPreview() {
-    TopBar(
-        coroutineScope = rememberCoroutineScope(),
-        drawerState = rememberDrawerState(DrawerValue.Closed)
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun TopBar(
-    coroutineScope: CoroutineScope,
-    drawerState: DrawerState
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
 ) {
     CenterAlignedTopAppBar(
         // Title Text
