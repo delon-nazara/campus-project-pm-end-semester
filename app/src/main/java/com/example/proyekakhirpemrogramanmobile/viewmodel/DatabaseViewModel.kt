@@ -3,7 +3,7 @@ package com.example.proyekakhirpemrogramanmobile.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.cloudinary.android.MediaManager
-import com.example.proyekakhirpemrogramanmobile.model.UserModel
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
