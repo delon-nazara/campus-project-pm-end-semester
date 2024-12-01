@@ -55,7 +55,11 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 @Composable
 fun LoginScreen(
     onLoginButtonClicked: (String, String) -> Unit = { _, _ -> },
-    onRegisterButtonClicked: () -> Unit = {}
+    onRegisterButtonClicked: () -> Unit = {},
+    errorEmailState: String? = null,
+    errorPasswordState: String? = null,
+    errorAllState: String? = null,
+    loadingState: Boolean = false
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -113,8 +117,6 @@ fun LoginScreen(
                 val focusManager = LocalFocusManager.current
                 var email by rememberSaveable { mutableStateOf("") }
                 var password by rememberSaveable { mutableStateOf("") }
-                var isEmailValid by rememberSaveable { mutableStateOf(true) }
-                var isPasswordValid by rememberSaveable { mutableStateOf(true) }
                 var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
                 // Card Title
@@ -129,10 +131,7 @@ fun LoginScreen(
                 // Email Input
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { input ->
-                        email = input
-                        isEmailValid = input.matches(Regex("^[A-Za-z0-9._%+-]+@gmail\\.com$"))
-                    },
+                    onValueChange = { email = it},
                     singleLine = true,
                     textStyle = TextStyle(fontSize = 14.sp),
                     label = {
@@ -142,7 +141,7 @@ fun LoginScreen(
                             fontFamily = Poppins,
                         )
                     },
-                    isError = !isEmailValid && email.isNotEmpty(),
+                    isError = errorEmailState != null || errorAllState != null,
                     shape = RoundedCornerShape(8.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = colorResource(R.color.white),
@@ -163,9 +162,9 @@ fun LoginScreen(
                 )
 
                 // Email Error
-                if (!isEmailValid && email.isNotEmpty()) {
+                if (errorEmailState != null ) {
                     Text(
-                        text = "",
+                        text = errorEmailState,
                         color = colorResource(R.color.red),
                         fontSize = 12.sp,
                         fontFamily = Poppins,
@@ -179,12 +178,7 @@ fun LoginScreen(
                 // Password Input
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { input ->
-                        if (input.length <= 15) {
-                            password = input
-                            isPasswordValid = password.length in 6..15
-                        }
-                    },
+                    onValueChange = { password = it},
                     singleLine = true,
                     textStyle = TextStyle(fontSize = 14.sp),
                     label = {
@@ -218,7 +212,7 @@ fun LoginScreen(
                     } else {
                         PasswordVisualTransformation()
                     },
-                    isError = !isPasswordValid && password.isNotEmpty(),
+                    isError = errorPasswordState != null || errorAllState != null,
                     shape = RoundedCornerShape(8.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = colorResource(R.color.white),
@@ -239,9 +233,9 @@ fun LoginScreen(
                 )
 
                 // Password Error
-                if (!isPasswordValid && password.isNotEmpty()) {
+                if (errorPasswordState != null || errorAllState != null) {
                     Text(
-                        text = "",
+                        text = errorPasswordState ?: errorAllState!!,
                         color = colorResource(R.color.red),
                         fontSize = 12.sp,
                         fontFamily = Poppins,
