@@ -106,6 +106,7 @@ fun SetupProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp)
+                    .padding(bottom = 32.dp)
                     .border(
                         width = 2.dp,
                         color = colorResource(R.color.gray),

@@ -8,17 +8,13 @@ import com.example.proyekakhirpemrogramanmobile.util.formatName
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import com.example.proyekakhirpemrogramanmobile.util.getFirstChar
 import com.example.proyekakhirpemrogramanmobile.util.getFirstWord
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.tasks.await
 
 class DatabaseViewModel : ViewModel() {
 
@@ -48,7 +44,7 @@ class DatabaseViewModel : ViewModel() {
     val userDataState: StateFlow<UserModel?> = _userDataState.asStateFlow()
 
     fun addUserToDatabase(
-        userAuth: FirebaseUser,
+        userId: String,
         email: String,
         fullName: String,
         studentId: String,
@@ -73,7 +69,7 @@ class DatabaseViewModel : ViewModel() {
         )
 
         showLoading(true)
-        userReference.document(userAuth.uid)
+        userReference.document(userId)
             .set(newUser)
             .addOnSuccessListener {
                 showLoading(false)
@@ -84,7 +80,6 @@ class DatabaseViewModel : ViewModel() {
                 showLoading(false)
                 updateUserState(null)
                 onFailure()
-                userAuth.delete()
             }
     }
 
@@ -114,6 +109,26 @@ class DatabaseViewModel : ViewModel() {
             }
             .addOnFailureListener {
                 showLoading(false)
+                onFailure()
+            }
+    }
+
+    fun checkUserFromDatabase(
+        userId: String,
+        onUserExist: () -> Unit,
+        onUserNotExist: () -> Unit,
+        onFailure: () -> Unit
+    ) {
+        userReference.document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    onUserExist()
+                } else {
+                    onUserNotExist()
+                }
+            }
+            .addOnFailureListener {
                 onFailure()
             }
     }

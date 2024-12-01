@@ -1,21 +1,15 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import com.example.proyekakhirpemrogramanmobile.R
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.tasks.await
 
 class AuthenticationViewModel : ViewModel() {
 
@@ -130,14 +124,14 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    private fun isNameInputValid(name: String): Boolean {
-        if (name.isEmpty()) {
+    fun isFullNameInputValid(fullName: String): Boolean {
+        if (fullName.isEmpty()) {
             _errorFullNameState.value = "Nama tidak boleh kosong"
             return false
-        } else if (!name.matches(Regex("^[a-zA-Z ]+$"))) {
+        } else if (!fullName.matches(Regex("^[a-zA-Z ]+$"))) {
             _errorFullNameState.value = "Nama hanya boleh terdiri dari huruf"
             return false
-        } else if (name.length < 3 || name.length > 30) {
+        } else if (fullName.length < 3 || fullName.length > 30) {
             _errorFullNameState.value = "Nama harus terdiri dari 3-30 karakter"
             return false
         } else {
@@ -146,7 +140,7 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    private fun isStudentIdValid(studentId: String): Boolean {
+    fun isStudentIdValid(studentId: String): Boolean {
         if (studentId.isEmpty()) {
             _errorStudentIdState.value = "NIM tidak boleh kosong"
             return false
@@ -162,7 +156,7 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    private fun isGenderValid(gender: String): Boolean {
+    fun isGenderValid(gender: String): Boolean {
         if (gender == "Jenis Kelamin") {
             _errorGenderState.value = "Pilih salah satu dari opsi gender yang ada"
             return false
@@ -172,7 +166,7 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    private fun clearErrorState() {
+    fun clearErrorState() {
         _errorEmailState.value = null
         _errorPasswordState.value = null
         _errorFullNameState.value = null
