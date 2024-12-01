@@ -1,7 +1,7 @@
-package com.example.proyekakhirpemrogramanmobile.data.source
+package com.example.proyekakhirpemrogramanmobile.data.source.archive
 
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.model.ModuleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.ModuleModel
 
 val listModule = listOf(
     ModuleModel(

@@ -33,6 +33,7 @@ fun MainApp(context: Context) {
     val errorAllState by authenticationViewModel.errorAllState.collectAsState()
 
     val databaseViewModel: DatabaseViewModel = viewModel()
+    val userDataState by databaseViewModel.userDataState.collectAsState()
 
     val loadingViewModel: LoadingViewModel = viewModel()
     val loadingState by loadingViewModel.loadingState.collectAsState()
@@ -86,11 +87,22 @@ fun MainApp(context: Context) {
                         showLoading = { state ->
                             loadingViewModel.showLoading(state)
                         },
-                        onSuccess = {
-                            navigateTo(Route.HOME_SCREEN.name, true)
+                        onSuccess = { userId ->
+                            databaseViewModel.getUserFromDatabase(
+                                userId = userId,
+                                showLoading = { state ->
+                                    loadingViewModel.showLoading(state)
+                                },
+                                onSuccess = {
+                                    navigateTo(Route.HOME_SCREEN.name, true)
+                                },
+                                onFailure = {
+                                    showToast(context, "Proses masuk gagal, coba kembali")
+                                }
+                            )
                         },
                         onFailure = {
-                            showToast(context, "Login gagal, coba kembali")
+                            showToast(context, "Proses masuk gagal, coba kembali")
                         }
                     )
                 },
@@ -116,7 +128,7 @@ fun MainApp(context: Context) {
                             navigateTo(Route.SETUP_PROFILE_SCREEN.name, true)
                         },
                         onFailure = {
-                            showToast(context, "Register gagal, coba kembali")
+                            showToast(context, "Pendaftaran gagal, coba kembali")
                         }
                     )
                 },
@@ -133,9 +145,24 @@ fun MainApp(context: Context) {
                 errorStudentIdState = errorStudentIdState,
                 errorGenderState = errorGenderState,
                 loadingState = loadingState,
-                onFinishButtonClicked = {
-                    navController.navigate(Route.HOME_SCREEN.name)
-                },
+                onFinishButtonClicked = { fullName, studentId, gender ->
+                    databaseViewModel.addUserToDatabase(
+                        userAuth = userAuthState!!,
+                        email = userAuthState!!.email!!,
+                        fullName = fullName,
+                        studentId = studentId,
+                        gender = gender,
+                        showLoading = { state ->
+                            loadingViewModel.showLoading(state)
+                        },
+                        onSuccess = {
+                            navigateTo(Route.HOME_SCREEN.name, true)
+                        },
+                        onFailure = {
+                            showToast(context, "Pendaftaran gagal, coba kembali")
+                        }
+                    )
+                }
             )
         }
 

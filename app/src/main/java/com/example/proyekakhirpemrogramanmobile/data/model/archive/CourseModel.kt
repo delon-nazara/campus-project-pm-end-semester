@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.data.model
+package com.example.proyekakhirpemrogramanmobile.data.model.archive
 
 data class CourseModel(
     val course: String,

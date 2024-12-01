@@ -20,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -58,27 +59,28 @@ fun SetupProfileScreen(
     errorStudentIdState: String? = null,
     errorGenderState: String? = null,
     loadingState: Boolean = false,
-    onFinishButtonClicked: () -> Unit = {},
+    onFinishButtonClicked: (String, String, String) -> Unit = { _, _, _ -> },
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        colorResource(R.color.white),
-                        colorResource(R.color.light_blue)
-                    ),
-                    start = Offset(0f, 0f),
-                    end = Offset(0f, Float.POSITIVE_INFINITY)
-                )
-            )
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
     ) {
         // Content
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            colorResource(R.color.white),
+                            colorResource(R.color.light_blue)
+                        ),
+                        start = Offset(0f, 0f),
+                        end = Offset(0f, Float.POSITIVE_INFINITY)
+                    )
+                )
         ) {
             // Title
             Text(
@@ -120,7 +122,7 @@ fun SetupProfileScreen(
                     val focusManager = LocalFocusManager.current
                     var fullName by rememberSaveable { mutableStateOf("") }
                     var studentId by rememberSaveable { mutableStateOf("") }
-                    var selectedGender by remember { mutableStateOf("Jenis Kelamin") }
+                    var gender by remember { mutableStateOf("Jenis Kelamin") }
                     var isGenderExpanded by remember { mutableStateOf(false) }
 
                     // Card Title
@@ -238,7 +240,7 @@ fun SetupProfileScreen(
                             .clickable { isGenderExpanded = true }
                     ) {
                         Text(
-                            text = selectedGender,
+                            text = gender,
                             modifier = Modifier
                                 .align(Alignment.CenterStart)
                                 .padding(start = 16.dp)
@@ -264,7 +266,7 @@ fun SetupProfileScreen(
                                         )
                                     },
                                     onClick = {
-                                        selectedGender = option
+                                        gender = option
                                         isGenderExpanded = false
                                     }
                                 )
@@ -288,7 +290,7 @@ fun SetupProfileScreen(
 
                     // Finish Button
                     TextButton(
-                        onClick = onFinishButtonClicked,
+                        onClick = { onFinishButtonClicked(fullName, studentId, gender) },
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         modifier = Modifier
@@ -304,6 +306,11 @@ fun SetupProfileScreen(
                     }
                 }
             }
+        }
+        if (loadingState) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
 }

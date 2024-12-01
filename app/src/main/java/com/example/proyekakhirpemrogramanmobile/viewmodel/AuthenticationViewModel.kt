@@ -54,13 +54,13 @@ class AuthenticationViewModel : ViewModel() {
             authentication.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     showLoading(false)
-                    _userAuthState.value = result.user
-                    onSuccess()
+                    updateUserState(result.user)
                     clearErrorState()
+                    onSuccess()
                 }
                 .addOnFailureListener { exception ->
                     showLoading(false)
-                    _userAuthState.value = null
+                    updateUserState(null)
                     when (exception) {
                         is FirebaseAuthUserCollisionException -> {
                             _errorEmailState.value = "Email telah terdaftar"
@@ -77,7 +77,7 @@ class AuthenticationViewModel : ViewModel() {
         email: String,
         password: String,
         showLoading: (Boolean) -> Unit,
-        onSuccess: () -> Unit,
+        onSuccess: (String) -> Unit,
         onFailure: () -> Unit
     ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
@@ -85,13 +85,13 @@ class AuthenticationViewModel : ViewModel() {
             authentication.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     showLoading(false)
-                    _userAuthState.value = result.user
+                    updateUserState(result.user)
                     clearErrorState()
-                    onSuccess()
+                    onSuccess(result.user!!.uid)
                 }
                 .addOnFailureListener { exception ->
                     showLoading(false)
-                    _userAuthState.value = null
+                    updateUserState(null)
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             _errorAllState.value = "Email atau kata sandi salah"
@@ -179,6 +179,10 @@ class AuthenticationViewModel : ViewModel() {
         _errorStudentIdState.value = null
         _errorGenderState.value = null
         _errorAllState.value = null
+    }
+
+    private fun updateUserState(state: FirebaseUser?) {
+        _userAuthState.value = state
     }
 
 }

@@ -1,6 +1,6 @@
-package com.example.proyekakhirpemrogramanmobile.data.source
+package com.example.proyekakhirpemrogramanmobile.data.source.archive
 
-import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.AnnouncementModel
 
 val listAnnouncement = listOf(
     AnnouncementModel(
