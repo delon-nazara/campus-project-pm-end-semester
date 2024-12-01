@@ -34,9 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.source.listSchedule
-import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleModel
-import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.util.formatDateWithoutDay
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds

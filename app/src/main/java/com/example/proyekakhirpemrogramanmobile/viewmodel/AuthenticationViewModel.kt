@@ -1,21 +1,15 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import com.example.proyekakhirpemrogramanmobile.R
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.tasks.await
 
 class AuthenticationViewModel : ViewModel() {
 
@@ -36,6 +30,9 @@ class AuthenticationViewModel : ViewModel() {
     private var _errorStudentIdState = MutableStateFlow<String?>(null)
     val errorStudentIdState: StateFlow<String?> = _errorStudentIdState.asStateFlow()
 
+    private var _errorGenderState = MutableStateFlow<String?>(null)
+    val errorGenderState: StateFlow<String?> = _errorGenderState.asStateFlow()
+
     private var _errorAllState = MutableStateFlow<String?>(null)
     val errorAllState: StateFlow<String?> = _errorAllState.asStateFlow()
 
@@ -51,16 +48,16 @@ class AuthenticationViewModel : ViewModel() {
             authentication.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     showLoading(false)
-                    _userAuthState.value = result.user
-                    onSuccess()
+                    updateUserState(result.user)
                     clearErrorState()
+                    onSuccess()
                 }
                 .addOnFailureListener { exception ->
                     showLoading(false)
-                    _userAuthState.value = null
+                    updateUserState(null)
                     when (exception) {
                         is FirebaseAuthUserCollisionException -> {
-                            _errorEmailState.value = "Email has been used"
+                            _errorEmailState.value = "Email telah terdaftar"
                         }
                         else -> {
                             onFailure()
@@ -74,7 +71,7 @@ class AuthenticationViewModel : ViewModel() {
         email: String,
         password: String,
         showLoading: (Boolean) -> Unit,
-        onSuccess: () -> Unit,
+        onSuccess: (String) -> Unit,
         onFailure: () -> Unit
     ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
@@ -82,16 +79,16 @@ class AuthenticationViewModel : ViewModel() {
             authentication.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     showLoading(false)
-                    _userAuthState.value = result.user
+                    updateUserState(result.user)
                     clearErrorState()
-                    onSuccess()
+                    onSuccess(result.user!!.uid)
                 }
                 .addOnFailureListener { exception ->
                     showLoading(false)
-                    _userAuthState.value = null
+                    updateUserState(null)
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
-                            _errorAllState.value = "Email atau password salah"
+                            _errorAllState.value = "Email atau kata sandi salah"
                         }
                         else -> {
                             onFailure()
@@ -99,13 +96,6 @@ class AuthenticationViewModel : ViewModel() {
                     }
                 }
         }
-    }
-
-    fun logout() {
-        authentication.signOut()
-        _userAuthState.value = null
-        showLoading(false)
-        clearErrorState()
     }
 
     private fun isEmailInputValid(email: String): Boolean {
@@ -123,10 +113,10 @@ class AuthenticationViewModel : ViewModel() {
 
     private fun isPasswordInputValid(password: String): Boolean {
         if (password.isEmpty()) {
-            _errorPasswordState.value = "Password tidak boleh kosong"
+            _errorPasswordState.value = "Kata sandi tidak boleh kosong"
             return false
         } else if (password.length < 6) {
-            _errorPasswordState.value = "Password harus terdiri dari minimal 6 karakter"
+            _errorPasswordState.value = "Kata sandi harus terdiri dari minimal 6 karakter"
             return false
         } else {
             _errorPasswordState.value = null
@@ -134,15 +124,15 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    private fun isNameInputValid(name: String): Boolean {
-        if (name.isEmpty()) {
-            _errorFullNameState.value = "Name cannot be empty"
+    fun isFullNameInputValid(fullName: String): Boolean {
+        if (fullName.isEmpty()) {
+            _errorFullNameState.value = "Nama tidak boleh kosong"
             return false
-        } else if (!name.matches(Regex("^[a-zA-Z ]+$"))) {
-            _errorFullNameState.value = "Name can only consist of alphabet"
+        } else if (!fullName.matches(Regex("^[a-zA-Z ]+$"))) {
+            _errorFullNameState.value = "Nama hanya boleh terdiri dari huruf"
             return false
-        } else if (name.length < 3 || name.length > 30) {
-            _errorFullNameState.value = "Name must consist of 3-30 characters"
+        } else if (fullName.length < 3 || fullName.length > 30) {
+            _errorFullNameState.value = "Nama harus terdiri dari 3-30 karakter"
             return false
         } else {
             _errorFullNameState.value = null
@@ -150,11 +140,43 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    private fun clearErrorState() {
+    fun isStudentIdValid(studentId: String): Boolean {
+        if (studentId.isEmpty()) {
+            _errorStudentIdState.value = "NIM tidak boleh kosong"
+            return false
+        } else if (!studentId.matches(Regex("^[0-9]+$"))) {
+            _errorStudentIdState.value = "NIM hanya boleh terdiri dari angka"
+            return false
+        } else if (studentId.length != 9) {
+            _errorStudentIdState.value = "NIM harus terdiri dari tepat 9 angka"
+            return false
+        } else {
+            _errorStudentIdState.value = null
+            return true
+        }
+    }
+
+    fun isGenderValid(gender: String): Boolean {
+        if (gender == "Jenis Kelamin") {
+            _errorGenderState.value = "Pilih salah satu dari opsi gender yang ada"
+            return false
+        } else {
+            _errorGenderState.value = null
+            return true
+        }
+    }
+
+    fun clearErrorState() {
         _errorEmailState.value = null
         _errorPasswordState.value = null
         _errorFullNameState.value = null
+        _errorStudentIdState.value = null
+        _errorGenderState.value = null
         _errorAllState.value = null
+    }
+
+    private fun updateUserState(state: FirebaseUser?) {
+        _userAuthState.value = state
     }
 
 }

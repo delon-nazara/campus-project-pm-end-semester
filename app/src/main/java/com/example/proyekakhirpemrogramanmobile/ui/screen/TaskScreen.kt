@@ -41,9 +41,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.source.listTask
-import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.TaskType
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title

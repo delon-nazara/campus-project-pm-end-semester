@@ -39,11 +39,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.source.generalInformationData
-import com.example.proyekakhirpemrogramanmobile.data.source.taskListData
-import com.example.proyekakhirpemrogramanmobile.data.source.learningModuleData
-import com.example.proyekakhirpemrogramanmobile.data.source.lecturerInformationData
-import com.example.proyekakhirpemrogramanmobile.data.source.lecturerSummaryData
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.generalInformationData
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.taskListData
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.learningModuleData
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.lecturerInformationData
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.lecturerSummaryData
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title

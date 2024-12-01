@@ -25,8 +25,15 @@ import com.example.proyekakhirpemrogramanmobile.viewmodel.LoadingViewModel
 fun MainApp(context: Context) {
     val authenticationViewModel: AuthenticationViewModel = viewModel()
     val userAuthState by authenticationViewModel.userAuthState.collectAsState()
+    val errorEmailState by authenticationViewModel.errorEmailState.collectAsState()
+    val errorPasswordState by authenticationViewModel.errorPasswordState.collectAsState()
+    val errorFullNameState by authenticationViewModel.errorFullNameState.collectAsState()
+    val errorStudentIdState by authenticationViewModel.errorStudentIdState.collectAsState()
+    val errorGenderState by authenticationViewModel.errorGenderState.collectAsState()
+    val errorAllState by authenticationViewModel.errorAllState.collectAsState()
 
     val databaseViewModel: DatabaseViewModel = viewModel()
+    val userDataState by databaseViewModel.userDataState.collectAsState()
 
     val loadingViewModel: LoadingViewModel = viewModel()
     val loadingState by loadingViewModel.loadingState.collectAsState()
@@ -69,6 +76,10 @@ fun MainApp(context: Context) {
         // Route Login Screen
         composable(Route.LOGIN_SCREEN.name) {
             LoginScreen(
+                errorEmailState = errorEmailState,
+                errorPasswordState = errorPasswordState,
+                errorAllState = errorAllState,
+                loadingState = loadingState,
                 onLoginButtonClicked = { email, password ->
                     authenticationViewModel.login(
                         email = email,
@@ -76,15 +87,39 @@ fun MainApp(context: Context) {
                         showLoading = { state ->
                             loadingViewModel.showLoading(state)
                         },
-                        onSuccess = {
-                            navigateTo(Route.HOME_SCREEN.name, true)
+                        onSuccess = { userId ->
+                            databaseViewModel.checkUserFromDatabase(
+                                userId = userId,
+                                onUserExist = {
+                                    databaseViewModel.getUserFromDatabase(
+                                        userId = userId,
+                                        showLoading = { state ->
+                                            loadingViewModel.showLoading(state)
+                                        },
+                                        onSuccess = {
+                                            navigateTo(Route.HOME_SCREEN.name, true)
+                                        },
+                                        onFailure = {
+                                            showToast(context, "Proses masuk gagal, coba kembali")
+                                        }
+                                    )
+                                },
+                                onUserNotExist = {
+                                    authenticationViewModel.clearErrorState()
+                                    navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
+                                },
+                                onFailure = {
+                                    showToast(context, "Proses masuk gagal, coba kembali")
+                                }
+                            )
                         },
                         onFailure = {
-                            showToast(context, "Login gagal, coba kembali")
+                            showToast(context, "Proses masuk gagal, coba kembali")
                         }
                     )
                 },
                 onRegisterButtonClicked = {
+                    authenticationViewModel.clearErrorState()
                     navigateTo(Route.REGISTER_SCREEN.name, false)
                 }
             )
@@ -93,6 +128,9 @@ fun MainApp(context: Context) {
         // Route Register Screen
         composable(Route.REGISTER_SCREEN.name) {
             RegisterScreen(
+                errorEmailState = errorEmailState,
+                errorPasswordState = errorPasswordState,
+                loadingState = loadingState,
                 onRegisterButtonClicked = { email, password ->
                     authenticationViewModel.register(
                         email = email,
@@ -101,14 +139,16 @@ fun MainApp(context: Context) {
                             loadingViewModel.showLoading(state)
                         },
                         onSuccess = {
-                            navigateTo(Route.SETUP_PROFILE_SCREEN.name, true)
+                            authenticationViewModel.clearErrorState()
+                            navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
                         },
                         onFailure = {
-                            showToast(context, "Register gagal, coba kembali")
+                            showToast(context, "Pendaftaran gagal, coba kembali")
                         }
                     )
                 },
                 onLoginButtonClicked = {
+                    authenticationViewModel.clearErrorState()
                     navigateTo(Route.LOGIN_SCREEN.name, false)
                 }
             )
@@ -117,9 +157,33 @@ fun MainApp(context: Context) {
         // Route Setup Profile Screen
         composable(Route.SETUP_PROFILE_SCREEN.name) {
             SetupProfileScreen(
-                onFinishButtonClicked = {
-                    navController.navigate(Route.HOME_SCREEN.name)
-                },
+                errorFullNameState = errorFullNameState,
+                errorStudentIdState = errorStudentIdState,
+                errorGenderState = errorGenderState,
+                loadingState = loadingState,
+                onFinishButtonClicked = { fullName, studentId, gender ->
+                    val fullNameValid = authenticationViewModel.isFullNameInputValid(fullName)
+                    val studentIdValid = authenticationViewModel.isStudentIdValid(studentId)
+                    val genderValid = authenticationViewModel.isGenderValid(gender)
+                    if (fullNameValid && studentIdValid && genderValid) {
+                        databaseViewModel.addUserToDatabase(
+                            userId = userAuthState!!.uid,
+                            email = userAuthState!!.email!!,
+                            fullName = fullName,
+                            studentId = studentId,
+                            gender = gender,
+                            showLoading = { state ->
+                                loadingViewModel.showLoading(state)
+                            },
+                            onSuccess = {
+                                navigateTo(Route.HOME_SCREEN.name, true)
+                            },
+                            onFailure = {
+                                showToast(context, "Pendaftaran gagal, coba kembali")
+                            }
+                        )
+                    }
+                }
             )
         }
 

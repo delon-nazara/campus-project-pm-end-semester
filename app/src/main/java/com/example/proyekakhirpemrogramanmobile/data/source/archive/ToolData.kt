@@ -1,7 +1,7 @@
-package com.example.proyekakhirpemrogramanmobile.data.source
+package com.example.proyekakhirpemrogramanmobile.data.source.archive
 
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.model.ToolModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.ToolModel
 
 val listTool = listOf(
     ToolModel(

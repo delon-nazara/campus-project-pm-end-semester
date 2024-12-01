@@ -1,7 +1,7 @@
-package com.example.proyekakhirpemrogramanmobile.data.source
+package com.example.proyekakhirpemrogramanmobile.data.source.archive
 
-import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.TaskType
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
 
 val listTask = listOf(
     TaskModel(

@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.data.source
+package com.example.proyekakhirpemrogramanmobile.data.source.archive
 
 val generalInformationData = mapOf(
     "Nama" to "Pemrograman Mobile",
