@@ -48,11 +48,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.source.genderOptions
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 
 @Preview
 @Composable
 fun SetupProfileScreen(
+    errorFullNameState: String? = null,
+    errorStudentIdState: String? = null,
+    errorGenderState: String? = null,
+    loadingState: Boolean = false,
     onFinishButtonClicked: () -> Unit = {},
 ) {
     Box(
@@ -115,11 +120,8 @@ fun SetupProfileScreen(
                     val focusManager = LocalFocusManager.current
                     var fullName by rememberSaveable { mutableStateOf("") }
                     var studentId by rememberSaveable { mutableStateOf("") }
-                    var isFullNameValid by rememberSaveable { mutableStateOf(true) }
-                    var isStudentIdValid by rememberSaveable { mutableStateOf(true) }
                     var selectedGender by remember { mutableStateOf("Jenis Kelamin") }
                     var isGenderExpanded by remember { mutableStateOf(false) }
-                    val genderOptions = listOf("Laki-Laki", "Perempuan", "Bola Basket")
 
                     // Card Title
                     Text(
@@ -134,10 +136,7 @@ fun SetupProfileScreen(
                     // Full Name Input
                     OutlinedTextField(
                         value = fullName,
-                        onValueChange = { input ->
-                            fullName = input
-                            isFullNameValid = input.length in 3..50
-                        },
+                        onValueChange = { fullName = it },
                         singleLine = true,
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
@@ -146,7 +145,7 @@ fun SetupProfileScreen(
                                 fontSize = 14.sp
                             )
                         },
-                        isError = !isFullNameValid && fullName.isNotEmpty(),
+                        isError = errorFullNameState != null,
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedContainerColor = colorResource(R.color.white),
@@ -167,9 +166,9 @@ fun SetupProfileScreen(
                     )
 
                     // Full Name Error
-                    if (!isFullNameValid && fullName.isNotEmpty()) {
+                    if (errorFullNameState != null) {
                         Text(
-                            text = "",
+                            text = errorFullNameState,
                             color = colorResource(R.color.red),
                             fontSize = 12.sp,
                             modifier = Modifier
@@ -183,12 +182,7 @@ fun SetupProfileScreen(
                     // Student Id Input
                     OutlinedTextField(
                         value = studentId,
-                        onValueChange = { input ->
-                            if (input.length <= 15) {
-                                studentId = input
-                                isStudentIdValid = studentId.length == 9
-                            }
-                        },
+                        onValueChange = { studentId = it },
                         singleLine = true,
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
@@ -197,7 +191,7 @@ fun SetupProfileScreen(
                                 fontSize = 14.sp,
                             )
                         },
-                        isError = !isStudentIdValid && studentId.isNotEmpty(),
+                        isError = errorStudentIdState != null,
                         shape = RoundedCornerShape(8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedContainerColor = colorResource(R.color.white),
@@ -218,9 +212,9 @@ fun SetupProfileScreen(
                     )
 
                     // Student Id Error
-                    if (!isStudentIdValid && studentId.isNotEmpty()) {
+                    if (errorStudentIdState != null) {
                         Text(
-                            text = "",
+                            text = errorStudentIdState,
                             color = colorResource(R.color.red),
                             fontSize = 12.sp,
                             modifier = Modifier
@@ -276,6 +270,18 @@ fun SetupProfileScreen(
                                 )
                             }
                         }
+                    }
+
+                    // Gender Input Error
+                    if (errorGenderState != null) {
+                        Text(
+                            text = errorGenderState,
+                            color = colorResource(R.color.red),
+                            fontSize = 12.sp,
+                            modifier = Modifier
+                                .padding(top = 4.dp)
+                                .align(Alignment.Start)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(30.dp))

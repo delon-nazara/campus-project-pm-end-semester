@@ -56,7 +56,6 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 fun RegisterScreen(
     errorEmailState: String? = null,
     errorPasswordState: String? = null,
-    loadingState: Boolean = false,
     onRegisterButtonClicked: (String, String) -> Unit = { _, _ -> },
     onLoginButtonClicked: () -> Unit = {},
 ) {
