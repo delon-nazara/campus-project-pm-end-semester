@@ -36,6 +36,9 @@ class AuthenticationViewModel : ViewModel() {
     private var _errorStudentIdState = MutableStateFlow<String?>(null)
     val errorStudentIdState: StateFlow<String?> = _errorStudentIdState.asStateFlow()
 
+    private var _errorGenderState = MutableStateFlow<String?>(null)
+    val errorGenderState: StateFlow<String?> = _errorGenderState.asStateFlow()
+
     private var _errorAllState = MutableStateFlow<String?>(null)
     val errorAllState: StateFlow<String?> = _errorAllState.asStateFlow()
 
@@ -60,7 +63,7 @@ class AuthenticationViewModel : ViewModel() {
                     _userAuthState.value = null
                     when (exception) {
                         is FirebaseAuthUserCollisionException -> {
-                            _errorEmailState.value = "Email has been used"
+                            _errorEmailState.value = "Email telah terdaftar"
                         }
                         else -> {
                             onFailure()
@@ -91,7 +94,7 @@ class AuthenticationViewModel : ViewModel() {
                     _userAuthState.value = null
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
-                            _errorAllState.value = "Email atau password salah"
+                            _errorAllState.value = "Email atau kata sandi salah"
                         }
                         else -> {
                             onFailure()
@@ -99,13 +102,6 @@ class AuthenticationViewModel : ViewModel() {
                     }
                 }
         }
-    }
-
-    fun logout() {
-        authentication.signOut()
-        _userAuthState.value = null
-        showLoading(false)
-        clearErrorState()
     }
 
     private fun isEmailInputValid(email: String): Boolean {
@@ -123,10 +119,10 @@ class AuthenticationViewModel : ViewModel() {
 
     private fun isPasswordInputValid(password: String): Boolean {
         if (password.isEmpty()) {
-            _errorPasswordState.value = "Password tidak boleh kosong"
+            _errorPasswordState.value = "Kata sandi tidak boleh kosong"
             return false
         } else if (password.length < 6) {
-            _errorPasswordState.value = "Password harus terdiri dari minimal 6 karakter"
+            _errorPasswordState.value = "Kata sandi harus terdiri dari minimal 6 karakter"
             return false
         } else {
             _errorPasswordState.value = null
@@ -136,16 +132,42 @@ class AuthenticationViewModel : ViewModel() {
 
     private fun isNameInputValid(name: String): Boolean {
         if (name.isEmpty()) {
-            _errorFullNameState.value = "Name cannot be empty"
+            _errorFullNameState.value = "Nama tidak boleh kosong"
             return false
         } else if (!name.matches(Regex("^[a-zA-Z ]+$"))) {
-            _errorFullNameState.value = "Name can only consist of alphabet"
+            _errorFullNameState.value = "Nama hanya boleh terdiri dari huruf"
             return false
         } else if (name.length < 3 || name.length > 30) {
-            _errorFullNameState.value = "Name must consist of 3-30 characters"
+            _errorFullNameState.value = "Nama harus terdiri dari 3-30 karakter"
             return false
         } else {
             _errorFullNameState.value = null
+            return true
+        }
+    }
+
+    private fun isStudentIdValid(studentId: String): Boolean {
+        if (studentId.isEmpty()) {
+            _errorStudentIdState.value = "NIM tidak boleh kosong"
+            return false
+        } else if (!studentId.matches(Regex("^[0-9]+$"))) {
+            _errorStudentIdState.value = "NIM hanya boleh terdiri dari angka"
+            return false
+        } else if (studentId.length != 9) {
+            _errorStudentIdState.value = "NIM harus terdiri dari tepat 9 angka"
+            return false
+        } else {
+            _errorStudentIdState.value = null
+            return true
+        }
+    }
+
+    private fun isGenderValid(gender: String): Boolean {
+        if (gender == "Jenis Kelamin") {
+            _errorGenderState.value = "Pilih salah satu dari opsi gender yang ada"
+            return false
+        } else {
+            _errorGenderState.value = null
             return true
         }
     }
@@ -154,6 +176,8 @@ class AuthenticationViewModel : ViewModel() {
         _errorEmailState.value = null
         _errorPasswordState.value = null
         _errorFullNameState.value = null
+        _errorStudentIdState.value = null
+        _errorGenderState.value = null
         _errorAllState.value = null
     }
 
