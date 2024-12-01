@@ -57,7 +57,35 @@ fun MainApp(context: Context) {
 
     LaunchedEffect(Unit) {
         databaseViewModel.cloudinaryInitialization(context)
-
+        if (userAuthState != null) {
+            databaseViewModel.checkUserFromDatabase(
+                userId = userAuthState!!.uid,
+                showLoading = { state ->
+                    loadingViewModel.showLoading(state)
+                },
+                onUserExist = {
+                    databaseViewModel.getUserFromDatabase(
+                        userId = userAuthState!!.uid,
+                        showLoading = { state ->
+                            loadingViewModel.showLoading(state)
+                        },
+                        onSuccess = {
+                            navigateTo(Route.HOME_SCREEN.name, true)
+                        },
+                        onFailure = {
+                            showToast(context, "Proses masuk gagal, coba kembali")
+                        }
+                    )
+                },
+                onUserNotExist = {
+                    authenticationViewModel.clearErrorState()
+                    navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
+                },
+                onFailure = {
+                    showToast(context, "Proses masuk gagal, coba kembali")
+                }
+            )
+        }
     }
 
     NavHost(
@@ -67,6 +95,7 @@ fun MainApp(context: Context) {
         // Route Onboarding Screen
         composable(Route.ONBOARDING_SCREEN.name) {
             OnboardingScreen(
+                loadingState = loadingState,
                 onStartButtonClicked = {
                     navigateTo(Route.LOGIN_SCREEN.name, false)
                 }
@@ -90,6 +119,9 @@ fun MainApp(context: Context) {
                         onSuccess = { userId ->
                             databaseViewModel.checkUserFromDatabase(
                                 userId = userId,
+                                showLoading = { state ->
+                                    loadingViewModel.showLoading(state)
+                                },
                                 onUserExist = {
                                     databaseViewModel.getUserFromDatabase(
                                         userId = userId,
@@ -191,148 +223,5 @@ fun MainApp(context: Context) {
         composable(Route.HOME_SCREEN.name) {
             HomeScreen()
         }
-
-        // ===========================
-        //      FINAL SECTION END
-        // ===========================
-
-//        coroutineScope.launch {
-//            if (userAuthState != null) {
-//                if (databaseViewModel.userExistInDatabase(userAuthState!!.uid)) {
-//                    navController.navigate("home_screen") {
-//                        popUpTo(0) {
-//                            inclusive = true
-//                        }
-//                    }
-//                } else {
-//                    navController.navigate("setup_profile_screen") {
-//                        popUpTo(0) {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        composable("base_screen") {
-//            BaseScreen(
-//                onRegisterScreenButton = {
-//                    navController.navigate("register_screen") {
-//                        popUpTo("register_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                },
-//                onLoginScreenButton = {
-//                    navController.navigate("login_screen") {
-//                        popUpTo("login_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//        composable("register_screen") {
-//            RegisterScreen(
-//                onRegisterButtonClicked = { email, password ->
-//                    if (email.isEmpty() or password.isEmpty()) {
-//                        showToast(context, "Email or password cannot be empty")
-//                    } else {
-//                        coroutineScope.launch {
-//                            val result = authenticationViewModel.register(email, password)
-//                            if (result == "Successful") {
-//                                navController.navigate("setup_profile_screen") {
-//                                    popUpTo(0) {
-//                                        inclusive = true
-//                                    }
-//                                }
-//                            }
-//                            showToast(context, result)
-//                        }
-//                    }
-//                },
-//                onLoginScreenButtonClicked = {
-//                    navController.navigate("login_screen") {
-//                        popUpTo("login_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                },
-//                onBaseScreenButtonClicked = {
-//                    navController.navigate("base_screen") {
-//                        popUpTo("base_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//        composable("login_screen") {
-//            LoginScreen(
-//                onLoginButtonClicked = { email, password ->
-//                    if (email.isEmpty() or password.isEmpty()) {
-//                        showToast(context, "Email or password cannot be empty")
-//                    } else {
-//                        coroutineScope.launch {
-//                            val result = authenticationViewModel.login(email, password)
-//                            if (result == "Successful") {
-//                                navController.navigate("home_screen") {
-//                                    popUpTo(0) {
-//                                        inclusive = true
-//                                    }
-//                                }
-//                            }
-//                            showToast(context, result)
-//                        }
-//                    }
-//                },
-//                onRegisterScreenButtonClicked = {
-//                    navController.navigate("register_screen") {
-//                        popUpTo("register_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                },
-//                onBaseScreenButtonClicked = {
-//                    navController.navigate("base_screen") {
-//                        popUpTo("base_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//        composable("setup_profile_screen") {
-//            SetupProfileScreen(
-//                onSetupProfileButtonClicked = { fullName, studentId -> // todo
-//                    coroutineScope.launch {
-//                        val result = databaseViewModel.addUserToDatabase(userAuthState!!, fullName, studentId)
-//                        if (result == "Successful") {
-//                            navController.navigate("home_screen") {
-//                                popUpTo(0) {
-//                                    inclusive = true
-//                                }
-//                            }
-//                        }
-//                        showToast(context, result)
-//                    }
-//                }
-//            )
-//        }
-//        composable("home_screen") {
-//            HomeScreen(
-//                imageUrl = databaseViewModel.getImageUrlFromCloudinary(), // todo
-//                email = userAuthState?.email,
-//                onLogoutButtonClicked = {
-//                    authenticationViewModel.logout()
-//                    navController.navigate("base_screen") {
-//                        popUpTo(0) {
-//                            inclusive = true
-//                        }
-//                    }
-//                    showToast(context, "Successful")
-//                }
-//            )
-//        }
     }
-
 }

@@ -115,13 +115,16 @@ class DatabaseViewModel : ViewModel() {
 
     fun checkUserFromDatabase(
         userId: String,
+        showLoading: (Boolean) -> Unit,
         onUserExist: () -> Unit,
         onUserNotExist: () -> Unit,
         onFailure: () -> Unit
     ) {
+        showLoading(true)
         userReference.document(userId)
             .get()
             .addOnSuccessListener { document ->
+                showLoading(false)
                 if (document.exists()) {
                     onUserExist()
                 } else {
@@ -129,6 +132,7 @@ class DatabaseViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener {
+                showLoading(false)
                 onFailure()
             }
     }

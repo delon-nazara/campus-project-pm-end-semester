@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,147 +46,164 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun OnboardingScreen(
+    loadingState: Boolean = false,
     onStartButtonClicked: () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState(pageCount = {4})
-    val coroutineScope = rememberCoroutineScope()
-
-    Column(
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        // Main Content
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1f)
-        ) { page ->
-            when (page) {
-                0 -> OnboardingPage(
-                    image = R.drawable.onboarding_image_1,
-                    title = R.string.onboarding_title_1,
-                    description = R.string.onboarding_description_1
-                )
-                1 -> OnboardingPage(
-                    image = R.drawable.onboarding_image_2,
-                    title = R.string.onboarding_title_2,
-                    description = R.string.onboarding_description_2
-                )
-                2 -> OnboardingPage(
-                    image = R.drawable.onboarding_image_3,
-                    title = R.string.onboarding_title_3,
-                    description = R.string.onboarding_description_3
-                )
-                3 -> OnboardingPage(
-                    image = R.drawable.onboarding_image_4,
-                    title = R.string.onboarding_title_4,
-                    description = R.string.onboarding_description_4
-                )
-            }
-        }
+        val pagerState = rememberPagerState(pageCount = { 4 })
+        val coroutineScope = rememberCoroutineScope()
 
-        // Bottom Navigation
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.white))
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 30.dp)
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            var leftText by rememberSaveable { mutableStateOf("") }
-            var rightText by rememberSaveable { mutableStateOf("") }
-            var enabledButton by rememberSaveable { mutableStateOf(true) }
-
-            when (pagerState.currentPage) {
-                0 -> {
-                    leftText = ""
-                    rightText = "Next"
-                    enabledButton = false
-                }
-                3 -> {
-                    leftText = "Back"
-                    rightText = "Start"
-                    enabledButton = true
-                }
-                else -> {
-                    rightText = "Next"
-                    leftText = "Back"
-                    enabledButton = true
-                }
-            }
-
-            // Back Button
-            TextButton(
-                onClick = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(
-                            page = pagerState.currentPage - 1,
-                            animationSpec = tween(500)
-                        )
-                    }
-                },
-                enabled = enabledButton,
-                modifier = Modifier.width(75.dp)
-            ) {
-                Text(
-                    text = leftText,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colorResource(R.color.very_light_blue)
-                )
-            }
-
-            // Page Indicator
-            Row(
-                horizontalArrangement = Arrangement.Center
-            ) {
-                for (i in 0 until pagerState.pageCount) {
-                    Box(
-                        modifier = Modifier
-                            .size(12.dp)
-                            .background(
-                                if (i == pagerState.currentPage) {
-                                    colorResource(R.color.dark_gray)
-                                } else {
-                                    colorResource(R.color.light_gray)
-                                },
-                                shape = CircleShape
-                            )
+            // Main Content
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.weight(1f)
+            ) { page ->
+                when (page) {
+                    0 -> OnboardingPage(
+                        image = R.drawable.onboarding_image_1,
+                        title = R.string.onboarding_title_1,
+                        description = R.string.onboarding_description_1
                     )
-                    if (i != 3) {
-                        Spacer(
-                            modifier = Modifier.width(8.dp)
-                        )
-                    }
+
+                    1 -> OnboardingPage(
+                        image = R.drawable.onboarding_image_2,
+                        title = R.string.onboarding_title_2,
+                        description = R.string.onboarding_description_2
+                    )
+
+                    2 -> OnboardingPage(
+                        image = R.drawable.onboarding_image_3,
+                        title = R.string.onboarding_title_3,
+                        description = R.string.onboarding_description_3
+                    )
+
+                    3 -> OnboardingPage(
+                        image = R.drawable.onboarding_image_4,
+                        title = R.string.onboarding_title_4,
+                        description = R.string.onboarding_description_4
+                    )
                 }
             }
 
-            // Next Button
-            TextButton(
-                onClick = {
-                    if (pagerState.currentPage == 3) {
-                        onStartButtonClicked()
-                    } else {
+            // Bottom Navigation
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.white))
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 30.dp)
+            ) {
+                var leftText by rememberSaveable { mutableStateOf("") }
+                var rightText by rememberSaveable { mutableStateOf("") }
+                var enabledButton by rememberSaveable { mutableStateOf(true) }
+
+                when (pagerState.currentPage) {
+                    0 -> {
+                        leftText = ""
+                        rightText = "Next"
+                        enabledButton = false
+                    }
+
+                    3 -> {
+                        leftText = "Back"
+                        rightText = "Start"
+                        enabledButton = true
+                    }
+
+                    else -> {
+                        rightText = "Next"
+                        leftText = "Back"
+                        enabledButton = true
+                    }
+                }
+
+                // Back Button
+                TextButton(
+                    onClick = {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(
-                                page = pagerState.currentPage + 1,
+                                page = pagerState.currentPage - 1,
                                 animationSpec = tween(500)
                             )
                         }
-                    }
-                },
-                modifier = Modifier.width(75.dp)
-            ) {
-                Text(
-                    text = rightText,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colorResource(R.color.very_light_blue)
-                )
-            }
+                    },
+                    enabled = enabledButton,
+                    modifier = Modifier.width(75.dp)
+                ) {
+                    Text(
+                        text = leftText,
+                        fontSize = 20.sp,
+                        fontFamily = Poppins,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colorResource(R.color.very_light_blue)
+                    )
+                }
 
+                // Page Indicator
+                Row(
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    for (i in 0 until pagerState.pageCount) {
+                        Box(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .background(
+                                    if (i == pagerState.currentPage) {
+                                        colorResource(R.color.dark_gray)
+                                    } else {
+                                        colorResource(R.color.light_gray)
+                                    },
+                                    shape = CircleShape
+                                )
+                        )
+                        if (i != 3) {
+                            Spacer(
+                                modifier = Modifier.width(8.dp)
+                            )
+                        }
+                    }
+                }
+
+                // Next Button
+                TextButton(
+                    onClick = {
+                        if (pagerState.currentPage == 3) {
+                            onStartButtonClicked()
+                        } else {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(
+                                    page = pagerState.currentPage + 1,
+                                    animationSpec = tween(500)
+                                )
+                            }
+                        }
+                    },
+                    modifier = Modifier.width(75.dp)
+                ) {
+                    Text(
+                        text = rightText,
+                        fontSize = 20.sp,
+                        fontFamily = Poppins,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colorResource(R.color.very_light_blue)
+                    )
+                }
+
+            }
+        }
+
+        if (loadingState) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
 }
