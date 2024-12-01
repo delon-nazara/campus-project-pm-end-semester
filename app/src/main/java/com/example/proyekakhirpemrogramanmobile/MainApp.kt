@@ -25,6 +25,12 @@ import com.example.proyekakhirpemrogramanmobile.viewmodel.LoadingViewModel
 fun MainApp(context: Context) {
     val authenticationViewModel: AuthenticationViewModel = viewModel()
     val userAuthState by authenticationViewModel.userAuthState.collectAsState()
+    val errorEmailState by authenticationViewModel.errorEmailState.collectAsState()
+    val errorPasswordState by authenticationViewModel.errorPasswordState.collectAsState()
+    val errorFullNameState by authenticationViewModel.errorFullNameState.collectAsState()
+    val errorStudentIdState by authenticationViewModel.errorStudentIdState.collectAsState()
+    val errorGenderState by authenticationViewModel.errorGenderState.collectAsState()
+    val errorAllState by authenticationViewModel.errorAllState.collectAsState()
 
     val databaseViewModel: DatabaseViewModel = viewModel()
 
@@ -69,6 +75,10 @@ fun MainApp(context: Context) {
         // Route Login Screen
         composable(Route.LOGIN_SCREEN.name) {
             LoginScreen(
+                errorEmailState = errorEmailState,
+                errorPasswordState = errorPasswordState,
+                errorAllState = errorAllState,
+                loadingState = loadingState,
                 onLoginButtonClicked = { email, password ->
                     authenticationViewModel.login(
                         email = email,
@@ -93,6 +103,8 @@ fun MainApp(context: Context) {
         // Route Register Screen
         composable(Route.REGISTER_SCREEN.name) {
             RegisterScreen(
+                errorEmailState = errorEmailState,
+                errorPasswordState = errorPasswordState,
                 onRegisterButtonClicked = { email, password ->
                     authenticationViewModel.register(
                         email = email,
@@ -117,6 +129,10 @@ fun MainApp(context: Context) {
         // Route Setup Profile Screen
         composable(Route.SETUP_PROFILE_SCREEN.name) {
             SetupProfileScreen(
+                errorFullNameState = errorFullNameState,
+                errorStudentIdState = errorStudentIdState,
+                errorGenderState = errorGenderState,
+                loadingState = loadingState,
                 onFinishButtonClicked = {
                     navController.navigate(Route.HOME_SCREEN.name)
                 },
