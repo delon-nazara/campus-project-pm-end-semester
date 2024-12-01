@@ -54,8 +54,11 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 @Preview
 @Composable
 fun RegisterScreen(
+    errorEmailState: String? = null,
+    errorPasswordState: String? = null,
+    loadingState: Boolean = false,
     onRegisterButtonClicked: (String, String) -> Unit = { _, _ -> },
-    onLoginButtonClicked: () -> Unit = {}
+    onLoginButtonClicked: () -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -113,8 +116,6 @@ fun RegisterScreen(
                 val focusManager = LocalFocusManager.current
                 var email by rememberSaveable { mutableStateOf("") }
                 var password by rememberSaveable { mutableStateOf("") }
-                var isEmailValid by rememberSaveable { mutableStateOf(true) }
-                var isPasswordValid by rememberSaveable { mutableStateOf(true) }
                 var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
                 // Card Title
@@ -129,10 +130,7 @@ fun RegisterScreen(
                 // Email Input
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { input ->
-                        email = input
-                        isEmailValid = input.matches(Regex("^[A-Za-z0-9._%+-]+@gmail\\.com$"))
-                    },
+                    onValueChange = { email = it},
                     singleLine = true,
                     textStyle = TextStyle(fontSize = 14.sp),
                     label = {
@@ -142,8 +140,8 @@ fun RegisterScreen(
                             fontFamily = Poppins,
                         )
                     },
-                    isError = !isEmailValid && email.isNotEmpty(),
                     shape = RoundedCornerShape(8.dp),
+                    isError = errorEmailState != null,
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = colorResource(R.color.white),
                         unfocusedContainerColor = colorResource(R.color.white),
@@ -163,9 +161,9 @@ fun RegisterScreen(
                 )
 
                 // Email Error
-                if (!isEmailValid && email.isNotEmpty()) {
+                if (errorEmailState != null) {
                     Text(
-                        text = "",
+                        text = errorEmailState,
                         color = colorResource(R.color.red),
                         fontSize = 12.sp,
                         fontFamily = Poppins,
@@ -179,12 +177,7 @@ fun RegisterScreen(
                 // Password Input
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { input ->
-                        if (input.length <= 15) {
-                            password = input
-                            isPasswordValid = password.length in 6..15
-                        }
-                    },
+                    onValueChange = { password = it },
                     singleLine = true,
                     textStyle = TextStyle(fontSize = 14.sp),
                     label = {
@@ -218,7 +211,7 @@ fun RegisterScreen(
                     } else {
                         PasswordVisualTransformation()
                     },
-                    isError = !isPasswordValid && password.isNotEmpty(),
+                    isError = errorPasswordState != null,
                     shape = RoundedCornerShape(8.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = colorResource(R.color.white),
@@ -239,9 +232,9 @@ fun RegisterScreen(
                 )
 
                 // Password Error
-                if (!isPasswordValid && password.isNotEmpty()) {
+                if (errorPasswordState != null) {
                     Text(
-                        text = "",
+                        text = errorPasswordState,
                         color = colorResource(R.color.red),
                         fontSize = 12.sp,
                         fontFamily = Poppins,

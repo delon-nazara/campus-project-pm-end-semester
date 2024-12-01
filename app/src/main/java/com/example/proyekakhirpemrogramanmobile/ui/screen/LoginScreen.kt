@@ -54,12 +54,12 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 @Preview
 @Composable
 fun LoginScreen(
-    onLoginButtonClicked: (String, String) -> Unit = { _, _ -> },
-    onRegisterButtonClicked: () -> Unit = {},
     errorEmailState: String? = null,
     errorPasswordState: String? = null,
     errorAllState: String? = null,
-    loadingState: Boolean = false
+    loadingState: Boolean = false,
+    onLoginButtonClicked: (String, String) -> Unit = { _, _ -> },
+    onRegisterButtonClicked: () -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -162,7 +162,7 @@ fun LoginScreen(
                 )
 
                 // Email Error
-                if (errorEmailState != null ) {
+                if (errorEmailState != null) {
                     Text(
                         text = errorEmailState,
                         color = colorResource(R.color.red),
