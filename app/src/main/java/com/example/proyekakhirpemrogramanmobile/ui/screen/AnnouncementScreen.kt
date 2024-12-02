@@ -53,7 +53,7 @@ fun AnnouncementScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = Menu.SCHEDULE
+    val selectedMenu = Menu.ANNOUNCEMENT
 
     ModalNavigationDrawer(
         drawerState = drawerState,

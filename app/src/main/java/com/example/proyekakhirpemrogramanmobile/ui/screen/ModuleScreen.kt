@@ -55,7 +55,7 @@ fun ModuleScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = Menu.SCHEDULE
+    val selectedMenu = Menu.MODULE
 
     ModalNavigationDrawer(
         drawerState = drawerState,

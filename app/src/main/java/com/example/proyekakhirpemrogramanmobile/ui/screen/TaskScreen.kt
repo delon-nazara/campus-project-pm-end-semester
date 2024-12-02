@@ -59,7 +59,7 @@ fun TaskScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = Menu.SCHEDULE
+    val selectedMenu = Menu.Task
 
     ModalNavigationDrawer(
         drawerState = drawerState,

@@ -38,6 +38,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -129,7 +130,7 @@ fun SideBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(75.dp)
-                    .clickable {  }
+                    .clickable { navigateTo(Route.SETTING_SCREEN.name, false) }
                     .background(colorResource(R.color.very_dark_blue))
             ) {
                 Spacer(modifier = Modifier.width(24.dp))

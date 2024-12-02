@@ -15,7 +15,7 @@ class AuthenticationViewModel : ViewModel() {
 
     private var authentication: FirebaseAuth = Firebase.auth
 
-    private var _userAuthState = MutableStateFlow<FirebaseUser?>(null)
+    private var _userAuthState = MutableStateFlow(authentication.currentUser)
     val userAuthState: StateFlow<FirebaseUser?> = _userAuthState.asStateFlow()
 
     private var _errorEmailState = MutableStateFlow<String?>(null)
