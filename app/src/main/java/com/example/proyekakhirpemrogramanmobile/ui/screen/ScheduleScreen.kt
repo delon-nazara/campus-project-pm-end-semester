@@ -62,8 +62,7 @@ fun ScheduleScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                userName = userData.userName,
-                studentId = userData.studentId,
+                userData = userData,
                 selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
@@ -74,6 +73,7 @@ fun ScheduleScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo

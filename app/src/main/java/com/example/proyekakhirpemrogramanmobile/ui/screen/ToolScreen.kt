@@ -51,8 +51,7 @@ fun ToolScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                userName = userData.userName,
-                studentId = userData.studentId,
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,
@@ -63,6 +62,7 @@ fun ToolScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo

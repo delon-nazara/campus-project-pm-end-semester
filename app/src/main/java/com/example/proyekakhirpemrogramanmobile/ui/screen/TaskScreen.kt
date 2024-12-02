@@ -59,14 +59,13 @@ fun TaskScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = Menu.Task
+    val selectedMenu = Menu.TASK
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                userName = userData.userName,
-                studentId = userData.studentId,
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,
@@ -77,6 +76,7 @@ fun TaskScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo

@@ -72,8 +72,7 @@ fun HomeScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                userName = userData.userName,
-                studentId = userData.studentId,
+                userData = userData,
                 selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
@@ -84,6 +83,7 @@ fun HomeScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo

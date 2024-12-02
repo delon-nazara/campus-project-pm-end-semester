@@ -61,8 +61,7 @@ fun ModuleScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                userName = userData.userName,
-                studentId = userData.studentId,
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,
@@ -73,6 +72,7 @@ fun ModuleScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo

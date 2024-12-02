@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DrawerValue
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +42,7 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
 
 @Preview
 @Composable
@@ -55,8 +58,7 @@ fun SettingScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                userName = userData.userName,
-                studentId = userData.studentId,
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,
@@ -67,6 +69,7 @@ fun SettingScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo
@@ -84,7 +87,7 @@ fun SettingScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 Title(title = stringResource(R.string.sidebar_setting))
-                Profile()
+                Profile(userData = userData)
                 MyClass()
                 SettingList()
                 Logout()
@@ -94,17 +97,18 @@ fun SettingScreen(
 }
 
 @Composable
-fun Profile() {
+fun Profile(userData: UserModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(R.drawable.person_icon),
+            painter = painterResource(setImageBasedLetter(userData.firstLetter)),
             contentDescription = "Profile picture",
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 16.dp, end = 20.dp)
                 .size(72.dp)
+                .clip(CircleShape)
         )
         Column(
             modifier = Modifier.fillMaxWidth()

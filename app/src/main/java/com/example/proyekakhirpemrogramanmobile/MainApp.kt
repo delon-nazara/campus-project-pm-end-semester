@@ -63,7 +63,6 @@ fun MainApp(context: Context) {
     val startDestination = Route.ONBOARDING_SCREEN.name
 
     LaunchedEffect(Unit) {
-        databaseViewModel.cloudinaryInitialization(context)
         if (userAuthState != null) {
             databaseViewModel.checkUserFromDatabase(
                 userId = userAuthState!!.uid,

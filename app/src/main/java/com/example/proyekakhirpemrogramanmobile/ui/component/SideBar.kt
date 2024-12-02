@@ -1,5 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -37,17 +39,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
+import com.google.firebase.firestore.auth.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
 fun SideBar(
-    userName: String = "Delon",
-    studentId: String = "221401073",
+    userData: UserModel = UserModel(),
     selectedMenu: Menu = Menu.HOME,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
@@ -86,7 +90,7 @@ fun SideBar(
                         }
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.close_icon),
+                            painter = painterResource(setImageBasedLetter(userData.firstLetter)),
                             contentDescription = "Close icon",
                             tint = colorResource(R.color.white),
                             modifier = Modifier.size(30.dp)
@@ -136,11 +140,12 @@ fun SideBar(
                 Spacer(modifier = Modifier.width(24.dp))
 
                 // Profile Picture
-                Icon(
-                    painter = painterResource(R.drawable.person_icon),
+                Image(
+                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
                     contentDescription = "Profile picture",
-                    tint = colorResource(R.color.white),
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -148,7 +153,7 @@ fun SideBar(
                 Column {
                     // Full Name Text
                     Text(
-                        text = userName,
+                        text = userData.firstWord,
                         fontSize = 16.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -158,7 +163,7 @@ fun SideBar(
 
                     // Student Id Text
                     Text(
-                        text = studentId,
+                        text = userData.fullName,
                         fontSize = 14.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),

@@ -1,41 +1,19 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.cloudinary.android.MediaManager
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.util.formatName
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
-import com.example.proyekakhirpemrogramanmobile.util.getFirstChar
+import com.example.proyekakhirpemrogramanmobile.util.getFirstLetter
 import com.example.proyekakhirpemrogramanmobile.util.getFirstWord
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class DatabaseViewModel : ViewModel() {
-
-    private lateinit var cloudinaryName: String
-    private lateinit var cloudinaryPreset: String
-
-    fun cloudinaryInitialization(context: Context) {
-        val dotenv = dotenv {
-            directory = "/assets"
-            filename = "env"
-        }
-
-        cloudinaryName = dotenv["CLOUD_NAME"]
-        cloudinaryPreset = dotenv["UPLOAD_PRESET_UNSIGNED"]
-
-        val config = hashMapOf(
-            "cloud_name" to cloudinaryName,
-            "secure" to true
-        )
-        MediaManager.init(context, config)
-    }
 
     private val database: FirebaseFirestore = Firebase.firestore
     private val userReference = database.collection("user")
@@ -54,18 +32,18 @@ class DatabaseViewModel : ViewModel() {
         onFailure: () -> Unit
     ) {
         val cleanName = formatName(fullName)
-        val firstChar = getFirstChar(cleanName)
-        val profileUrl = "https://res.cloudinary.com/${cloudinaryName}/image/upload/alphabet_profile_picture_${firstChar}"
+        val firstWord = getFirstWord(cleanName)
+        val firstLetter = getFirstLetter(cleanName).toString()
         val currentTime = getCurrentMilliseconds().toString()
 
         val newUser = UserModel(
             email = email,
             gender = gender,
+            firstWord = firstWord,
             fullName = cleanName,
-            userName = getFirstWord(cleanName),
-            createdAt = currentTime,
             studentId = studentId,
-            profileUrl = profileUrl
+            createdAt = currentTime,
+            firstLetter = firstLetter
         )
 
         showLoading(true)
@@ -98,11 +76,11 @@ class DatabaseViewModel : ViewModel() {
                 val userData = UserModel(
                     email = data["email"].toString(),
                     gender = data["gender"].toString(),
+                    firstWord = data["firstWord"].toString(),
                     fullName = data["fullName"].toString(),
-                    userName = data["userName"].toString(),
-                    createdAt = data["createdAt"].toString(),
                     studentId = data["studentId"].toString(),
-                    profileUrl = data["profileUrl"].toString()
+                    createdAt = data["createdAt"].toString(),
+                    firstLetter = data["firstLetter"].toString()
                 )
                 updateUserState(userData)
                 onSuccess()
