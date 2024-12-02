@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
@@ -50,6 +51,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun ScheduleScreen(
+    userData: UserModel = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -60,6 +62,8 @@ fun ScheduleScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userName = userData.userName,
+                studentId = userData.studentId,
                 selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,

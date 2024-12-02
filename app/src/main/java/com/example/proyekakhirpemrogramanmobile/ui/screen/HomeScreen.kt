@@ -41,6 +41,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
@@ -54,11 +55,13 @@ import com.example.proyekakhirpemrogramanmobile.util.formatTime
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.google.firebase.firestore.core.UserData
 import kotlinx.coroutines.delay
 
 @Preview
 @Composable
 fun HomeScreen(
+    userData: UserModel = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -69,6 +72,8 @@ fun HomeScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userName = userData.userName,
+                studentId = userData.studentId,
                 selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,

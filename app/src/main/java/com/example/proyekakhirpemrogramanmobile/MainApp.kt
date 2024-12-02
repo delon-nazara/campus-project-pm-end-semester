@@ -229,6 +229,7 @@ fun MainApp(context: Context) {
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -238,6 +239,7 @@ fun MainApp(context: Context) {
         // Route Schedule Screen
         composable(Route.SCHEDULE_SCREEN.name) {
             ScheduleScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -247,6 +249,7 @@ fun MainApp(context: Context) {
         // Route Course Screen
         composable(Route.COURSE_SCREEN.name) {
             CourseScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -256,6 +259,7 @@ fun MainApp(context: Context) {
         // Route Task Screen
         composable(Route.TASK_SCREEN.name) {
             TaskScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -265,6 +269,7 @@ fun MainApp(context: Context) {
         // Route Module Screen
         composable(Route.MODULE_SCREEN.name) {
             ModuleScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -274,6 +279,7 @@ fun MainApp(context: Context) {
         // Route Announcement Screen
         composable(Route.ANNOUNCEMENT_SCREEN.name) {
             AnnouncementScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -283,6 +289,7 @@ fun MainApp(context: Context) {
         // Route Tool Screen
         composable(Route.TOOL_SCREEN.name) {
             ToolScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -292,6 +299,7 @@ fun MainApp(context: Context) {
         // Route Setting Screen
         composable(Route.SETTING_SCREEN.name) {
             SettingScreen(
+                userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }

@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listAnnouncement
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.AnnouncementModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
@@ -47,6 +48,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun AnnouncementScreen(
+    userData: UserModel = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -57,6 +59,8 @@ fun AnnouncementScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userName = userData.userName,
+                studentId = userData.studentId,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,

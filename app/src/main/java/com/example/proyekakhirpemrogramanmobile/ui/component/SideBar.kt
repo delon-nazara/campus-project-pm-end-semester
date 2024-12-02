@@ -45,6 +45,8 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun SideBar(
+    userName: String = "Delon",
+    studentId: String = "221401073",
     selectedMenu: Menu = Menu.HOME,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
@@ -145,7 +147,7 @@ fun SideBar(
                 Column {
                     // Full Name Text
                     Text(
-                        text = "Delon Nazara",  // todo
+                        text = userName,
                         fontSize = 16.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -155,7 +157,7 @@ fun SideBar(
 
                     // Student Id Text
                     Text(
-                        text = "221401073", // todo
+                        text = studentId,
                         fontSize = 14.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
