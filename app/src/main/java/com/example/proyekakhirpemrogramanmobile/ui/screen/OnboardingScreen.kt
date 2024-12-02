@@ -135,7 +135,7 @@ fun OnboardingScreen(
                             )
                         }
                     },
-                    enabled = enabledButton,
+                    enabled = enabledButton || !loadingState,
                     modifier = Modifier.width(75.dp)
                 ) {
                     Text(
@@ -186,6 +186,7 @@ fun OnboardingScreen(
                             }
                         }
                     },
+                    enabled = !loadingState,
                     modifier = Modifier.width(75.dp)
                 ) {
                     Text(

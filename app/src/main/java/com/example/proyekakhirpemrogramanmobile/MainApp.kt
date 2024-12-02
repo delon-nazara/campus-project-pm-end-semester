@@ -11,12 +11,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
+import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ScheduleScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.SettingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
@@ -223,14 +229,72 @@ fun MainApp(context: Context) {
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
-                navController = navController
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
             )
         }
 
         // Route Schedule Screen
         composable(Route.SCHEDULE_SCREEN.name) {
             ScheduleScreen(
-                navController = navController
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Course Screen
+        composable(Route.COURSE_SCREEN.name) {
+            CourseScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Task Screen
+        composable(Route.TASK_SCREEN.name) {
+            TaskScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Module Screen
+        composable(Route.MODULE_SCREEN.name) {
+            ModuleScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Announcement Screen
+        composable(Route.ANNOUNCEMENT_SCREEN.name) {
+            AnnouncementScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Tool Screen
+        composable(Route.TOOL_SCREEN.name) {
+            ToolScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Setting Screen
+        composable(Route.SETTING_SCREEN.name) {
+            SettingScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
             )
         }
     }

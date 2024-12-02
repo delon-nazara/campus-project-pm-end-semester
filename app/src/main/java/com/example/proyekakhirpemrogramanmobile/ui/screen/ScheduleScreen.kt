@@ -50,7 +50,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun ScheduleScreen(
-    navController: NavHostController = rememberNavController()
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -60,10 +60,10 @@ fun ScheduleScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                navController = navController,
+                selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                navigateTo = navigateTo
             )
         }
     ) {
@@ -71,7 +71,8 @@ fun ScheduleScreen(
             topBar = {
                 TopBar(
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->

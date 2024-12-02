@@ -45,10 +45,10 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun SideBar(
-    navController: NavHostController = rememberNavController(),
+    selectedMenu: Menu = Menu.HOME,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    selectedMenu: Menu = Menu.HOME
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     ModalDrawerSheet{
         Column(
@@ -116,7 +116,7 @@ fun SideBar(
                     MenuItem(
                         currentMenu = menu,
                         selectedMenu = selectedMenu,
-                        navController = navController
+                        navigateTo = navigateTo
                     )
                 }
             }
@@ -170,20 +170,14 @@ fun SideBar(
 fun MenuItem(
     currentMenu: Menu,
     selectedMenu: Menu,
-    navController: NavHostController
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     Spacer(modifier = Modifier.height(5.dp))
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clickable {
-                navController.navigate(currentMenu.destination) {
-                    popUpTo(currentMenu.destination) {
-                        inclusive = true
-                    }
-                }
-            }
+            .clickable { navigateTo(currentMenu.destination, false) }
             .height(50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))

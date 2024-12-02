@@ -59,7 +59,7 @@ import kotlinx.coroutines.delay
 @Preview
 @Composable
 fun HomeScreen(
-    navController: NavHostController = rememberNavController()
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -69,10 +69,10 @@ fun HomeScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
-                navController = navController,
+                selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                navigateTo = navigateTo
             )
         }
     ) {
@@ -80,7 +80,8 @@ fun HomeScreen(
             topBar = {
                 TopBar(
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->

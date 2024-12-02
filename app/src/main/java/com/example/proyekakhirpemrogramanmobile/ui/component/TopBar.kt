@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,7 +33,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopBar(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     CenterAlignedTopAppBar(
         // Title Text
@@ -70,7 +72,7 @@ fun TopBar(
         // Profile Picture
         actions = {
             IconButton(
-                onClick = {  },
+                onClick = { navigateTo(Route.SETTING_SCREEN.name, false) },
                 modifier = Modifier.padding(end = 12.dp)
             ) {
                 Icon(
