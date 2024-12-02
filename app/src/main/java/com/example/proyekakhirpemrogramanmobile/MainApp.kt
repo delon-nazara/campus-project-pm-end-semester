@@ -15,6 +15,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ScheduleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
@@ -221,7 +222,16 @@ fun MainApp(context: Context) {
 
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
-            HomeScreen()
+            HomeScreen(
+                navController = navController
+            )
+        }
+
+        // Route Schedule Screen
+        composable(Route.SCHEDULE_SCREEN.name) {
+            ScheduleScreen(
+                navController = navController
+            )
         }
     }
 }

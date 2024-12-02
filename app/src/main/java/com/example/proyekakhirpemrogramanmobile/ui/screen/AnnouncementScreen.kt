@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listAnnouncement
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.AnnouncementModel
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -48,7 +49,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 fun AnnouncementScreen() {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_announcement
+    val selectedMenu = Menu.SCHEDULE
 
     ModalNavigationDrawer(
         drawerState = drawerState,

@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listModule
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listModuleDetail
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
@@ -49,7 +50,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 fun ModuleDetailScreen() {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_module
+    val selectedMenu = Menu.SCHEDULE
 
     ModalNavigationDrawer(
         drawerState = drawerState,

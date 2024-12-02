@@ -34,9 +34,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listMenu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,9 +45,10 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun SideBar(
+    navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    selectedMenu: Int = Menu.HOME.title
+    selectedMenu: Menu = Menu.HOME
 ) {
     ModalDrawerSheet{
         Column(
@@ -112,10 +114,9 @@ fun SideBar(
             ){
                 Menu.entries.forEach { menu ->
                     MenuItem(
-                        menuIcon = menu.icon,
-                        menuTitle = menu.title,
-                        isSelected = menu.title == selectedMenu,
-                        onClicked = {}
+                        currentMenu = menu,
+                        selectedMenu = selectedMenu,
+                        navController = navController
                     )
                 }
             }
@@ -167,22 +168,27 @@ fun SideBar(
 
 @Composable
 fun MenuItem(
-    menuIcon: Int,
-    menuTitle: Int,
-    isSelected: Boolean,
-    onClicked: () -> Unit
+    currentMenu: Menu,
+    selectedMenu: Menu,
+    navController: NavHostController
 ) {
     Spacer(modifier = Modifier.height(5.dp))
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clickable { onClicked() }
+            .clickable {
+                navController.navigate(currentMenu.destination) {
+                    popUpTo(currentMenu.destination) {
+                        inclusive = true
+                    }
+                }
+            }
             .height(50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(
-                if (isSelected) {
+                if (currentMenu.title == selectedMenu.title) {
                     colorResource(R.color.dark_blue)
                 } else {
                     colorResource(R.color.very_light_blue)
@@ -193,8 +199,8 @@ fun MenuItem(
 
         // Menu Icon
         Icon(
-            painter = painterResource(menuIcon),
-            contentDescription = "$menuTitle icon",
+            painter = painterResource(currentMenu.icon),
+            contentDescription = "${currentMenu.title} icon",
             tint = colorResource(R.color.white),
             modifier = Modifier.size(22.dp)
         )
@@ -203,7 +209,7 @@ fun MenuItem(
 
         // Menu Text
         Text(
-            text = stringResource(menuTitle),
+            text = stringResource(currentMenu.title),
             fontSize = 16.sp,
             textAlign = TextAlign.Start,
             color = Color.White,
