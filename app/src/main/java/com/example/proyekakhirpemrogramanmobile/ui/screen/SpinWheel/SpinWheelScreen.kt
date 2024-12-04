@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen
+package com.example.proyekakhirpemrogramanmobile.ui.screen.SpinWheel
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.layout.Arrangement
