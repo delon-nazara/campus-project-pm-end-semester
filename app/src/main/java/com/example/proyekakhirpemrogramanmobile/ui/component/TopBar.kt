@@ -81,9 +81,10 @@ fun TopBar(
                 onClick = { navigateTo(Route.SETTING_SCREEN.name, false) },
                 modifier = Modifier.padding(end = 12.dp)
             ) {
-                Image(
-                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+                Icon(
+                    painter = painterResource(R.drawable.person_icon),
                     contentDescription = "Profile picture",
+                    tint = colorResource(R.color.black),
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape)

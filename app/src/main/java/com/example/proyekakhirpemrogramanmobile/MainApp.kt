@@ -12,15 +12,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ScheduleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SettingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
@@ -251,6 +254,9 @@ fun MainApp(context: Context) {
                 userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
+                },
+                temp = {
+                    navigateTo(Route.COURSE_DETAIL_SCREEN.name, false)
                 }
             )
         }
@@ -271,6 +277,9 @@ fun MainApp(context: Context) {
                 userData = userDataState!!,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
+                },
+                temp = {
+                    navigateTo(Route.MODULE_DETAIL_SCREEN.name, false)
                 }
             )
         }
@@ -299,6 +308,26 @@ fun MainApp(context: Context) {
         composable(Route.SETTING_SCREEN.name) {
             SettingScreen(
                 userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
+                temp = {
+                    authenticationViewModel.logout()
+                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
+                }
+            )
+        }
+
+        composable(Route.COURSE_DETAIL_SCREEN.name) {
+            CourseDetailScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        composable(Route.MODULE_DETAIL_SCREEN.name) {
+            ModuleDetailScreen(
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }

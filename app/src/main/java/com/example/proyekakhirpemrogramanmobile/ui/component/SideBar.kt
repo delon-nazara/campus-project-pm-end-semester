@@ -140,9 +140,10 @@ fun SideBar(
                 Spacer(modifier = Modifier.width(24.dp))
 
                 // Profile Picture
-                Image(
-                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+                Icon(
+                    painter = painterResource(R.drawable.person_icon),
                     contentDescription = "Profile picture",
+                    tint = colorResource(R.color.white),
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
@@ -153,7 +154,7 @@ fun SideBar(
                 Column {
                     // Full Name Text
                     Text(
-                        text = userData.firstWord,
+                        text = "Delon Nazara",
                         fontSize = 16.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -163,7 +164,7 @@ fun SideBar(
 
                     // Student Id Text
                     Text(
-                        text = userData.fullName,
+                        text = "221401073",
                         fontSize = 14.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),

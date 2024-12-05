@@ -166,6 +166,11 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
+    fun logout() {
+        _userAuthState.value = null
+        authentication.signOut()
+    }
+
     fun clearErrorState() {
         _errorEmailState.value = null
         _errorPasswordState.value = null

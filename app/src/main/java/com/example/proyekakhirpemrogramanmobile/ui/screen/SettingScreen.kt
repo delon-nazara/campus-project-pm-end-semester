@@ -48,7 +48,8 @@ import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
 @Composable
 fun SettingScreen(
     userData: UserModel = UserModel(),
-    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+    temp: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -90,7 +91,7 @@ fun SettingScreen(
                 Profile(userData = userData)
                 MyClass()
                 SettingList()
-                Logout()
+                Logout(temp)
             }
         }
     }
@@ -228,12 +229,12 @@ fun SettingListItem(setting: SettingModel) {
 }
 
 @Composable
-fun Logout() {
+fun Logout(temp: () -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .clickable {  }
+            .clickable { temp() }
             .fillMaxWidth()
             .background(
                 color = colorResource(R.color.light_blue),

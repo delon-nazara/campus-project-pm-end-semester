@@ -47,10 +47,10 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 
 @Preview
 @Composable
-fun ModuleDetailScreen() {
+fun ModuleDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = Menu.SCHEDULE
+    val selectedMenu = Menu.MODULE
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -58,7 +58,8 @@ fun ModuleDetailScreen() {
             SideBar(
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                selectedMenu = selectedMenu,
+                navigateTo = navigateTo
             )
         }
     ) {
@@ -66,7 +67,8 @@ fun ModuleDetailScreen() {
             topBar = {
                 TopBar(
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->

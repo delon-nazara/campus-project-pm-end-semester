@@ -51,7 +51,8 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Composable
 fun ModuleScreen(
     userData: UserModel = UserModel(),
-    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+    temp: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -89,7 +90,7 @@ fun ModuleScreen(
                     .padding(bottom = 16.dp)
             ) {
                 Title(title = stringResource(R.string.sidebar_module))
-                ModuleList()
+                ModuleList(temp)
             }
         }
     }
@@ -97,7 +98,7 @@ fun ModuleScreen(
 
 
 @Composable
-fun ModuleList() {
+fun ModuleList(temp: () -> Unit = {}) {
     if (listModule.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -152,16 +153,16 @@ fun ModuleList() {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(listModule) { item ->
-                ModuleListItem(item)
+                ModuleListItem(item, temp)
             }
         }
     }
 }
 
 @Composable
-fun ModuleListItem(item : ModuleModel) {
+fun ModuleListItem(item : ModuleModel, temp: () -> Unit = {}) {
     Card(
-        onClick = {},
+        onClick = { temp() },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),

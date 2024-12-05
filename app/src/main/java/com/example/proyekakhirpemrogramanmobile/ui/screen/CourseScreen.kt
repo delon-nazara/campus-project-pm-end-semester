@@ -51,7 +51,8 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Composable
 fun CourseScreen(
     userData: UserModel = UserModel(),
-    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+    temp: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -89,14 +90,14 @@ fun CourseScreen(
                     .padding(bottom = 16.dp)
             ) {
                 Title(title = stringResource(R.string.sidebar_course))
-                CourseList()
+                CourseList(temp)
             }
         }
     }
 }
 
 @Composable
-fun CourseList() {
+fun CourseList(temp: () -> Unit) {
     if (listCourse.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -151,16 +152,16 @@ fun CourseList() {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(listCourse) { item ->
-                CourseListItem(item)
+                CourseListItem(item, temp)
             }
         }
     }
 }
 
 @Composable
-fun CourseListItem(item : CourseModel) {
+fun CourseListItem(item : CourseModel, temp: () -> Unit) {
     Card(
-        onClick = {},
+        onClick = { temp() },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),
