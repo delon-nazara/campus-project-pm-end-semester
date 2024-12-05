@@ -1,6 +1,5 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen.Voting
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.domain.Voting.Vote
 import com.example.proyekakhirpemrogramanmobile.domain.Voting.VoteList
