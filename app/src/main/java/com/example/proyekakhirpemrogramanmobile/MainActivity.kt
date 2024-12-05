@@ -4,11 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.proyekakhirpemrogramanmobile.ui.screen.VotingList.VotingListScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.VotingList.VotingListViewModel
 import com.example.proyekakhirpemrogramanmobile.ui.theme.ProyekAkhirPemrogramanMobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,19 +16,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyekAkhirPemrogramanMobileTheme {
-                Scaffold { innerPadding ->
-                    Greeting(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                Testing()
             }
         }
     }
 }
 
 @Composable
-fun Greeting (
-    modifier: Modifier = Modifier
-) {
-    Text("Hello World!")
+fun Testing(viewModel: VotingListViewModel = viewModel()) {
+    VotingListScreen()
 }
