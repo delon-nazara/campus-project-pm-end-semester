@@ -1,6 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen.Voting
 
-import androidx.compose.foundation.clickable
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,65 +10,70 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun VotingScreen() {
-    val options = listOf("Option 1", "Option 2", "Option 3")
-    val votes = remember { mutableStateListOf(0, 0, 0) }
-    var selectedOption by remember { mutableStateOf<Int?>(null) }
+fun VotingScreen(
+    viewModel: VotingViewModel = viewModel()
+) {
+    val vote = viewModel.votes.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text("Vote for your favorite option:", style = MaterialTheme.typography.bodyMedium)
-
-        options.forEachIndexed { index, option ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = selectedOption == index,
-                    onClick = { selectedOption = index }
+    Scaffold (
+        topBar = {
+            TopAppBar(title = { Text("Vote your voice")})
+        }
+    ){ paddingValues ->
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp)
+        ){
+            val data = vote.value
+            if (data != null) {
+                Text(
+                    text = data.title,
+                    style = MaterialTheme.typography.titleLarge
                 )
-                Text(option, modifier = Modifier.clickable { selectedOption = index })
+                Spacer(modifier = Modifier.height(16.dp))
+                data.options.forEach { option ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = option.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "Votes: ${option.count}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Button(
+                            onClick = { viewModel.updateVote(option.name) }
+                        ) {
+                            Text("Vote")
+                        }
+                    }
+                }
+            } else {
+                Text("Loading...", style = MaterialTheme.typography.bodyMedium)
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                selectedOption?.let { votes[it]++ }
-            },
-            enabled = selectedOption != null
-        ) {
-            Text("Submit Vote")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("Current Votes:")
-        options.forEachIndexed { index, option ->
-            Text("$option: ${votes[index]} votes")
         }
     }
 }

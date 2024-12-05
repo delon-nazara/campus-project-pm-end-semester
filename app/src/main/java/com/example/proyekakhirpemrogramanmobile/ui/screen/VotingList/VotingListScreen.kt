@@ -2,13 +2,10 @@ package com.example.proyekakhirpemrogramanmobile.ui.screen.VotingList
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,10 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,8 +26,6 @@ fun VotingListScreen(
 ) {
     val voteList = viewModel.voteList.collectAsState()
 
-    Log.d("VotingListScreen", "Vote list content: ${voteList.value}")
-
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Voting Events") })
@@ -41,8 +34,8 @@ fun VotingListScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues) // Use padding values here
-                .padding(16.dp) // Add additional padding if needed
+                .padding(paddingValues)
+                .padding(16.dp)
         ) {
             voteList.value.forEach { event ->
                 Card(
