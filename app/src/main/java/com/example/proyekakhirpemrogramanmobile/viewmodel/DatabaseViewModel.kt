@@ -1,5 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.util.formatName
@@ -109,7 +110,7 @@ class DatabaseViewModel : ViewModel() {
                     onUserNotExist()
                 }
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
                 showLoading(false)
                 onFailure()
             }
@@ -117,6 +118,10 @@ class DatabaseViewModel : ViewModel() {
 
     private fun updateUserState(state: UserModel?) {
         _userDataState.value = state
+    }
+
+    fun logout() {
+        _userDataState.value = null
     }
 
 }

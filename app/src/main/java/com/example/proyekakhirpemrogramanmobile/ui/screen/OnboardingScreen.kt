@@ -203,7 +203,9 @@ fun OnboardingScreen(
 
         if (loadingState) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(72.dp)
             )
         }
     }

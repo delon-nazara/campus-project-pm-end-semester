@@ -14,6 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
@@ -43,13 +45,14 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
+import kotlin.math.log
 
 @Preview
 @Composable
 fun SettingScreen(
     userData: UserModel = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> },
-    temp: () -> Unit = {}
+    logout: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -91,7 +94,7 @@ fun SettingScreen(
                 Profile(userData = userData)
                 MyClass()
                 SettingList()
-                Logout(temp)
+                Logout(logout)
             }
         }
     }
@@ -115,14 +118,14 @@ fun Profile(userData: UserModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Delon Nazara",
+                text = userData.fullName,
                 lineHeight = 24.sp,
                 fontSize = 20.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "221401073",
+                text = userData.studentId,
                 fontSize = 16.sp,
                 fontFamily = Poppins,
                 fontStyle = FontStyle.Italic,
@@ -229,28 +232,28 @@ fun SettingListItem(setting: SettingModel) {
 }
 
 @Composable
-fun Logout(temp: () -> Unit = {}) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .clickable { temp() }
-            .fillMaxWidth()
-            .background(
-                color = colorResource(R.color.light_blue),
-                shape = RoundedCornerShape(16.dp)
-            )
+fun Logout(logout: () -> Unit = {}) {
+    Button(
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(R.color.light_blue),
+            contentColor = colorResource(R.color.black)
+        ),
+        shape = RoundedCornerShape(16.dp),
+        onClick = { logout() },
+        modifier = Modifier.fillMaxWidth()
     ) {
         Icon(
             painterResource(R.drawable.logout_icon),
             contentDescription = "Logout icon",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .padding(end = 12.dp)
+                .size(24.dp)
         )
         Text(
             text = stringResource(R.string.logout),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(vertical = 8.dp)
         )
     }
 }

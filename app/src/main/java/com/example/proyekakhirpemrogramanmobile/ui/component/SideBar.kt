@@ -36,15 +36,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
-import com.google.firebase.firestore.auth.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -90,7 +87,7 @@ fun SideBar(
                         }
                     ) {
                         Icon(
-                            painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+                            painter = painterResource(R.drawable.close_icon),
                             contentDescription = "Close icon",
                             tint = colorResource(R.color.white),
                             modifier = Modifier.size(30.dp)
@@ -140,10 +137,9 @@ fun SideBar(
                 Spacer(modifier = Modifier.width(24.dp))
 
                 // Profile Picture
-                Icon(
-                    painter = painterResource(R.drawable.person_icon),
+                Image(
+                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
                     contentDescription = "Profile picture",
-                    tint = colorResource(R.color.white),
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
@@ -154,7 +150,7 @@ fun SideBar(
                 Column {
                     // Full Name Text
                     Text(
-                        text = "Delon Nazara",
+                        text = userData.firstWord,
                         fontSize = 16.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -164,7 +160,7 @@ fun SideBar(
 
                     // Student Id Text
                     Text(
-                        text = "221401073",
+                        text = userData.studentId,
                         fontSize = 14.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),

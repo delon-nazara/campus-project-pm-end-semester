@@ -311,8 +311,9 @@ fun MainApp(context: Context) {
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 },
-                temp = {
+                logout = {
                     authenticationViewModel.logout()
+                    databaseViewModel.logout()
                     navigateTo(Route.ONBOARDING_SCREEN.name, true)
                 }
             )
