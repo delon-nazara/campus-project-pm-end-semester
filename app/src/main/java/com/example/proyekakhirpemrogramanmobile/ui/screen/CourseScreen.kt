@@ -38,8 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listCourse
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -47,26 +49,34 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 
 @Preview
 @Composable
-fun CourseScreen() {
+fun CourseScreen(
+    userData: UserModel = UserModel(),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+    temp: () -> Unit = {}
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_course
+    val selectedMenu = Menu.COURSE
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                selectedMenu = selectedMenu,
+                navigateTo = navigateTo
             )
         }
     ) {
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->
@@ -80,14 +90,14 @@ fun CourseScreen() {
                     .padding(bottom = 16.dp)
             ) {
                 Title(title = stringResource(R.string.sidebar_course))
-                CourseList()
+                CourseList(temp)
             }
         }
     }
 }
 
 @Composable
-fun CourseList() {
+fun CourseList(temp: () -> Unit) {
     if (listCourse.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -142,16 +152,16 @@ fun CourseList() {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(listCourse) { item ->
-                CourseListItem(item)
+                CourseListItem(item, temp)
             }
         }
     }
 }
 
 @Composable
-fun CourseListItem(item : CourseModel) {
+fun CourseListItem(item : CourseModel, temp: () -> Unit) {
     Card(
-        onClick = {},
+        onClick = { temp() },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),

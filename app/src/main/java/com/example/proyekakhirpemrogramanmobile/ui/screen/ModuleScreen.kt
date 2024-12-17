@@ -38,8 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listModule
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ModuleModel
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -47,26 +49,34 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 
 @Preview
 @Composable
-fun ModuleScreen() {
+fun ModuleScreen(
+    userData: UserModel = UserModel(),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+    temp: () -> Unit = {}
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_module
+    val selectedMenu = Menu.MODULE
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                selectedMenu = selectedMenu,
+                navigateTo = navigateTo
             )
         }
     ) {
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->
@@ -80,7 +90,7 @@ fun ModuleScreen() {
                     .padding(bottom = 16.dp)
             ) {
                 Title(title = stringResource(R.string.sidebar_module))
-                ModuleList()
+                ModuleList(temp)
             }
         }
     }
@@ -88,7 +98,7 @@ fun ModuleScreen() {
 
 
 @Composable
-fun ModuleList() {
+fun ModuleList(temp: () -> Unit = {}) {
     if (listModule.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -143,16 +153,16 @@ fun ModuleList() {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(listModule) { item ->
-                ModuleListItem(item)
+                ModuleListItem(item, temp)
             }
         }
     }
 }
 
 @Composable
-fun ModuleListItem(item : ModuleModel) {
+fun ModuleListItem(item : ModuleModel, temp: () -> Unit = {}) {
     Card(
-        onClick = {},
+        onClick = { temp() },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),

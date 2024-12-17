@@ -292,6 +292,7 @@ fun SetupProfileScreen(
                     // Finish Button
                     TextButton(
                         onClick = { onFinishButtonClicked(fullName, studentId, gender) },
+                        enabled = !loadingState,
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         modifier = Modifier

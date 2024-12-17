@@ -1,6 +1,9 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -164,6 +167,12 @@ class AuthenticationViewModel : ViewModel() {
             _errorGenderState.value = null
             return true
         }
+    }
+
+    fun logout() {
+        clearErrorState()
+        updateUserState(null)
+        authentication.signOut()
     }
 
     fun clearErrorState() {

@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
@@ -23,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,35 +36,47 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSetting
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.SettingModel
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
+import kotlin.math.log
 
 @Preview
 @Composable
-fun SettingScreen() {
+fun SettingScreen(
+    userData: UserModel = UserModel(),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+    logout: () -> Unit = {}
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_setting
+    val selectedMenu = Menu.SETTING
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                selectedMenu = selectedMenu,
+                navigateTo = navigateTo
             )
         }
     ) {
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->
@@ -75,40 +91,41 @@ fun SettingScreen() {
                     .verticalScroll(rememberScrollState())
             ) {
                 Title(title = stringResource(R.string.sidebar_setting))
-                Profile()
+                Profile(userData = userData)
                 MyClass()
                 SettingList()
-                Logout()
+                Logout(logout)
             }
         }
     }
 }
 
 @Composable
-fun Profile() {
+fun Profile(userData: UserModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(R.drawable.person_icon),
+            painter = painterResource(setImageBasedLetter(userData.firstLetter)),
             contentDescription = "Profile picture",
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 16.dp, end = 20.dp)
                 .size(72.dp)
+                .clip(CircleShape)
         )
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Delon Nazara",
+                text = userData.fullName,
                 lineHeight = 24.sp,
                 fontSize = 20.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "221401073",
+                text = userData.studentId,
                 fontSize = 16.sp,
                 fontFamily = Poppins,
                 fontStyle = FontStyle.Italic,
@@ -215,28 +232,28 @@ fun SettingListItem(setting: SettingModel) {
 }
 
 @Composable
-fun Logout() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .clickable {  }
-            .fillMaxWidth()
-            .background(
-                color = colorResource(R.color.light_blue),
-                shape = RoundedCornerShape(16.dp)
-            )
+fun Logout(logout: () -> Unit = {}) {
+    Button(
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(R.color.light_blue),
+            contentColor = colorResource(R.color.black)
+        ),
+        shape = RoundedCornerShape(16.dp),
+        onClick = { logout() },
+        modifier = Modifier.fillMaxWidth()
     ) {
         Icon(
             painterResource(R.drawable.logout_icon),
             contentDescription = "Logout icon",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .padding(end = 12.dp)
+                .size(24.dp)
         )
         Text(
             text = stringResource(R.string.logout),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(vertical = 8.dp)
         )
     }
 }

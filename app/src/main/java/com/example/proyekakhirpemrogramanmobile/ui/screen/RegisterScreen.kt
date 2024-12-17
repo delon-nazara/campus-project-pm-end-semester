@@ -254,6 +254,7 @@ fun RegisterScreen(
                     // Top Button
                     TextButton(
                         onClick = { onRegisterButtonClicked(email, password) },
+                        enabled = !loadingState,
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         modifier = Modifier
@@ -292,6 +293,7 @@ fun RegisterScreen(
                     // Bottom Button
                     TextButton(
                         onClick = onLoginButtonClicked,
+                        enabled = !loadingState,
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
                         modifier = Modifier

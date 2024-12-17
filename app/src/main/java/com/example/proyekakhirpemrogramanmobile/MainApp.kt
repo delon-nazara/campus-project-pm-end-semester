@@ -11,11 +11,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
+import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleDetailScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ScheduleScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.SettingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
@@ -56,8 +66,35 @@ fun MainApp(context: Context) {
     val startDestination = Route.ONBOARDING_SCREEN.name
 
     LaunchedEffect(Unit) {
-        databaseViewModel.cloudinaryInitialization(context)
-
+        if (userAuthState != null) {
+            databaseViewModel.checkUserFromDatabase(
+                userId = userAuthState!!.uid,
+                showLoading = { state ->
+                    loadingViewModel.showLoading(state)
+                },
+                onUserExist = {
+                    databaseViewModel.getUserFromDatabase(
+                        userId = userAuthState!!.uid,
+                        showLoading = { state ->
+                            loadingViewModel.showLoading(state)
+                        },
+                        onSuccess = {
+                            navigateTo(Route.HOME_SCREEN.name, true)
+                        },
+                        onFailure = {
+                            showToast(context, "Proses masuk gagal, coba kembali")
+                        }
+                    )
+                },
+                onUserNotExist = {
+                    authenticationViewModel.clearErrorState()
+                    navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
+                },
+                onFailure = {
+                    showToast(context, "Proses masuk gagal, coba kembali")
+                }
+            )
+        }
     }
 
     NavHost(
@@ -67,6 +104,7 @@ fun MainApp(context: Context) {
         // Route Onboarding Screen
         composable(Route.ONBOARDING_SCREEN.name) {
             OnboardingScreen(
+                loadingState = loadingState,
                 onStartButtonClicked = {
                     navigateTo(Route.LOGIN_SCREEN.name, false)
                 }
@@ -90,6 +128,9 @@ fun MainApp(context: Context) {
                         onSuccess = { userId ->
                             databaseViewModel.checkUserFromDatabase(
                                 userId = userId,
+                                showLoading = { state ->
+                                    loadingViewModel.showLoading(state)
+                                },
                                 onUserExist = {
                                     databaseViewModel.getUserFromDatabase(
                                         userId = userId,
@@ -189,150 +230,109 @@ fun MainApp(context: Context) {
 
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
-            HomeScreen()
+            HomeScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
         }
 
-        // ===========================
-        //      FINAL SECTION END
-        // ===========================
+        // Route Schedule Screen
+        composable(Route.SCHEDULE_SCREEN.name) {
+            ScheduleScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
 
-//        coroutineScope.launch {
-//            if (userAuthState != null) {
-//                if (databaseViewModel.userExistInDatabase(userAuthState!!.uid)) {
-//                    navController.navigate("home_screen") {
-//                        popUpTo(0) {
-//                            inclusive = true
-//                        }
-//                    }
-//                } else {
-//                    navController.navigate("setup_profile_screen") {
-//                        popUpTo(0) {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        composable("base_screen") {
-//            BaseScreen(
-//                onRegisterScreenButton = {
-//                    navController.navigate("register_screen") {
-//                        popUpTo("register_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                },
-//                onLoginScreenButton = {
-//                    navController.navigate("login_screen") {
-//                        popUpTo("login_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//        composable("register_screen") {
-//            RegisterScreen(
-//                onRegisterButtonClicked = { email, password ->
-//                    if (email.isEmpty() or password.isEmpty()) {
-//                        showToast(context, "Email or password cannot be empty")
-//                    } else {
-//                        coroutineScope.launch {
-//                            val result = authenticationViewModel.register(email, password)
-//                            if (result == "Successful") {
-//                                navController.navigate("setup_profile_screen") {
-//                                    popUpTo(0) {
-//                                        inclusive = true
-//                                    }
-//                                }
-//                            }
-//                            showToast(context, result)
-//                        }
-//                    }
-//                },
-//                onLoginScreenButtonClicked = {
-//                    navController.navigate("login_screen") {
-//                        popUpTo("login_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                },
-//                onBaseScreenButtonClicked = {
-//                    navController.navigate("base_screen") {
-//                        popUpTo("base_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//        composable("login_screen") {
-//            LoginScreen(
-//                onLoginButtonClicked = { email, password ->
-//                    if (email.isEmpty() or password.isEmpty()) {
-//                        showToast(context, "Email or password cannot be empty")
-//                    } else {
-//                        coroutineScope.launch {
-//                            val result = authenticationViewModel.login(email, password)
-//                            if (result == "Successful") {
-//                                navController.navigate("home_screen") {
-//                                    popUpTo(0) {
-//                                        inclusive = true
-//                                    }
-//                                }
-//                            }
-//                            showToast(context, result)
-//                        }
-//                    }
-//                },
-//                onRegisterScreenButtonClicked = {
-//                    navController.navigate("register_screen") {
-//                        popUpTo("register_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                },
-//                onBaseScreenButtonClicked = {
-//                    navController.navigate("base_screen") {
-//                        popUpTo("base_screen") {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//        composable("setup_profile_screen") {
-//            SetupProfileScreen(
-//                onSetupProfileButtonClicked = { fullName, studentId -> // todo
-//                    coroutineScope.launch {
-//                        val result = databaseViewModel.addUserToDatabase(userAuthState!!, fullName, studentId)
-//                        if (result == "Successful") {
-//                            navController.navigate("home_screen") {
-//                                popUpTo(0) {
-//                                    inclusive = true
-//                                }
-//                            }
-//                        }
-//                        showToast(context, result)
-//                    }
-//                }
-//            )
-//        }
-//        composable("home_screen") {
-//            HomeScreen(
-//                imageUrl = databaseViewModel.getImageUrlFromCloudinary(), // todo
-//                email = userAuthState?.email,
-//                onLogoutButtonClicked = {
-//                    authenticationViewModel.logout()
-//                    navController.navigate("base_screen") {
-//                        popUpTo(0) {
-//                            inclusive = true
-//                        }
-//                    }
-//                    showToast(context, "Successful")
-//                }
-//            )
-//        }
+        // Route Course Screen
+        composable(Route.COURSE_SCREEN.name) {
+            CourseScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
+                temp = {
+                    navigateTo(Route.COURSE_DETAIL_SCREEN.name, false)
+                }
+            )
+        }
+
+        // Route Task Screen
+        composable(Route.TASK_SCREEN.name) {
+            TaskScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Module Screen
+        composable(Route.MODULE_SCREEN.name) {
+            ModuleScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
+                temp = {
+                    navigateTo(Route.MODULE_DETAIL_SCREEN.name, false)
+                }
+            )
+        }
+
+        // Route Announcement Screen
+        composable(Route.ANNOUNCEMENT_SCREEN.name) {
+            AnnouncementScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Tool Screen
+        composable(Route.TOOL_SCREEN.name) {
+            ToolScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Setting Screen
+        composable(Route.SETTING_SCREEN.name) {
+            SettingScreen(
+                userData = userDataState!!,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
+                logout = {
+                    authenticationViewModel.logout()
+                    databaseViewModel.logout()
+                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
+                }
+            )
+        }
+
+        composable(Route.COURSE_DETAIL_SCREEN.name) {
+            CourseDetailScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        composable(Route.MODULE_DETAIL_SCREEN.name) {
+            ModuleDetailScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
     }
-
 }

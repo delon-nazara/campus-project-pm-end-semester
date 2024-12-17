@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.generalInformationData
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.taskListData
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.learningModuleData
@@ -51,10 +52,10 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 
 @Preview
 @Composable
-fun CourseDetailScreen() {
+fun CourseDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_course
+    val selectedMenu = Menu.COURSE
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -62,7 +63,8 @@ fun CourseDetailScreen() {
             SideBar(
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu
+                selectedMenu = selectedMenu,
+                navigateTo = navigateTo
             )
         }
     ) {
@@ -70,7 +72,8 @@ fun CourseDetailScreen() {
             topBar = {
                 TopBar(
                     coroutineScope = coroutineScope,
-                    drawerState = drawerState
+                    drawerState = drawerState,
+                    navigateTo = navigateTo
                 )
             }
         ) { contentPadding ->

@@ -53,7 +53,6 @@ android {
 }
 
 dependencies {
-
     // Default Library
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,13 +80,6 @@ dependencies {
     implementation(libs.google.firebase.auth.ktx)
     implementation(libs.firebase.firestore)
 
-    // Cloudinary Library
-    implementation(libs.cloudinary.android)
-
-    // Dotenv Kotlin Library
-    implementation(libs.dotenv.kotlin)
-
     // Coil Library
     implementation(libs.coil.compose)
-
 }

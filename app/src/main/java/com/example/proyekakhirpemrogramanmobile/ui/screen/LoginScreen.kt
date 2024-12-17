@@ -255,6 +255,7 @@ fun LoginScreen(
                     // Top Button
                     TextButton(
                         onClick = { onLoginButtonClicked(email, password) },
+                        enabled = !loadingState,
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
                         modifier = Modifier
@@ -293,6 +294,7 @@ fun LoginScreen(
                     // Bottom Button
                     TextButton(
                         onClick = onRegisterButtonClicked,
+                        enabled = !loadingState,
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.very_light_blue)),
                         modifier = Modifier

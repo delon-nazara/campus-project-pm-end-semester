@@ -1,5 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -35,26 +37,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listMenu
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun SideBarPreview() {
-    SideBar(
-        coroutineScope = rememberCoroutineScope(),
-        drawerState = rememberDrawerState(DrawerValue.Closed),
-        selectedMenu = R.string.sidebar_home
-    )
-}
-
-@Composable
 fun SideBar(
-    coroutineScope: CoroutineScope,
-    drawerState: DrawerState,
-    selectedMenu: Int,
+    userData: UserModel = UserModel(),
+    selectedMenu: Menu = Menu.HOME,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     ModalDrawerSheet{
         Column(
@@ -118,12 +116,11 @@ fun SideBar(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             ){
-                listMenu.forEach { menu ->
+                Menu.entries.forEach { menu ->
                     MenuItem(
-                        menuIcon = menu.icon,
-                        menuText = menu.name,
-                        isSelected = menu.name == selectedMenu,
-                        onClicked = {}
+                        currentMenu = menu,
+                        selectedMenu = selectedMenu,
+                        navigateTo = navigateTo
                     )
                 }
             }
@@ -134,17 +131,18 @@ fun SideBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(75.dp)
-                    .clickable {  }
+                    .clickable { navigateTo(Route.SETTING_SCREEN.name, false) }
                     .background(colorResource(R.color.very_dark_blue))
             ) {
                 Spacer(modifier = Modifier.width(24.dp))
 
                 // Profile Picture
-                Icon(
-                    painter = painterResource(R.drawable.person_icon),
+                Image(
+                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
                     contentDescription = "Profile picture",
-                    tint = colorResource(R.color.white),
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -152,7 +150,7 @@ fun SideBar(
                 Column {
                     // Full Name Text
                     Text(
-                        text = "Delon Nazara",  // todo
+                        text = userData.firstWord,
                         fontSize = 16.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -162,7 +160,7 @@ fun SideBar(
 
                     // Student Id Text
                     Text(
-                        text = "221401073", // todo
+                        text = userData.studentId,
                         fontSize = 14.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -175,22 +173,21 @@ fun SideBar(
 
 @Composable
 fun MenuItem(
-    menuIcon: Int,
-    menuText: Int,
-    isSelected: Boolean,
-    onClicked: () -> Unit
+    currentMenu: Menu,
+    selectedMenu: Menu,
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     Spacer(modifier = Modifier.height(5.dp))
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clickable { onClicked() }
+            .clickable { navigateTo(currentMenu.destination, false) }
             .height(50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(
-                if (isSelected) {
+                if (currentMenu.title == selectedMenu.title) {
                     colorResource(R.color.dark_blue)
                 } else {
                     colorResource(R.color.very_light_blue)
@@ -201,8 +198,8 @@ fun MenuItem(
 
         // Menu Icon
         Icon(
-            painter = painterResource(menuIcon),
-            contentDescription = "$menuText icon",
+            painter = painterResource(currentMenu.icon),
+            contentDescription = "${currentMenu.title} icon",
             tint = colorResource(R.color.white),
             modifier = Modifier.size(22.dp)
         )
@@ -211,7 +208,7 @@ fun MenuItem(
 
         // Menu Text
         Text(
-            text = stringResource(menuText),
+            text = stringResource(currentMenu.title),
             fontSize = 16.sp,
             textAlign = TextAlign.Start,
             color = Color.White,
