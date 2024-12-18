@@ -3,6 +3,9 @@ package com.example.proyekakhirpemrogramanmobile.ui.component
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,10 +22,9 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 fun Title(
     title: String
 ) {
-    Surface(
+    ElevatedCard(
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-//        shadowElevation = 25.dp, todo
-        color = colorResource(R.color.very_dark_blue),
+        colors = CardDefaults.elevatedCardColors(colorResource(R.color.very_dark_blue)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
@@ -32,7 +34,9 @@ fun Title(
             fontFamily = Poppins,
             fontWeight = FontWeight.SemiBold,
             color = colorResource(R.color.white),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         )
     }
 }

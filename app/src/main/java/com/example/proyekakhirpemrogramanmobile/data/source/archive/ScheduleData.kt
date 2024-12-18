@@ -1,7 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.data.source.archive
 
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleStatus
 
 val listSchedule = listOf(
     ScheduleModel(

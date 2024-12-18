@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
@@ -41,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu

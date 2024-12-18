@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.data.model.archive
+package com.example.proyekakhirpemrogramanmobile.data.model
 
 enum class ScheduleStatus {
     PRESENT,    // perkuliahan diadakan

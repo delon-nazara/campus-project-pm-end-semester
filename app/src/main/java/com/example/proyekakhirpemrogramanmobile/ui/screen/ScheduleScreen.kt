@@ -1,5 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,16 +16,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,8 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
@@ -44,7 +53,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
-import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
+import java.util.Calendar
 
 @Preview
 @Composable
@@ -84,7 +93,7 @@ fun ScheduleScreen(
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal =  16.dp)
+                    .padding(horizontal = 16.dp)
                     .padding(bottom = 16.dp)
             ) {
                 // Title
@@ -102,7 +111,19 @@ fun ScheduleScreen(
 
 @Composable
 fun Date() {
-    val currentDate = formatDate(getCurrentMilliseconds())
+    val calendar = remember { Calendar.getInstance() }
+    var selectedDate by remember { mutableStateOf(formatDate(calendar.timeInMillis)) }
+
+    val datePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, selectedYear, selectedMonth, selectedDay ->
+            calendar.set(selectedYear, selectedMonth, selectedDay)
+            selectedDate = formatDate(calendar.timeInMillis)
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -112,29 +133,32 @@ fun Date() {
         Spacer(modifier = Modifier.width(6.dp))
 
         // Back Icon
-        Icon(
-            painter = painterResource(R.drawable.back_icon),
-            contentDescription = "Back icon",
-            tint = colorResource(R.color.very_dark_blue),
-            modifier = Modifier
-                .size(40.dp)
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
+        IconButton(
+            onClick = {
+                calendar.add(Calendar.DAY_OF_MONTH, -1)
+                selectedDate = formatDate(calendar.timeInMillis)
+            },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.back_icon),
+                contentDescription = "Back icon",
+                tint = colorResource(R.color.very_dark_blue),
+                modifier = Modifier.size(36.dp)
+            )
+        }
 
         // Date
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+        Button(
+            onClick = { datePickerDialog.show() },
+            colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
+            shape = RoundedCornerShape(16.dp),
+            contentPadding = PaddingValues(0.dp),
             modifier = Modifier
                 .weight(1f)
-                .background(
-                    color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(16.dp)
-                )
+                .padding(horizontal = 10.dp)
         ) {
             Text(
-                text = currentDate,
+                text = selectedDate,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -142,16 +166,20 @@ fun Date() {
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
-
         // Next Icon
-        Icon(
-            painter = painterResource(R.drawable.next_icon),
-            contentDescription = "Back icon",
-            tint = colorResource(R.color.very_dark_blue),
-            modifier = Modifier
-                .size(40.dp)
-        )
+        IconButton(
+            onClick = {
+                calendar.add(Calendar.DAY_OF_MONTH, 1)
+                selectedDate = formatDate(calendar.timeInMillis)
+            },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.next_icon),
+                contentDescription = "Next icon",
+                tint = colorResource(R.color.very_dark_blue),
+                modifier = Modifier.size(36.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.width(6.dp))
     }
@@ -160,7 +188,7 @@ fun Date() {
 @Composable
 fun Schedule() {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
     ) {
         // Title
         Row(
@@ -186,8 +214,7 @@ fun Schedule() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
+                    .fillMaxSize()
                     .background(
                         color = colorResource(R.color.light_blue),
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
@@ -214,7 +241,7 @@ fun Schedule() {
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .background(
                         color = colorResource(R.color.light_blue),
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
@@ -245,7 +272,7 @@ fun ScheduleItem(item: ScheduleModel) {
                     },
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
-        ){
+        ) {
             Text(
                 text = item.course,
                 fontSize = 16.sp,
@@ -269,7 +296,7 @@ fun ScheduleItem(item: ScheduleModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.time_icon),
                     contentDescription = "Time icon",
@@ -285,7 +312,7 @@ fun ScheduleItem(item: ScheduleModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.location_icon),
                     contentDescription = "Location icon",
@@ -301,7 +328,7 @@ fun ScheduleItem(item: ScheduleModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.notes_icon),
                     contentDescription = "Notes icon",
