@@ -76,11 +76,27 @@ fun formatDay(milliseconds: Long): String {
 }
 
 fun formatTime(milliseconds: Long): String {
-    val formatter = SimpleDateFormat("HH.mm", Locale.getDefault())
+    val formatter = SimpleDateFormat("HH.mm", Locale("id", "ID"))
     return formatter.format(milliseconds)
 }
 
 fun formatDisplayTime(milliseconds: Long): String {
-    val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    val formatter = SimpleDateFormat("HH:mm:ss", Locale("id", "ID"))
     return formatter.format(milliseconds)
+}
+
+fun formatTimeDifferent(millis: Long): String {
+    return when {
+        millis < 60_000 -> "${millis / 1_000} detik"
+        millis < 3_600_000 -> "${millis / 60_000} menit"
+        millis < 86_400_000 -> "${millis / 3_600_000} jam"
+        millis < 2_592_000_000 -> "${millis / 86_400_000} hari"
+        millis < 31_536_000_000 -> "${millis / 2_592_000_000} bulan"
+        else -> "${millis / 31_536_000_000} tahun"
+    }
+}
+
+fun parseDateAndTime(dateTime: String): Long {
+    val formatter = SimpleDateFormat("dd MMMM yyyy HH.mm", Locale("id", "ID"))
+    return formatter.parse(dateTime)?.time ?: 0
 }

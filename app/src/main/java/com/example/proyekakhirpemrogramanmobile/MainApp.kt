@@ -42,6 +42,7 @@ fun MainApp(context: Context) {
     val databaseViewModel: DatabaseViewModel = viewModel()
     val userState by databaseViewModel.userState.collectAsState()
     val lectureState by databaseViewModel.lectureState.collectAsState()
+    val taskState by databaseViewModel.taskState.collectAsState()
 
     val loadingViewModel: LoadingViewModel = viewModel()
     val loadingState by loadingViewModel.loadingState.collectAsState()
@@ -85,7 +86,7 @@ fun MainApp(context: Context) {
                     )
                 },
                 onUserNotExist = {
-                    authenticationViewModel.clearErrorState()
+                    authenticationViewModel.clearAllErrorState()
                     navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
                 },
                 onFailure = {
@@ -144,7 +145,7 @@ fun MainApp(context: Context) {
                                     )
                                 },
                                 onUserNotExist = {
-                                    authenticationViewModel.clearErrorState()
+                                    authenticationViewModel.clearAllErrorState()
                                     navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
                                 },
                                 onFailure = {
@@ -158,7 +159,7 @@ fun MainApp(context: Context) {
                     )
                 },
                 onRegisterButtonClicked = {
-                    authenticationViewModel.clearErrorState()
+                    authenticationViewModel.clearAllErrorState()
                     navigateTo(Route.REGISTER_SCREEN.name, false)
                 }
             )
@@ -178,7 +179,7 @@ fun MainApp(context: Context) {
                             loadingViewModel.showLoading(state)
                         },
                         onSuccess = {
-                            authenticationViewModel.clearErrorState()
+                            authenticationViewModel.clearAllErrorState()
                             navigateTo(Route.SETUP_PROFILE_SCREEN.name, false)
                         },
                         onFailure = {
@@ -187,7 +188,7 @@ fun MainApp(context: Context) {
                     )
                 },
                 onLoginButtonClicked = {
-                    authenticationViewModel.clearErrorState()
+                    authenticationViewModel.clearAllErrorState()
                     navigateTo(Route.LOGIN_SCREEN.name, false)
                 }
             )
@@ -230,10 +231,10 @@ fun MainApp(context: Context) {
 
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
-            databaseViewModel.getLectureState()
             HomeScreen(
                 userData = userState,
                 lectureData = lectureState,
+                taskData = taskState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -242,7 +243,6 @@ fun MainApp(context: Context) {
 
         // Route Schedule Screen
         composable(Route.SCHEDULE_SCREEN.name) {
-            databaseViewModel.getLectureState()
             ScheduleScreen(
                 userData = userState,
                 lectureData = lectureState,
@@ -271,6 +271,7 @@ fun MainApp(context: Context) {
         composable(Route.TASK_SCREEN.name) {
             TaskScreen(
                 userData = userState,
+                taskData = taskState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }

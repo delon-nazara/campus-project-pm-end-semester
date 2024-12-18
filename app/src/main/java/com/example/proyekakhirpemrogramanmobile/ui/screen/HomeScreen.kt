@@ -40,18 +40,19 @@ import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
 import com.example.proyekakhirpemrogramanmobile.util.formatDay
 import com.example.proyekakhirpemrogramanmobile.util.formatDisplayTime
+import com.example.proyekakhirpemrogramanmobile.util.formatTimeDifferent
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 import kotlinx.coroutines.delay
 
 @Preview
@@ -59,6 +60,7 @@ import kotlinx.coroutines.delay
 fun HomeScreen(
     userData: UserModel? = null,
     lectureData: List<LectureModel> = emptyList(),
+    taskData: List<TaskModel> = emptyList(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -117,12 +119,17 @@ fun HomeScreen(
 
                 // Today Schedule
                 TodaySchedule(
-                    lectureData = lectureData.filter { it.schedule["date"] == currentDate },
+                    lectureData = lectureData.filter {
+                        it.schedule["date"] == currentDate
+                    },
                     modifier = Modifier.weight(1f)
                 )
 
                 // Active Task
                 ActiveTask(
+                    taskData = taskData.filter {
+                        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
+                    },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -240,7 +247,9 @@ fun TodaySchedule(
 }
 
 @Composable
-fun TodayScheduleItem(lecture: LectureModel) {
+fun TodayScheduleItem(
+    lecture: LectureModel
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -257,7 +266,7 @@ fun TodayScheduleItem(lecture: LectureModel) {
                     },
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
-        ){
+        ) {
             Text(
                 text = lecture.course,
                 fontSize = 16.sp,
@@ -281,7 +290,7 @@ fun TodayScheduleItem(lecture: LectureModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.time_icon),
                     contentDescription = "Time icon",
@@ -297,7 +306,7 @@ fun TodayScheduleItem(lecture: LectureModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.location_icon),
                     contentDescription = "Location icon",
@@ -313,7 +322,7 @@ fun TodayScheduleItem(lecture: LectureModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.notes_icon),
                     contentDescription = "Notes icon",
@@ -329,7 +338,10 @@ fun TodayScheduleItem(lecture: LectureModel) {
 }
 
 @Composable
-fun ActiveTask(modifier: Modifier = Modifier) {
+fun ActiveTask(
+    taskData: List<TaskModel> = emptyList(),
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -351,7 +363,7 @@ fun ActiveTask(modifier: Modifier = Modifier) {
             )
         }
 
-        if (listTask.isEmpty()) {
+        if (taskData.isEmpty()) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -389,8 +401,8 @@ fun ActiveTask(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
             ) {
-                items(listTask) { item ->
-                    ActiveTaskItem(item)
+                items(taskData) { task ->
+                    ActiveTaskItem(task)
                 }
             }
         }
@@ -398,7 +410,14 @@ fun ActiveTask(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ActiveTaskItem(item: TaskModel) {
+fun ActiveTaskItem(
+    task: TaskModel
+) {
+    val deadlineDate = "${task.deadline["date"]} ${task.deadline["time"]}"
+    val deadlineMillis = parseDateAndTime(deadlineDate)
+    val currentMillis = getCurrentMilliseconds()
+    val deadline = formatTimeDifferent(deadlineMillis - currentMillis)
+
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
@@ -409,22 +428,23 @@ fun ActiveTaskItem(item: TaskModel) {
             )
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        // Subject
+        // Course
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = item.course,
+                text = task.course,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Icon(
                 painter = painterResource(
-                    when (item.type) {
-                        TaskType.PERSONAL -> R.drawable.person_icon
-                        TaskType.GROUP -> R.drawable.group_icon
+                    when (task.type) {
+                        TaskType.PERSONAL.name -> R.drawable.person_icon
+                        TaskType.GROUP.name -> R.drawable.group_icon
+                        else -> R.drawable.person_icon
                     }
                 ),
                 contentDescription = "Type icon",
@@ -444,7 +464,7 @@ fun ActiveTaskItem(item: TaskModel) {
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = "Deadline ${item.deadline}",
+                text = "Deadline $deadline lagi",
                 fontSize = 14.sp,
             )
         }
@@ -461,7 +481,7 @@ fun ActiveTaskItem(item: TaskModel) {
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = item.title,
+                text = task.title,
                 fontSize = 14.sp,
             )
         }

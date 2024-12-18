@@ -92,8 +92,7 @@ fun ScheduleScreen(
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(16.dp)
             ) {
                 val calendar = remember { Calendar.getInstance() }
                 var selectedDate by remember { mutableStateOf(formatDate(calendar.timeInMillis)) }
@@ -158,8 +157,8 @@ fun Date(
                 contentDescription = "Back icon",
                 tint = colorResource(R.color.very_dark_blue),
                 modifier = Modifier
-                    .padding(start = 6.dp)
                     .size(36.dp)
+                    .padding(horizontal = 2.dp)
             )
         }
 
@@ -189,8 +188,8 @@ fun Date(
                 contentDescription = "Next icon",
                 tint = colorResource(R.color.very_dark_blue),
                 modifier = Modifier
-                    .padding(end = 6.dp)
                     .size(36.dp)
+                    .padding(horizontal = 2.dp)
             )
         }
     }
@@ -269,7 +268,9 @@ fun Schedule(
 }
 
 @Composable
-fun ScheduleItem(lecture: LectureModel) {
+fun ScheduleItem(
+    lecture: LectureModel
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

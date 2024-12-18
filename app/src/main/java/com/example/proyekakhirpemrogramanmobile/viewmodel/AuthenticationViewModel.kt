@@ -1,10 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -49,17 +45,18 @@ class AuthenticationViewModel : ViewModel() {
     ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
             showLoading(true)
-            authentication.createUserWithEmailAndPassword(email, password)
+            authentication
+                .createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     showLoading(false)
-                    updateUserState(result.user)
-                    clearErrorState()
+                    _userAuthState.value = result.user
+                    clearAllErrorState()
                     onSuccess()
                 }
                 .addOnFailureListener { exception ->
                     showLoading(false)
-                    updateUserState(null)
-                    when (exception) {
+                    _userAuthState.value = null
+                        when (exception) {
                         is FirebaseAuthUserCollisionException -> {
                             _errorEmailState.value = "Email telah terdaftar"
                         }
@@ -80,16 +77,17 @@ class AuthenticationViewModel : ViewModel() {
     ) {
         if (isEmailInputValid(email) && isPasswordInputValid(password)) {
             showLoading(true)
-            authentication.signInWithEmailAndPassword(email, password)
+            authentication
+                .signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { result ->
                     showLoading(false)
-                    updateUserState(result.user)
-                    clearErrorState()
+                    _userAuthState.value = result.user
+                    clearAllErrorState()
                     onSuccess(result.user!!.uid)
                 }
                 .addOnFailureListener { exception ->
                     showLoading(false)
-                    updateUserState(null)
+                    _userAuthState.value = null
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             _errorAllState.value = "Email atau kata sandi salah"
@@ -170,13 +168,7 @@ class AuthenticationViewModel : ViewModel() {
         }
     }
 
-    fun logout() {
-        clearErrorState()
-        updateUserState(null)
-        authentication.signOut()
-    }
-
-    fun clearErrorState() {
+    fun clearAllErrorState() {
         _errorEmailState.value = null
         _errorPasswordState.value = null
         _errorFullNameState.value = null
@@ -185,8 +177,10 @@ class AuthenticationViewModel : ViewModel() {
         _errorAllState.value = null
     }
 
-    private fun updateUserState(state: FirebaseUser?) {
-        _userAuthState.value = state
+    fun logout() {
+        clearAllErrorState()
+        _userAuthState.value = null
+        authentication.signOut()
     }
 
 }

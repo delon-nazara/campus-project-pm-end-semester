@@ -2,6 +2,7 @@ package com.example.proyekakhirpemrogramanmobile.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
 import com.example.proyekakhirpemrogramanmobile.util.formatDay
@@ -22,12 +23,16 @@ class DatabaseViewModel : ViewModel() {
     private val database: FirebaseFirestore = Firebase.firestore
     private val userReference = database.collection("user")
     private val lectureReference = database.collection("lecture")
+    private val taskReference = database.collection("task")
 
     private var _userState = MutableStateFlow<UserModel?>(null)
     val userState: StateFlow<UserModel?> = _userState.asStateFlow()
 
     private var _lectureState = MutableStateFlow<List<LectureModel>>(emptyList())
     val lectureState: StateFlow<List<LectureModel>> = _lectureState.asStateFlow()
+
+    private var _taskState = MutableStateFlow<List<TaskModel>>(emptyList())
+    val taskState: StateFlow<List<TaskModel>> = _taskState.asStateFlow()
 
     fun addUserToDatabase(
         userId: String,
@@ -63,16 +68,19 @@ class DatabaseViewModel : ViewModel() {
         )
 
         showLoading(true)
-        userReference.document(userId)
+        userReference
+            .document(userId)
             .set(newUser)
             .addOnSuccessListener {
                 showLoading(false)
                 _userState.value = newUser
+                getAllData()
                 onSuccess()
             }
             .addOnFailureListener {
                 showLoading(false)
                 _userState.value = null
+                deleteAllData()
                 onFailure()
             }
     }
@@ -84,15 +92,19 @@ class DatabaseViewModel : ViewModel() {
         onFailure: () -> Unit
     ) {
         showLoading(true)
-        userReference.document(userId)
+        userReference
+            .document(userId)
             .get()
             .addOnSuccessListener { document ->
                 showLoading(false)
                 _userState.value = document.toObject(UserModel::class.java)
+                getAllData()
                 onSuccess()
             }
             .addOnFailureListener {
                 showLoading(false)
+                _userState.value = null
+                deleteAllData()
                 onFailure()
             }
     }
@@ -105,7 +117,8 @@ class DatabaseViewModel : ViewModel() {
         onFailure: () -> Unit
     ) {
         showLoading(true)
-        userReference.document(userId)
+        userReference
+            .document(userId)
             .get()
             .addOnSuccessListener { document ->
                 showLoading(false)
@@ -121,20 +134,47 @@ class DatabaseViewModel : ViewModel() {
             }
     }
 
-    fun getLectureState() {
+    private fun getLectureData() {
         _userState.value?.coursesId?.let {
             lectureReference
                 .whereIn("courseId", it)
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    _lectureState.value = snapshot.toObjects(LectureModel::class.java)
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        _lectureState.value = snapshot?.toObjects(LectureModel::class.java) ?: emptyList()
+                    } else {
+                        _lectureState.value = emptyList()
+                    }
                 }
         }
     }
 
+    private fun getTaskData() {
+        _userState.value?.coursesId?.let {
+            taskReference
+                .whereIn("courseId", it)
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        _taskState.value = snapshot?.toObjects(TaskModel::class.java) ?: emptyList()
+                    } else {
+                        _taskState.value = emptyList()
+                    }
+                }
+        }
+    }
+
+    private fun getAllData() {
+        getLectureData()
+        getTaskData()
+    }
+
+    private fun deleteAllData() {
+        _lectureState.value = emptyList()
+        _taskState.value = emptyList()
+    }
+
     fun logout() {
         _userState.value = null
-        _lectureState.value = emptyList()
+        deleteAllData()
     }
 
 }
