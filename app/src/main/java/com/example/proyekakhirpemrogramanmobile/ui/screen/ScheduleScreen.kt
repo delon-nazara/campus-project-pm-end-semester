@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,11 +42,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureStatus
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleModel
-import com.example.proyekakhirpemrogramanmobile.data.model.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
@@ -58,7 +56,8 @@ import java.util.Calendar
 @Preview
 @Composable
 fun ScheduleScreen(
-    userData: UserModel? = UserModel(),
+    userData: UserModel? = null,
+    lectureData: List<LectureModel> = emptyList(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -88,7 +87,7 @@ fun ScheduleScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
@@ -96,58 +95,74 @@ fun ScheduleScreen(
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 16.dp)
             ) {
+                val calendar = remember { Calendar.getInstance() }
+                var selectedDate by remember { mutableStateOf(formatDate(calendar.timeInMillis)) }
+                val lectureBasedOnDate = lectureData.filter { it.schedule["date"] == selectedDate }
+
+                val datePickerDialog = DatePickerDialog(
+                    LocalContext.current,
+                    { _, selectedYear, selectedMonth, selectedDay ->
+                        calendar.set(selectedYear, selectedMonth, selectedDay)
+                        selectedDate = (formatDate(calendar.timeInMillis))
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                )
+
                 // Title
-                Title(title = stringResource(R.string.sb_schedule))
+                Title(
+                    title = stringResource(R.string.sb_schedule)
+                )
 
                 // Date and Time
-                Date()
+                Date(
+                    selectedDate = selectedDate,
+                    onBackButtonClicked = {
+                        calendar.add(Calendar.DAY_OF_MONTH, -1)
+                        selectedDate = formatDate(calendar.timeInMillis)
+                    },
+                    onNextButtonClicked = {
+                        calendar.add(Calendar.DAY_OF_MONTH, 1)
+                        selectedDate = formatDate(calendar.timeInMillis)
+                    },
+                    datePickerDialog = datePickerDialog
+                )
 
                 // Today Schedule
-                Schedule()
+                Schedule(
+                    lectureData = lectureBasedOnDate
+                )
             }
         }
     }
 }
 
 @Composable
-fun Date() {
-    val calendar = remember { Calendar.getInstance() }
-    var selectedDate by remember { mutableStateOf(formatDate(calendar.timeInMillis)) }
-
-    val datePickerDialog = DatePickerDialog(
-        LocalContext.current,
-        { _, selectedYear, selectedMonth, selectedDay ->
-            calendar.set(selectedYear, selectedMonth, selectedDay)
-            selectedDate = formatDate(calendar.timeInMillis)
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
-
+fun Date(
+    selectedDate: String,
+    onBackButtonClicked: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    datePickerDialog: DatePickerDialog
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Spacer(modifier = Modifier.width(6.dp))
-
-        // Back Icon
         IconButton(
-            onClick = {
-                calendar.add(Calendar.DAY_OF_MONTH, -1)
-                selectedDate = formatDate(calendar.timeInMillis)
-            },
+            onClick = { onBackButtonClicked() },
         ) {
             Icon(
                 painter = painterResource(R.drawable.back_icon),
                 contentDescription = "Back icon",
                 tint = colorResource(R.color.very_dark_blue),
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier
+                    .padding(start = 6.dp)
+                    .size(36.dp)
             )
         }
 
-        // Date
         Button(
             onClick = { datePickerDialog.show() },
             colors = ButtonDefaults.buttonColors(colorResource(R.color.very_dark_blue)),
@@ -166,27 +181,25 @@ fun Date() {
             )
         }
 
-        // Next Icon
         IconButton(
-            onClick = {
-                calendar.add(Calendar.DAY_OF_MONTH, 1)
-                selectedDate = formatDate(calendar.timeInMillis)
-            },
+            onClick = { onNextButtonClicked() },
         ) {
             Icon(
                 painter = painterResource(R.drawable.next_icon),
                 contentDescription = "Next icon",
                 tint = colorResource(R.color.very_dark_blue),
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier
+                    .padding(end = 6.dp)
+                    .size(36.dp)
             )
         }
-
-        Spacer(modifier = Modifier.width(6.dp))
     }
 }
 
 @Composable
-fun Schedule() {
+fun Schedule(
+    lectureData: List<LectureModel> = emptyList()
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -209,7 +222,7 @@ fun Schedule() {
         }
 
         // Content
-        if (listSchedule.isEmpty()) {
+        if (lectureData.isEmpty()) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -247,8 +260,8 @@ fun Schedule() {
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
             ) {
-                items(listSchedule) { item ->
-                    ScheduleItem(item)
+                items(lectureData) { lecture ->
+                    ScheduleItem(lecture)
                 }
             }
         }
@@ -256,7 +269,7 @@ fun Schedule() {
 }
 
 @Composable
-fun ScheduleItem(item: ScheduleModel) {
+fun ScheduleItem(lecture: LectureModel) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -265,16 +278,17 @@ fun ScheduleItem(item: ScheduleModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = when (item.status) {
-                        ScheduleStatus.PRESENT -> colorResource(R.color.light_green)
-                        ScheduleStatus.UNKNOWN -> colorResource(R.color.light_yellow)
-                        ScheduleStatus.CANCELLED -> colorResource(R.color.light_red)
+                    color = when (lecture.status) {
+                        LectureStatus.PRESENT.name -> colorResource(R.color.light_green)
+                        LectureStatus.UNKNOWN.name -> colorResource(R.color.light_yellow)
+                        LectureStatus.CANCELLED.name -> colorResource(R.color.light_red)
+                        else -> colorResource(R.color.light_yellow)
                     },
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
         ) {
             Text(
-                text = item.course,
+                text = lecture.course,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
@@ -303,7 +317,7 @@ fun ScheduleItem(item: ScheduleModel) {
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = item.time,
+                    text = "${lecture.schedule["time"]}",
                     fontSize = 14.sp
                 )
             }
@@ -319,7 +333,7 @@ fun ScheduleItem(item: ScheduleModel) {
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = item.location,
+                    text = "Ruangan ${lecture.location["class"]}",
                     fontSize = 14.sp
                 )
             }
@@ -335,7 +349,7 @@ fun ScheduleItem(item: ScheduleModel) {
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = item.notes,
+                    text = lecture.notes,
                     fontSize = 14.sp
                 )
             }

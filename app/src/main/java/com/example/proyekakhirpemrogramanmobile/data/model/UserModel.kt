@@ -7,7 +7,7 @@ data class UserModel(
     val firstWord: String = "",
     val studentId: String = "",
     val firstLetter: String = "",
-    val courseId: List<String> = emptyList(),
     val created: Map<String, String> = emptyMap(),
-    val finishedTaskId: List<String> = emptyList(),
+    val coursesId: List<String>? = null,
+    val finishedTasksId: List<String>? = null,
 )
