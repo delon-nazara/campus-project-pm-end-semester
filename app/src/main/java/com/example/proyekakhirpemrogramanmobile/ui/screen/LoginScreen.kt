@@ -85,7 +85,7 @@ fun LoginScreen(
         ) {
             // Title
             Text(
-                text = stringResource(R.string.login_title),
+                text = stringResource(R.string.as_login_title),
                 fontSize = 24.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold,
@@ -127,7 +127,7 @@ fun LoginScreen(
 
                     // Card Title
                     Text(
-                        text = stringResource(R.string.login),
+                        text = stringResource(R.string.as_login),
                         fontSize = 20.sp,
                         fontFamily = Poppins,
                         fontWeight = FontWeight.SemiBold,
@@ -142,7 +142,7 @@ fun LoginScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.email),
+                                text = stringResource(R.string.as_email),
                                 fontSize = 14.sp,
                                 fontFamily = Poppins,
                             )
@@ -189,7 +189,7 @@ fun LoginScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.password),
+                                text = stringResource(R.string.as_password),
                                 fontSize = 14.sp,
                                 fontFamily = Poppins,
                             )
@@ -263,7 +263,7 @@ fun LoginScreen(
                             .height(45.dp)
                     ){
                         Text(
-                            text = stringResource(R.string.login),
+                            text = stringResource(R.string.as_login),
                             fontSize = 18.sp,
                             fontFamily = Poppins,
                             fontWeight = FontWeight.SemiBold,
@@ -282,7 +282,7 @@ fun LoginScreen(
 
                     // Navigation Text
                     Text(
-                        text = stringResource(R.string.not_have_account),
+                        text = stringResource(R.string.as_not_have_account),
                         textAlign = TextAlign.Center,
                         fontSize = 18.sp,
                         fontFamily = Poppins,
@@ -302,7 +302,7 @@ fun LoginScreen(
                             .height(45.dp)
                     ){
                         Text(
-                            text = stringResource(R.string.register),
+                            text = stringResource(R.string.as_register),
                             fontSize = 18.sp,
                             fontFamily = Poppins,
                             fontWeight = FontWeight.SemiBold,

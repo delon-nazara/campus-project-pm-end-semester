@@ -86,7 +86,7 @@ fun AnnouncementScreen(
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 20.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_announcement))
+                Title(title = stringResource(R.string.sb_announcement))
                 AnnouncementList()
             }
         }
@@ -108,7 +108,7 @@ fun AnnouncementList() {
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(R.string.as_empty),
+                text = stringResource(R.string.ans_empty),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp,
                 fontFamily = Poppins,

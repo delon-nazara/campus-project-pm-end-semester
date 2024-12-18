@@ -18,6 +18,7 @@ val listCourse = listOf(
         semester = 5,
         image = R.drawable.course_image_2
     ),
+
 //    CourseModel(
 //        course = "Komputasi Paralel dan Terdistribusi",
 //        lecture = "Handrizal S.Si., M.Comp.Sc",

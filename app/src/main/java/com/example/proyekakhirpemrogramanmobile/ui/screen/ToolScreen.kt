@@ -78,7 +78,7 @@ fun ToolScreen(
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 20.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_tool))
+                Title(title = stringResource(R.string.sb_tool))
                 ToolList()
             }
         }

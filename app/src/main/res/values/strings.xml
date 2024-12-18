@@ -4,58 +4,58 @@
     <string name="app_name">Central Class</string>
 
     <!-- Onboarding Screen -->
-    <string name="onboarding_title_1">Selamat datang!</string>
-    <string name="onboarding_description_1">Mari lihat semua yang kamu dapatkan dalam satu aplikasi</string>
-    <string name="onboarding_title_2">Jadwal Perkuliahan</string>
-    <string name="onboarding_description_2">Tetap terinformasi dengan perubahan jadwal yang terjadi</string>
-    <string name="onboarding_title_3">Informasi Tugas</string>
-    <string name="onboarding_description_3">Pantau deadline dan detail tugas agar tidak terlewatkan</string>
-    <string name="onboarding_title_4">Kumpulan Modul</string>
-    <string name="onboarding_description_4">Pelajari kembali materi perkuliahan, kapanpun dan dimanapun</string>
+    <string name="os_title_1">Selamat datang!</string>
+    <string name="os_description_1">Mari lihat semua yang kamu dapatkan dalam satu aplikasi</string>
+    <string name="os_title_2">Jadwal Perkuliahan</string>
+    <string name="os_description_2">Tetap terinformasi dengan perubahan jadwal yang terjadi</string>
+    <string name="os_title_3">Informasi Tugas</string>
+    <string name="os_description_3">Pantau deadline dan detail tugas agar tidak terlewatkan</string>
+    <string name="os_title_4">Kumpulan Modul</string>
+    <string name="os_description_4">Pelajari kembali materi perkuliahan, kapanpun dan dimanapun</string>
 
     <!-- Authentication (Login and Register) Screen -->
-    <string name="login_title">Selamat Datang!</string>
-    <string name="register_title">Daftar Sekarang!</string>
-    <string name="login">Masuk</string>
-    <string name="register">Daftar</string>
-    <string name="email">Email</string>
-    <string name="password">Kata Sandi</string>
-    <string name="not_have_account">Belum punya akun?\nDaftar sekarang!</string>
-    <string name="already_have_account">Sudah punya akun?\nMasuk sekarang!</string>
+    <string name="as_login_title">Selamat Datang!</string>
+    <string name="as_register_title">Daftar Sekarang!</string>
+    <string name="as_login">Masuk</string>
+    <string name="as_register">Daftar</string>
+    <string name="as_email">Email</string>
+    <string name="as_password">Kata Sandi</string>
+    <string name="as_not_have_account">Belum punya akun?\nDaftar sekarang!</string>
+    <string name="as_already_have_account">Sudah punya akun?\nMasuk sekarang!</string>
 
-    <!-- Authentication (Login and Register) Error -->
-    <string name="email_empty">Email tidak boleh kosong</string>
+    <!-- Setup Profile Screen -->
+    <string name="sps_title">Mari Berkenalan!</string>
+    <string name="sps_subtitle">Lengkapi Data Dirimu</string>
+    <string name="sps_full_name">Nama Lengkap</string>
+    <string name="sps_student_id">NIM</string>
+    <string name="sps_finish">Selesai</string>
 
-    <!-- Setup (Profile and Class) Screen -->
-    <string name="setup_profile_title">Mari Berkenalan!</string>
-    <string name="setup_profile_subtitle">Lengkapi Data Dirimu</string>
-    <string name="full_name">Nama Lengkap</string>
-    <string name="student_id">NIM</string>
-    <string name="finish">Selesai</string>
+    <!-- Choose Course Screen -->
 
-    <!-- SideBar -->
-    <string name="sidebar_home">Beranda</string>
-    <string name="sidebar_schedule">Jadwal</string>
-    <string name="sidebar_course">Mata Kuliah</string>
-    <string name="sidebar_task">Tugas</string>
-    <string name="sidebar_module">Modul</string>
-    <string name="sidebar_announcement">Pengumuman</string>
-    <string name="sidebar_tool">Alat</string>
-    <string name="sidebar_setting">Pengaturan</string>
+    <!-- Side Bar -->
+    <string name="sb_home">Beranda</string>
+    <string name="sb_schedule">Jadwal</string>
+    <string name="sb_course">Mata Kuliah</string>
+    <string name="sb_task">Tugas</string>
+    <string name="sb_module">Modul</string>
+    <string name="sb_announcement">Pengumuman</string>
+    <string name="sb_tool">Alat</string>
+    <string name="sb_admin">Admin</string>
+    <string name="sb_setting">Pengaturan</string>
 
     <!-- Home Screen -->
-    <string name="home_today_schedule">Jadwal Hari ini</string>
-    <string name="home_today_schedule_empty">Tidak ada jadwal perkuliahan hari ini.\nKamu bisa melanjutkan tidurmu!</string>
-    <string name="home_active_task">Tugas Aktif</string>
-    <string name="home_active_task_empty">Tidak ada tugas saat ini.\nKamu bisa bermain game sekarang!</string>
+    <string name="hs_today_schedule">Jadwal Hari ini</string>
+    <string name="hs_today_schedule_empty">Tidak ada jadwal perkuliahan hari ini.\nKamu bisa melanjutkan tidurmu!</string>
+    <string name="hs_active_task">Tugas Aktif</string>
+    <string name="hs_active_task_empty">Tidak ada tugas aktif saat ini.\nKamu bisa bermain game sekarang!</string>
 
     <!-- Schedule Screen -->
-    <string name="schedule_title">Jadwal Perkuliahan</string>
-    <string name="schedule_empty">Tidak ada jadwal perkuliahan di tanggal ini.\nKamu bisa liburan sepuasnya!</string>
+    <string name="ss_title">Jadwal Perkuliahan</string>
+    <string name="ss_empty">Tidak ada jadwal perkuliahan di tanggal ini.\nKamu bisa liburan sepuasnya!</string>
 
     <!-- Course Screen -->
-    <string name="course_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
-    <string name="course_take_course">Ambil Mata Kuliah</string>
+    <string name="cs_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
+    <string name="cs_take_course">Ambil Mata Kuliah</string>
 
     <!-- Course Detail Screen -->
     <string name="cds_general_information">Informasi Umum</string>
@@ -65,46 +65,45 @@
     <string name="cds_learning_module">Modul Pembelajaran</string>
 
     <!-- Task Screen -->
-    <string name="active_task">Tugas Aktif</string>
-    <string name="past_task">Tugas Lewat</string>
-    <string name="marked_as_done">Tandai Sebagai Selesai</string>
+    <string name="ts_active_task">Tugas Aktif</string>
+    <string name="ts_past_task">Tugas Lewat</string>
+    <string name="ts_task_empty">Tidak ada tugas saat ini.\nKamu bisa bermain game sekarang!</string>
+
+    <!-- Task Detail Screen -->
+    <string name="tds_marked_as_done">Tandai Sebagai Selesai</string>
+
+    <!-- Task Group Screen -->
 
     <!-- Module Screen -->
     <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
     <string name="ms_take_course">Ambil Mata Kuliah</string>
 
+    <!-- Module Detail Screen -->
+
     <!-- Announcement Screen -->
-    <string name="as_empty">Tidak ada pengumuman untuk saat ini!</string>
+    <string name="ans_empty">Tidak ada pengumuman untuk saat ini!</string>
 
     <!-- Tool Screen -->
-    <string name="ts_spin_wheel">Spin Wheel</string>
-    <string name="ts_voting">Voting</string>
+    <string name="tls_spin_wheel">Spin Wheel</string>
+    <string name="tls_voting">Voting</string>
+
+    <!-- Tool Spin Wheel Screen -->
+
+    <!-- Tool Voting Screen -->
+
+    <!-- Admin Screen -->
+
+    <!-- Admin Child Screen -->
 
     <!-- Setting Screen -->
-    <string name="ss_setting">Pengaturan</string>
-    <string name="ss_my_class">Kelas Saya</string>
-    <string name="ss_profile">Profil</string>
-    <string name="ss_account">Akun</string>
-    <string name="ss_notification">Notifikasi</string>
-    <string name="ss_contact">Hubungi Developer</string>
-    <string name="ss_privacy">Privasi dan Keamanan</string>
-    <string name="ss_about">Tentang Aplikasi</string>
-    <string name="ss_logout">Keluar</string>
-
-    <!-- Final Section End -->
-
-    <string name="go_to_base_screen">Go to Base Screen</string>
-    <string name="go_to_register_screen">Go to Register Screen</string>
-    <string name="go_to_login_screen">Go to Login Screen</string>
-
-    <string name="this_is_base_screen">This is Base Screen</string>
-    <string name="this_is_register_screen">This is Register Screen</string>
-    <string name="this_is_login_screen">This is Login Screen</string>
-    <string name="this_is_setup_profile_screen">This is Setup Profile Screen</string>
-    <string name="this_is_home_screen">This is Home Screen</string>
-
-    <string name="logout">Logout</string>
-
-    <string name="display_email">Email: %s</string>
+    <string name="sts_setting">Pengaturan</string>
+    <string name="sts_my_class">Kelas Saya</string>
+    <string name="sts_profile">Profil</string>
+    <string name="sts_account">Akun</string>
+    <string name="sts_notification">Notifikasi</string>
+    <string name="sts_contact">Hubungi Developer</string>
+    <string name="sts_privacy">Privasi dan Keamanan</string>
+    <string name="sts_about">Tentang Aplikasi</string>
+    <string name="sts_logout">Keluar</string>
 
 </resources>

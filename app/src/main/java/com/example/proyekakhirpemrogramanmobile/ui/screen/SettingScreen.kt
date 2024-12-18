@@ -45,7 +45,6 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
-import kotlin.math.log
 
 @Preview
 @Composable
@@ -90,7 +89,7 @@ fun SettingScreen(
                     .padding(bottom = 20.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                Title(title = stringResource(R.string.sidebar_setting))
+                Title(title = stringResource(R.string.sb_setting))
                 Profile(userData = userData)
                 MyClass()
                 SettingList()
@@ -154,7 +153,7 @@ fun MyClass() {
             modifier = Modifier.size(24.dp)
         )
         Text(
-            text = stringResource(R.string.ss_my_class),
+            text = stringResource(R.string.sts_my_class),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
@@ -174,7 +173,7 @@ fun SettingList() {
                 )
         ) {
             Text(
-                text = stringResource(R.string.ss_setting),
+                text = stringResource(R.string.sts_setting),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = colorResource(R.color.white),
@@ -250,7 +249,7 @@ fun Logout(logout: () -> Unit = {}) {
                 .size(24.dp)
         )
         Text(
-            text = stringResource(R.string.logout),
+            text = stringResource(R.string.sts_logout),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 8.dp)

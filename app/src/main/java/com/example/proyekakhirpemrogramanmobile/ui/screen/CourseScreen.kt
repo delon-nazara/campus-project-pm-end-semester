@@ -89,7 +89,7 @@ fun CourseScreen(
                     .padding(horizontal =  16.dp)
                     .padding(bottom = 16.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_course))
+                Title(title = stringResource(R.string.sb_course))
                 CourseList(temp)
             }
         }
@@ -116,7 +116,7 @@ fun CourseList(temp: () -> Unit) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.course_empty),
+                    text = stringResource(R.string.cs_empty),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     fontFamily = Poppins,
@@ -137,7 +137,7 @@ fun CourseList(temp: () -> Unit) {
                     modifier = Modifier.size(28.dp)
                 )
                 Text(
-                    text = stringResource(R.string.course_take_course),
+                    text = stringResource(R.string.cs_take_course),
                     fontSize = 16.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,

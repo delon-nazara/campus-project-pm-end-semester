@@ -88,7 +88,7 @@ fun ScheduleScreen(
                     .padding(bottom = 16.dp)
             ) {
                 // Title
-                Title(title = stringResource(R.string.sidebar_schedule))
+                Title(title = stringResource(R.string.sb_schedule))
 
                 // Date and Time
                 Date()
@@ -172,7 +172,7 @@ fun Schedule() {
                 )
         ) {
             Text(
-                text = stringResource(R.string.schedule_title),
+                text = stringResource(R.string.ss_title),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -202,7 +202,7 @@ fun Schedule() {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.schedule_empty),
+                    text = stringResource(R.string.ss_empty),
                     textAlign = TextAlign.Center,
                     fontFamily = Poppins,
                     fontSize = 14.sp,

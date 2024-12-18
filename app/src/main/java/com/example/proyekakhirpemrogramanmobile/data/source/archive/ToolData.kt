@@ -6,10 +6,10 @@ import com.example.proyekakhirpemrogramanmobile.data.model.archive.ToolModel
 val listTool = listOf(
     ToolModel(
         image = R.drawable.spin_wheel_icon,
-        name = R.string.ts_spin_wheel
+        name = R.string.tls_spin_wheel
     ),
     ToolModel(
         image = R.drawable.voting_icon,
-        name = R.string.ts_voting
+        name = R.string.tls_voting
     )
 )

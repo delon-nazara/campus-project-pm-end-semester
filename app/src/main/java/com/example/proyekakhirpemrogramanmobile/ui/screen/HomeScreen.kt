@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
@@ -168,7 +170,7 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
                 )
         ) {
             Text(
-                text = stringResource(R.string.home_today_schedule),
+                text = stringResource(R.string.hs_today_schedule),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -197,7 +199,7 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.home_today_schedule_empty),
+                    text = stringResource(R.string.hs_today_schedule_empty),
                     textAlign = TextAlign.Center,
                     fontFamily = Poppins,
                     fontSize = 14.sp,
@@ -326,7 +328,7 @@ fun ActiveTask(modifier: Modifier = Modifier) {
                 )
         ) {
             Text(
-                text = stringResource(R.string.home_active_task),
+                text = stringResource(R.string.hs_active_task),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -354,7 +356,7 @@ fun ActiveTask(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.home_active_task_empty),
+                    text = stringResource(R.string.hs_active_task_empty),
                     textAlign = TextAlign.Center,
                     fontFamily = Poppins,
                     fontSize = 14.sp,

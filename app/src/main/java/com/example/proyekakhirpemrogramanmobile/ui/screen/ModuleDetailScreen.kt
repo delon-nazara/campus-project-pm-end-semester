@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -109,7 +111,7 @@ fun ModuleDetailList() {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.course_empty),
+                    text = stringResource(R.string.cs_empty),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     fontFamily = Poppins,
@@ -130,7 +132,7 @@ fun ModuleDetailList() {
                     modifier = Modifier.size(28.dp)
                 )
                 Text(
-                    text = stringResource(R.string.course_take_course),
+                    text = stringResource(R.string.cs_take_course),
                     fontSize = 16.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,

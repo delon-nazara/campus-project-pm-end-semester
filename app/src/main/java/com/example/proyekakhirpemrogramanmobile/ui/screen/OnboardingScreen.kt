@@ -67,26 +67,26 @@ fun OnboardingScreen(
                 when (page) {
                     0 -> OnboardingPage(
                         image = R.drawable.onboarding_image_1,
-                        title = R.string.onboarding_title_1,
-                        description = R.string.onboarding_description_1
+                        title = R.string.os_title_1,
+                        description = R.string.os_description_1
                     )
 
                     1 -> OnboardingPage(
                         image = R.drawable.onboarding_image_2,
-                        title = R.string.onboarding_title_2,
-                        description = R.string.onboarding_description_2
+                        title = R.string.os_title_2,
+                        description = R.string.os_description_2
                     )
 
                     2 -> OnboardingPage(
                         image = R.drawable.onboarding_image_3,
-                        title = R.string.onboarding_title_3,
-                        description = R.string.onboarding_description_3
+                        title = R.string.os_title_3,
+                        description = R.string.os_description_3
                     )
 
                     3 -> OnboardingPage(
                         image = R.drawable.onboarding_image_4,
-                        title = R.string.onboarding_title_4,
-                        description = R.string.onboarding_description_4
+                        title = R.string.os_title_4,
+                        description = R.string.os_description_4
                     )
                 }
             }

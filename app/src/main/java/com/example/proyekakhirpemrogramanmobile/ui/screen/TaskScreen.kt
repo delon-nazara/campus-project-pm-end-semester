@@ -92,7 +92,7 @@ fun TaskScreen(
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 20.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_task))
+                Title(title = stringResource(R.string.sb_task))
                 TaskTab()
             }
         }
@@ -103,8 +103,8 @@ fun TaskScreen(
 fun TaskTab() {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabList = listOf(
-        stringResource(R.string.active_task),
-        stringResource(R.string.past_task)
+        stringResource(R.string.ts_active_task),
+        stringResource(R.string.ts_past_task)
     )
 
     val listActiveTask by remember {
@@ -194,7 +194,7 @@ fun TaskEmpty() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = stringResource(R.string.home_active_task_empty),
+            text = stringResource(R.string.ts_task_empty),
             textAlign = TextAlign.Center,
             fontFamily = Poppins,
             fontSize = 14.sp,

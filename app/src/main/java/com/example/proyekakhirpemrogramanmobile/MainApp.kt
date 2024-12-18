@@ -227,6 +227,8 @@ fun MainApp(context: Context) {
             )
         }
 
+        // Route Choose Course Screen
+
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
@@ -260,6 +262,8 @@ fun MainApp(context: Context) {
             )
         }
 
+        // Route Course Detail Screen
+
         // Route Task Screen
         composable(Route.TASK_SCREEN.name) {
             TaskScreen(
@@ -269,6 +273,10 @@ fun MainApp(context: Context) {
                 }
             )
         }
+
+        // Route Task Detail Screen
+
+        // Route Task Group Screen
 
         // Route Module Screen
         composable(Route.MODULE_SCREEN.name) {
@@ -282,6 +290,8 @@ fun MainApp(context: Context) {
                 }
             )
         }
+
+        // Route Module Detail Screen
 
         // Route Announcement Screen
         composable(Route.ANNOUNCEMENT_SCREEN.name) {
@@ -303,6 +313,14 @@ fun MainApp(context: Context) {
             )
         }
 
+        // Route Tool Spin Wheel Screen
+
+        // Route Tool Voting Screen
+
+        // Route Admin Screen
+
+        // Route Admin Child Screen
+
         // Route Setting Screen
         composable(Route.SETTING_SCREEN.name) {
             SettingScreen(
@@ -318,20 +336,5 @@ fun MainApp(context: Context) {
             )
         }
 
-        composable(Route.COURSE_DETAIL_SCREEN.name) {
-            CourseDetailScreen(
-                navigateTo = { route, clearStack ->
-                    navigateTo(route, clearStack)
-                }
-            )
-        }
-
-        composable(Route.MODULE_DETAIL_SCREEN.name) {
-            ModuleDetailScreen(
-                navigateTo = { route, clearStack ->
-                    navigateTo(route, clearStack)
-                }
-            )
-        }
     }
 }

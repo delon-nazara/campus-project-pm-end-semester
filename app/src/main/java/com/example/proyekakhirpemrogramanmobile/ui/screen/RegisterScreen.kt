@@ -84,7 +84,7 @@ fun RegisterScreen(
         ) {
             // Title
             Text(
-                text = stringResource(R.string.register_title),
+                text = stringResource(R.string.as_register_title),
                 fontSize = 24.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold,
@@ -126,7 +126,7 @@ fun RegisterScreen(
 
                     // Card Title
                     Text(
-                        text = stringResource(R.string.register),
+                        text = stringResource(R.string.as_register),
                         fontSize = 20.sp,
                         fontFamily = Poppins,
                         fontWeight = FontWeight.SemiBold,
@@ -141,7 +141,7 @@ fun RegisterScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.email),
+                                text = stringResource(R.string.as_email),
                                 fontSize = 14.sp,
                                 fontFamily = Poppins,
                             )
@@ -188,7 +188,7 @@ fun RegisterScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.password),
+                                text = stringResource(R.string.as_password),
                                 fontSize = 14.sp,
                                 fontFamily = Poppins,
                             )
@@ -262,7 +262,7 @@ fun RegisterScreen(
                             .height(45.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.register),
+                            text = stringResource(R.string.as_register),
                             fontSize = 18.sp,
                             fontFamily = Poppins,
                             fontWeight = FontWeight.SemiBold,
@@ -281,7 +281,7 @@ fun RegisterScreen(
 
                     // Navigation Text
                     Text(
-                        text = stringResource(R.string.already_have_account),
+                        text = stringResource(R.string.as_already_have_account),
                         textAlign = TextAlign.Center,
                         fontSize = 18.sp,
                         fontFamily = Poppins,
@@ -301,7 +301,7 @@ fun RegisterScreen(
                             .height(45.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.login),
+                            text = stringResource(R.string.as_login),
                             fontSize = 18.sp,
                             fontFamily = Poppins,
                             fontWeight = FontWeight.SemiBold,
