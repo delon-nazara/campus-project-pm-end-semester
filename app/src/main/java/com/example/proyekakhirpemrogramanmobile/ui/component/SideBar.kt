@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun SideBar(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     selectedMenu: Menu = Menu.HOME,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
@@ -138,7 +138,7 @@ fun SideBar(
 
                 // Profile Picture
                 Image(
-                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+                    painter = painterResource(setImageBasedLetter(userData?.firstLetter ?: "u")),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(40.dp)
@@ -148,9 +148,9 @@ fun SideBar(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
-                    // Full Name Text
+                    // First Name Text
                     Text(
-                        text = userData.firstWord,
+                        text = userData?.firstWord ?: "Unknown",
                         fontSize = 16.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),
@@ -160,7 +160,7 @@ fun SideBar(
 
                     // Student Id Text
                     Text(
-                        text = userData.studentId,
+                        text = userData?.studentId ?: "000000000",
                         fontSize = 14.sp,
                         fontFamily = Poppins,
                         color = colorResource(R.color.white),

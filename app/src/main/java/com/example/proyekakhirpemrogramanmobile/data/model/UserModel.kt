@@ -4,8 +4,10 @@ data class UserModel(
     val email: String = "",
     val gender: String = "",
     val fullName: String = "",
-    val studentId: String = "",
-    val createdAt: String = "",
     val firstWord: String = "",
-    val firstLetter: String = ""
+    val studentId: String = "",
+    val firstLetter: String = "",
+    val courseId: List<String> = emptyList(),
+    val created: Map<String, String> = emptyMap(),
+    val finishedTaskId: List<String> = emptyList(),
 )

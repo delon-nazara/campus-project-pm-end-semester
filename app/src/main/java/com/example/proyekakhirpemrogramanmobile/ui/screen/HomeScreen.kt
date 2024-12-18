@@ -37,31 +37,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
-import com.example.proyekakhirpemrogramanmobile.util.formatDate
-import com.example.proyekakhirpemrogramanmobile.util.formatTime
-import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
-import com.google.firebase.firestore.core.UserData
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.formatDay
+import com.example.proyekakhirpemrogramanmobile.util.formatDisplayTime
+import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import kotlinx.coroutines.delay
 
 @Preview
 @Composable
 fun HomeScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -122,8 +119,9 @@ fun DateAndTime() {
         }
     }
 
+    val currentDay = formatDay(currentMilliseconds)
     val currentDate = formatDate(currentMilliseconds)
-    val currentTime = formatTime(currentMilliseconds)
+    val currentTime = formatDisplayTime(currentMilliseconds)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -137,7 +135,7 @@ fun DateAndTime() {
     ) {
         // Date
         Text(
-            text = currentDate,
+            text = "$currentDay, $currentDate",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             color = colorResource(R.color.white),

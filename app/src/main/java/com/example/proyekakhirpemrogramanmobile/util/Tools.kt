@@ -66,16 +66,21 @@ fun getCurrentMilliseconds(): Long {
 }
 
 fun formatDate(milliseconds: Long): String {
-    val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
-    return formatter.format(milliseconds)
-}
-
-fun formatDateWithoutDay(milliseconds: Long): String {
     val formatter = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
     return formatter.format(milliseconds)
 }
 
+fun formatDay(milliseconds: Long): String {
+    val formatter = SimpleDateFormat("EEEE", Locale("id", "ID"))
+    return formatter.format(milliseconds)
+}
+
 fun formatTime(milliseconds: Long): String {
+    val formatter = SimpleDateFormat("HH.mm", Locale.getDefault())
+    return formatter.format(milliseconds)
+}
+
+fun formatDisplayTime(milliseconds: Long): String {
     val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
     return formatter.format(milliseconds)
 }

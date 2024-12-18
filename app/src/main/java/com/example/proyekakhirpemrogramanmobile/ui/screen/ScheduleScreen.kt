@@ -33,25 +33,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
-import com.example.proyekakhirpemrogramanmobile.util.formatDateWithoutDay
-import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
+import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 
 @Preview
 @Composable
 fun ScheduleScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -104,7 +102,7 @@ fun ScheduleScreen(
 
 @Composable
 fun Date() {
-    val currentDate = formatDateWithoutDay(getCurrentMilliseconds())
+    val currentDate = formatDate(getCurrentMilliseconds())
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

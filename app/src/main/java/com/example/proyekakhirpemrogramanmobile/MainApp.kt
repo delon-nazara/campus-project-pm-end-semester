@@ -23,7 +23,6 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ScheduleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SettingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
-import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
@@ -231,7 +230,7 @@ fun MainApp(context: Context) {
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
             HomeScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -241,7 +240,7 @@ fun MainApp(context: Context) {
         // Route Schedule Screen
         composable(Route.SCHEDULE_SCREEN.name) {
             ScheduleScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -251,7 +250,7 @@ fun MainApp(context: Context) {
         // Route Course Screen
         composable(Route.COURSE_SCREEN.name) {
             CourseScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 },
@@ -264,7 +263,7 @@ fun MainApp(context: Context) {
         // Route Task Screen
         composable(Route.TASK_SCREEN.name) {
             TaskScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -274,7 +273,7 @@ fun MainApp(context: Context) {
         // Route Module Screen
         composable(Route.MODULE_SCREEN.name) {
             ModuleScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 },
@@ -287,7 +286,7 @@ fun MainApp(context: Context) {
         // Route Announcement Screen
         composable(Route.ANNOUNCEMENT_SCREEN.name) {
             AnnouncementScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -297,7 +296,7 @@ fun MainApp(context: Context) {
         // Route Tool Screen
         composable(Route.TOOL_SCREEN.name) {
             ToolScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -307,7 +306,7 @@ fun MainApp(context: Context) {
         // Route Setting Screen
         composable(Route.SETTING_SCREEN.name) {
             SettingScreen(
-                userData = userDataState!!,
+                userData = userDataState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 },

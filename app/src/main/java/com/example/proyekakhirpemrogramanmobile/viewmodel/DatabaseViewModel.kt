@@ -1,9 +1,13 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import android.util.Log
+import androidx.compose.animation.core.snap
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
+import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.formatDay
 import com.example.proyekakhirpemrogramanmobile.util.formatName
+import com.example.proyekakhirpemrogramanmobile.util.formatDisplayTime
+import com.example.proyekakhirpemrogramanmobile.util.formatTime
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import com.example.proyekakhirpemrogramanmobile.util.getFirstLetter
 import com.example.proyekakhirpemrogramanmobile.util.getFirstWord
@@ -35,16 +39,24 @@ class DatabaseViewModel : ViewModel() {
         val cleanName = formatName(fullName)
         val firstWord = getFirstWord(cleanName)
         val firstLetter = getFirstLetter(cleanName).toString()
-        val currentTime = getCurrentMilliseconds().toString()
+        val day = formatDay(getCurrentMilliseconds())
+        val date = formatDate(getCurrentMilliseconds())
+        val time = formatTime(getCurrentMilliseconds())
 
         val newUser = UserModel(
             email = email,
             gender = gender,
-            firstWord = firstWord,
             fullName = cleanName,
             studentId = studentId,
-            createdAt = currentTime,
-            firstLetter = firstLetter
+            firstWord = firstWord,
+            firstLetter = firstLetter,
+            finishedTaskId = emptyList(),
+            courseId = emptyList(),
+            created = mapOf(
+                "day" to day,
+                "date" to date,
+                "time" to time,
+            ),
         )
 
         showLoading(true)
@@ -73,16 +85,7 @@ class DatabaseViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { document ->
                 showLoading(false)
-                val data = document.data!!
-                val userData = UserModel(
-                    email = data["email"].toString(),
-                    gender = data["gender"].toString(),
-                    firstWord = data["firstWord"].toString(),
-                    fullName = data["fullName"].toString(),
-                    studentId = data["studentId"].toString(),
-                    createdAt = data["createdAt"].toString(),
-                    firstLetter = data["firstLetter"].toString()
-                )
+                val userData = document.toObject(UserModel::class.java)
                 updateUserState(userData)
                 onSuccess()
             }

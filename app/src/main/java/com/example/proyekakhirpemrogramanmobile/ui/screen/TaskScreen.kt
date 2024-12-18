@@ -54,7 +54,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun TaskScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()

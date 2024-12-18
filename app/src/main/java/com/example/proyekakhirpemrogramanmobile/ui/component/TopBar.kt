@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun TopBar(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
@@ -82,7 +82,7 @@ fun TopBar(
                 modifier = Modifier.padding(end = 12.dp)
             ) {
                 Image(
-                    painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+                    painter = painterResource(setImageBasedLetter(userData?.firstLetter ?: "u")),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(32.dp)

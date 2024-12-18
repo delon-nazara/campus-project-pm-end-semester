@@ -50,7 +50,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun ModuleScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> },
     temp: () -> Unit = {}
 ) {

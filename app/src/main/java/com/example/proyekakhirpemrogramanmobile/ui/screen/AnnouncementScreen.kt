@@ -48,7 +48,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun AnnouncementScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()

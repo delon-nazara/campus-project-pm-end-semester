@@ -50,7 +50,7 @@ import kotlin.math.log
 @Preview
 @Composable
 fun SettingScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> },
     logout: () -> Unit = {}
 ) {
@@ -101,13 +101,13 @@ fun SettingScreen(
 }
 
 @Composable
-fun Profile(userData: UserModel) {
+fun Profile(userData: UserModel?) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+            painter = painterResource(setImageBasedLetter(userData?.firstLetter ?: "u")),
             contentDescription = "Profile picture",
             modifier = Modifier
                 .padding(start = 16.dp, end = 20.dp)
@@ -118,14 +118,14 @@ fun Profile(userData: UserModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = userData.fullName,
+                text = userData?.fullName ?: "Unknown User",
                 lineHeight = 24.sp,
                 fontSize = 20.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = userData.studentId,
+                text = userData?.studentId ?: "000000000",
                 fontSize = 16.sp,
                 fontFamily = Poppins,
                 fontStyle = FontStyle.Italic,
