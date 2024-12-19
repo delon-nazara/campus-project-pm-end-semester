@@ -42,11 +42,11 @@ enum class Menu(
         icon = R.drawable.tool_icon,
         destination = Route.TOOL_SCREEN.name
     ),
-//    ADMIN(
-//        title = R.string.sb_admin,
-//        icon = R.drawable.admin_icon,
-//        destination = Route.ADMIN_SCREEN.name
-//    ),
+    ADMIN(
+        title = R.string.sb_admin,
+        icon = R.drawable.admin_icon,
+        destination = Route.ADMIN_SCREEN.name
+    ),
     SETTING(
         title = R.string.sb_setting,
         icon = R.drawable.setting_icon,

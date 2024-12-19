@@ -124,6 +124,8 @@
     <!-- Tool Voting Screen -->
 
     <!-- Admin Screen -->
+    <string name="ads_empty">Kamu bukan seorang admin di kelas manapun.\nJadilah admin dengan membuat kelas baru!</string>
+    <string name="ads_create">Buat Kelas Baru</string>
 
     <!-- Admin Detail Screen -->
 

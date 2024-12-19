@@ -229,7 +229,7 @@ fun MainApp(context: Context) {
                                 loadingViewModel.showLoading(state)
                             },
                             onSuccess = {
-                                navigateTo(Route.HOME_SCREEN.name, true)
+                                navigateTo(Route.COURSE_MANAGE_SCREEN.name, true)
                             },
                             onFailure = {
                                 showToast(context, "Pendaftaran gagal, coba kembali")
@@ -261,7 +261,7 @@ fun MainApp(context: Context) {
         composable(Route.COURSE_CREATE_SCREEN.name) {
             CourseCreateScreen(
                 onCancelButtonClicked = {
-                    navigateTo(Route.COURSE_MANAGE_SCREEN.name, false)
+                    navController.popBackStack()
                 },
                 onConfirmButtonClicked = { allData ->
                     databaseViewModel.addCourseToDatabase(
@@ -434,7 +434,15 @@ fun MainApp(context: Context) {
         // Route Admin Screen
         composable(Route.ADMIN_SCREEN.name) {
             AdminScreen(
-
+                userData = userState,
+                courseData = courseState,
+                selectedCourse = { courseId ->
+                    databaseViewModel.selectedCourseIdState
+                    navigateTo(Route.ADMIN_DETAIL_SCREEN.name, false)
+                },
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
             )
         }
 
