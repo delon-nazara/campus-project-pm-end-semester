@@ -39,28 +39,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
+import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
+import com.example.proyekakhirpemrogramanmobile.data.model.ModuleModel
 import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.AnnouncementModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ModuleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.taskListData
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.learningModuleData
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.google.android.play.integrity.internal.s
 
 @Preview
 @Composable
 fun CourseDetailScreen(
+    userData: UserModel? = UserModel(),
     selectedCourseId: String = "",
     courseData: List<CourseModel> = emptyList(),
     lectureData: List<LectureModel> = emptyList(),
     taskData: List<TaskModel> = emptyList(),
-//    announcementData: AnnouncementModel = AnnouncementModel(),
-//    moduleData: ModuleModel = ModuleModel(),
+    moduleData: List<ModuleModel> = emptyList(),
+    announcementData: List<AnnouncementModel> = emptyList(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -71,6 +72,7 @@ fun CourseDetailScreen(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,
@@ -81,6 +83,7 @@ fun CourseDetailScreen(
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo
@@ -99,15 +102,17 @@ fun CourseDetailScreen(
                 val course = courseData.find { it.courseId == selectedCourseId } ?: CourseModel()
                 val listLectureSummary = lectureData.filter { it.courseId == selectedCourseId }.map { it.summary }
                 val listTaskTitle = taskData.filter { it.courseId == selectedCourseId }.map { it.title }
+                val listModuleTitle = moduleData.filter { it.courseId == selectedCourseId }.map { it.title }
+                val listAnnouncementTitle = announcementData.filter { it.courseId == "s" }.map { it.title }
 
                 Title(
-                    title = course.name
+                    title = course.courseName
                 )
 
                 DropdownData(
                     title = R.string.cds_general_information,
                     listData = mapOf(
-                        "Nama" to course.name,
+                        "Nama" to course.courseName,
                         "Kode" to course.code,
                         "SKS" to "${course.credits} SKS",
                         "Program Studi" to course.major,
@@ -145,15 +150,19 @@ fun CourseDetailScreen(
                     }.toMap()
                 )
 
-//                DropdownData(
-//                    title = R.string.cds_announcement_list,
-//                    listData = taskListData
-//                )
-//
-//                DropdownData(
-//                    title = R.string.cds_learning_module,
-//                    listData = learningModuleData
-//                )
+                DropdownData(
+                    title = R.string.cds_learning_module,
+                    listData = listModuleTitle.mapIndexed { index, value ->
+                        "Modul ${index + 1}" to value
+                    }.toMap()
+                )
+
+                DropdownData(
+                    title = R.string.cds_announcement_list,
+                    listData = listAnnouncementTitle.mapIndexed { index, value ->
+                        "Pengumuman ${index + 1}" to value
+                    }.toMap()
+                )
             }
         }
     }
@@ -182,7 +191,7 @@ fun DropdownData(
             Icon(
                 painter = painterResource(R.drawable.arrow_right_icon),
                 contentDescription = "arrow icon",
-                tint = colorResource(R.color.black),
+                tint = colorResource(R.color.white),
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -191,7 +200,7 @@ fun DropdownData(
                 fontSize = 15.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.black)
+                color = colorResource(R.color.white)
             )
         }
 
@@ -217,17 +226,27 @@ fun DropdownData(
                             shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
                         )
                 ) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    listData.forEach { data ->
-                        CourseData(
-                            title = data.key,
-                            content = data.value,
-                            textAlign = if (title == R.string.cds_lecture_summary) {
-                                TextAlign.Justify
-                            } else {
-                                TextAlign.Start
-                            }
+                    Spacer(modifier = Modifier.height(14.dp))
+                    if (listData.isEmpty()) {
+                        Text(
+                            text = "Tidak ada data yang tersedia",
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(horizontal = 14.dp)
+                                .padding(bottom = 14.dp)
                         )
+                    } else {
+                        listData.forEach { data ->
+                            CourseData(
+                                title = data.key,
+                                content = data.value,
+                                textAlign = if (title == R.string.cds_lecture_summary) {
+                                    TextAlign.Justify
+                                } else {
+                                    TextAlign.Start
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -249,7 +268,8 @@ fun CourseData(
     ) {
         Text(
             text = "$title:",
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 2.dp)
         )
         Text(
             text = content,

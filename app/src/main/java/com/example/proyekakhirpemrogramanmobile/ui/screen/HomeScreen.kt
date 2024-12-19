@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -268,7 +269,7 @@ fun TodayScheduleItem(
                 )
         ) {
             Text(
-                text = lecture.course,
+                text = lecture.courseName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
@@ -419,14 +420,14 @@ fun ActiveTaskItem(
     val deadline = formatTimeDifferent(deadlineMillis - currentMillis)
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(
                 color = colorResource(R.color.white),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
         // Course
         Row(
@@ -435,7 +436,7 @@ fun ActiveTaskItem(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = task.course,
+                text = task.courseName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -448,9 +449,11 @@ fun ActiveTaskItem(
                     }
                 ),
                 contentDescription = "Type icon",
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(22.dp)
             )
         }
+
+        HorizontalDivider()
 
         // Deadline
         Row(

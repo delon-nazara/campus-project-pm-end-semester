@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.listRightCourseImage
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
@@ -193,7 +193,7 @@ fun CourseListItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = course.name,
+                    text = course.courseName,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorResource(R.color.white)

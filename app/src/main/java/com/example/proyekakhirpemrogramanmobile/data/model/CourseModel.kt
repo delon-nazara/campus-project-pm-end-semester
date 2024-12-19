@@ -1,8 +1,8 @@
-package com.example.proyekakhirpemrogramanmobile.data.model.archive
+package com.example.proyekakhirpemrogramanmobile.data.model
 
 data class CourseModel(
     val courseId: String = "",
-    val name: String = "",
+    val courseName: String = "",
     val code: String = "",
     val credits: String = "",
     val major: String = "",

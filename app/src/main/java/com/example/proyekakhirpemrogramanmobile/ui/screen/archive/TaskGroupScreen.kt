@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen
+package com.example.proyekakhirpemrogramanmobile.ui.screen.archive
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -622,7 +622,8 @@ data class Member(
 //List jika anggota kelompok ada di list
 //===================================================
 
-val groups = listOf(GroupZ(
+val groups = listOf(
+    GroupZ(
         name = "Syntax Invalid",
         description = ".Edu adalah sebuah aplikasi mobile yang digunakan sebagai sarana berbagi informasi dalam sebuah kelas perkuliahan.",
         members = listOf(
@@ -632,7 +633,7 @@ val groups = listOf(GroupZ(
             Member("Nico Saputra Siringoringo", "221401040"),
             Member("Steven Anthony", "221401031")
         )
-    ),GroupZ(
+    ), GroupZ(
         name = "Rider",
         description = "MechaCare. Aplikasi yang memungkinkan Anda memanggil mekanik kapan saja dan menemukan bengkel terdekat dengan cepat dan mudah.",
         members = listOf(

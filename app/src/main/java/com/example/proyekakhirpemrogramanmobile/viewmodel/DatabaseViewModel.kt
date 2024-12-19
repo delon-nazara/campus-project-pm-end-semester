@@ -1,10 +1,12 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
 import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.model.ModuleModel
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
 import com.example.proyekakhirpemrogramanmobile.util.formatDay
 import com.example.proyekakhirpemrogramanmobile.util.formatName
@@ -23,21 +25,29 @@ class DatabaseViewModel : ViewModel() {
 
     private val database: FirebaseFirestore = Firebase.firestore
     private val userReference = database.collection("user")
-    private val courseReference = database.collection("course")
     private val lectureReference = database.collection("lecture")
+    private val courseReference = database.collection("course")
     private val taskReference = database.collection("task")
+    private val moduleReference = database.collection("module")
+    private val announcementReference = database.collection("announcement")
 
     private var _userState = MutableStateFlow<UserModel?>(null)
     val userState: StateFlow<UserModel?> = _userState.asStateFlow()
 
-    private var _courseState = MutableStateFlow<List<CourseModel>>(emptyList())
-    val courseState: StateFlow<List<CourseModel>> = _courseState.asStateFlow()
-
     private var _lectureState = MutableStateFlow<List<LectureModel>>(emptyList())
     val lectureState: StateFlow<List<LectureModel>> = _lectureState.asStateFlow()
 
+    private var _courseState = MutableStateFlow<List<CourseModel>>(emptyList())
+    val courseState: StateFlow<List<CourseModel>> = _courseState.asStateFlow()
+
     private var _taskState = MutableStateFlow<List<TaskModel>>(emptyList())
     val taskState: StateFlow<List<TaskModel>> = _taskState.asStateFlow()
+
+    private var _moduleState = MutableStateFlow<List<ModuleModel>>(emptyList())
+    val moduleState: StateFlow<List<ModuleModel>> = _moduleState.asStateFlow()
+
+    private var _announcementState = MutableStateFlow<List<AnnouncementModel>>(emptyList())
+    val announcementState: StateFlow<List<AnnouncementModel>> = _announcementState.asStateFlow()
 
     private var _selectedCourseIdState = MutableStateFlow("")
     val selectedCourseIdState: StateFlow<String> = _selectedCourseIdState.asStateFlow()
@@ -141,20 +151,6 @@ class DatabaseViewModel : ViewModel() {
             }
     }
 
-    private fun getCourseData() {
-        _userState.value?.coursesId?.let {
-            courseReference
-                .whereIn("courseId", it)
-                .addSnapshotListener { snapshot, e ->
-                    if (e == null) {
-                        _courseState.value = snapshot?.toObjects(CourseModel::class.java) ?: emptyList()
-                    } else {
-                        _courseState.value = emptyList()
-                    }
-                }
-        }
-    }
-
     private fun getLectureData() {
         _userState.value?.coursesId?.let {
             lectureReference
@@ -164,6 +160,20 @@ class DatabaseViewModel : ViewModel() {
                         _lectureState.value = snapshot?.toObjects(LectureModel::class.java) ?: emptyList()
                     } else {
                         _lectureState.value = emptyList()
+                    }
+                }
+        }
+    }
+
+    private fun getCourseData() {
+        _userState.value?.coursesId?.let {
+            courseReference
+                .whereIn("courseId", it)
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        _courseState.value = snapshot?.toObjects(CourseModel::class.java) ?: emptyList()
+                    } else {
+                        _courseState.value = emptyList()
                     }
                 }
         }
@@ -183,21 +193,52 @@ class DatabaseViewModel : ViewModel() {
         }
     }
 
+    private fun getModuleData() {
+        _userState.value?.coursesId?.let {
+            moduleReference
+                .whereIn("courseId", it)
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        _moduleState.value = snapshot?.toObjects(ModuleModel::class.java) ?: emptyList()
+                    } else {
+                        _moduleState.value = emptyList()
+                    }
+                }
+        }
+    }
+
+    private fun getAnnouncementData() {
+        _userState.value?.coursesId?.let {
+            announcementReference
+                .whereIn("courseId", it)
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        _announcementState.value = snapshot?.toObjects(AnnouncementModel::class.java) ?: emptyList()
+                    } else {
+                        _announcementState.value = emptyList()
+                    }
+                }
+        }
+    }
+
     fun setSelectedCourseIdState(courseId: String) {
         _selectedCourseIdState.value = courseId
     }
 
     private fun getAllData() {
-        getCourseData()
         getLectureData()
+        getCourseData()
         getTaskData()
+        getModuleData()
+        getAnnouncementData()
     }
 
     private fun deleteAllData() {
-        _courseState.value = emptyList()
         _lectureState.value = emptyList()
+        _courseState.value = emptyList()
         _taskState.value = emptyList()
-
+        _moduleState.value = emptyList()
+        _announcementState.value = emptyList()
         _selectedCourseIdState.value = ""
     }
 

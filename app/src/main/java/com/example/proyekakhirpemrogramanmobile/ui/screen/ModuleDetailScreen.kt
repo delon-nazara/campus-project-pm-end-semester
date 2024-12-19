@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -39,17 +37,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.model.ModuleModel
+import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listModule
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listModuleDetail
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
 
 @Preview
 @Composable
-fun ModuleDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
+fun ModuleDetailScreen(
+    userData: UserModel? = UserModel(),
+    selectedCourseId: String = "",
+    courseData: List<CourseModel> = emptyList(),
+    moduleData: List<ModuleModel> = emptyList(),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val selectedMenu = Menu.MODULE
@@ -58,6 +63,7 @@ fun ModuleDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
         drawerState = drawerState,
         drawerContent = {
             SideBar(
+                userData = userData,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 selectedMenu = selectedMenu,
@@ -68,6 +74,7 @@ fun ModuleDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
         Scaffold(
             topBar = {
                 TopBar(
+                    userData = userData,
                     coroutineScope = coroutineScope,
                     drawerState = drawerState,
                     navigateTo = navigateTo
@@ -75,16 +82,23 @@ fun ModuleDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal =  16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                Title(title = "Pemrograman Mobile")
-                ModuleDetailList()
+                val course = courseData.find { it.courseId == selectedCourseId } ?: CourseModel()
+                val module = moduleData.filter { it.courseId == selectedCourseId }
+
+                Title(
+                    title = course.courseName
+                )
+
+                ModuleDetailList(
+                    moduleData = module
+                )
             }
         }
     }
@@ -92,8 +106,10 @@ fun ModuleDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
 
 
 @Composable
-fun ModuleDetailList() {
-    if (listModule.isEmpty()) {
+fun ModuleDetailList(
+    moduleData: List<ModuleModel> = emptyList(),
+) {
+    if (moduleData.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
@@ -146,10 +162,9 @@ fun ModuleDetailList() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(listModuleDetail.entries.toList()) { module ->
+            items(moduleData) { module ->
                 ModuleDetailListItem(
-                    name = module.key,
-                    icon = module.value
+                    module = module
                 )
             }
         }
@@ -158,8 +173,7 @@ fun ModuleDetailList() {
 
 @Composable
 fun ModuleDetailListItem(
-    name: String,
-    icon: Int
+    module: ModuleModel
 ) {
     Card(
         onClick = {},
@@ -175,7 +189,13 @@ fun ModuleDetailListItem(
                 .padding(16.dp)
         ) {
             Icon(
-                painter = painterResource(icon),
+                painter = painterResource(
+                    when (module.type) {
+                        "pdf" -> R.drawable.pdf_icon
+                        "ppt" -> R.drawable.ppt_icon
+                        else -> R.drawable.pdf_icon
+                    }
+                ),
                 contentDescription = "Module icon",
                 tint = colorResource(R.color.white),
                 modifier = Modifier.size(22.dp)
@@ -183,7 +203,7 @@ fun ModuleDetailListItem(
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = name,
+                text = module.title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white)

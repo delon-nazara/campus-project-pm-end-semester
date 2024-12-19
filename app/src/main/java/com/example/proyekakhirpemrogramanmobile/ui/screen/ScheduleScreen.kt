@@ -289,7 +289,7 @@ fun ScheduleItem(
                 )
         ) {
             Text(
-                text = lecture.course,
+                text = lecture.courseName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)

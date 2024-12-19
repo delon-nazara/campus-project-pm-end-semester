@@ -8,7 +8,7 @@ enum class LectureStatus {
 
 data class LectureModel(
     val courseId: String = "",
-    val course: String = "",
+    val courseName: String = "",
     val number: String = "",
     val notes: String = "",
     val summary: String = "",

@@ -16,6 +16,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.OnboardingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
@@ -42,9 +43,11 @@ fun MainApp(context: Context) {
 
     val databaseViewModel: DatabaseViewModel = viewModel()
     val userState by databaseViewModel.userState.collectAsState()
-    val courseState by databaseViewModel.courseState.collectAsState()
     val lectureState by databaseViewModel.lectureState.collectAsState()
+    val courseState by databaseViewModel.courseState.collectAsState()
     val taskState by databaseViewModel.taskState.collectAsState()
+    val moduleState by databaseViewModel.moduleState.collectAsState()
+    val announcementState by databaseViewModel.announcementState.collectAsState()
     val selectedCourseIdState by databaseViewModel.selectedCourseIdState.collectAsState()
 
     val loadingViewModel: LoadingViewModel = viewModel()
@@ -273,10 +276,16 @@ fun MainApp(context: Context) {
         // Route Course Detail Screen
         composable(Route.COURSE_DETAIL_SCREEN.name) {
             CourseDetailScreen(
+                userData = userState,
                 selectedCourseId = selectedCourseIdState,
                 courseData = courseState,
                 lectureData = lectureState,
-                taskData = taskState
+                taskData = taskState,
+                moduleData = moduleState,
+                announcementData = announcementState,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
             )
         }
 
@@ -293,27 +302,40 @@ fun MainApp(context: Context) {
 
         // Route Task Detail Screen
 
-        // Route Task Group Screen
-
         // Route Module Screen
         composable(Route.MODULE_SCREEN.name) {
             ModuleScreen(
                 userData = userState,
+                courseData = courseState,
+                selectedCourse = { courseId ->
+                    databaseViewModel.setSelectedCourseIdState(courseId)
+                    navigateTo(Route.MODULE_DETAIL_SCREEN.name, false)
+                },
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 },
-                temp = {
-                    navigateTo(Route.MODULE_DETAIL_SCREEN.name, false)
-                }
             )
         }
 
         // Route Module Detail Screen
+        composable(Route.MODULE_DETAIL_SCREEN.name) {
+            ModuleDetailScreen(
+                userData = userState,
+                selectedCourseId = selectedCourseIdState,
+                courseData = courseState,
+                moduleData = moduleState,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
+            )
+        }
 
         // Route Announcement Screen
         composable(Route.ANNOUNCEMENT_SCREEN.name) {
             AnnouncementScreen(
                 userData = userState,
+                selectedCourseId = selectedCourseIdState,
+                announcementData = announcementState,
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }

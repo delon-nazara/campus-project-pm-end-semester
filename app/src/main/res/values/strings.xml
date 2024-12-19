@@ -73,8 +73,6 @@
     <!-- Task Detail Screen -->
     <string name="tds_marked_as_done">Tandai Sebagai Selesai</string>
 
-    <!-- Task Group Screen -->
-
     <!-- Module Screen -->
     <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
     <string name="ms_take_course">Ambil Mata Kuliah</string>
@@ -83,6 +81,7 @@
 
     <!-- Announcement Screen -->
     <string name="ans_empty">Tidak ada pengumuman untuk saat ini!</string>
+    <string name="ans_date">Diumumkan pada %s</string>
 
     <!-- Tool Screen -->
     <string name="tls_spin_wheel">Spin Wheel</string>
