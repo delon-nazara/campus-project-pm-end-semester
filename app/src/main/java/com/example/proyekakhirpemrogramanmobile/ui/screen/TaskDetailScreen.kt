@@ -6,13 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
@@ -26,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -37,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
@@ -117,14 +123,6 @@ fun DetailTask(
         "${formatTimeDifferent(currentMillis - deadlineMillis)} yang lalu"
     }
 
-    val assignedDate = "${task.assigned["date"]} ${task.assigned["time"]}"
-    val assignedMillis = parseDateAndTime(assignedDate)
-    val assigned = if (assignedMillis >= currentMillis) {
-        "${formatTimeDifferent(assignedMillis - currentMillis)} lagi"
-    } else {
-        "${formatTimeDifferent(currentMillis - assignedMillis)} yang lalu"
-    }
-
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -135,8 +133,43 @@ fun DetailTask(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 20.dp, vertical = 24.dp)
         ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = task.courseName,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 2.dp)
+                    )
+                    Text(
+                        text = deadline,
+                        fontSize = 14.sp
+                    )
+                }
+                Icon(
+                    painter = painterResource(
+                        when (task.type) {
+                            TaskType.PERSONAL.name -> R.drawable.person_icon
+                            TaskType.GROUP.name -> R.drawable.group_icon
+                            else -> R.drawable.person_icon
+                        }
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,129 +177,43 @@ fun DetailTask(
                         color = colorResource(R.color.white),
                         shape = RoundedCornerShape(16.dp)
                     )
-                    .padding(20.dp)
+                    .padding(horizontal = 20.dp, vertical = 24.dp)
             ) {
                 Text(
                     text = task.title,
-                    fontSize = 15.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 HorizontalDivider(
-                    color = colorResource(R.color.very_dark_blue),
-                    modifier = Modifier.padding(vertical = 10.dp)
+                    color = colorResource(R.color.black),
+                    modifier = Modifier.padding(vertical = 12.dp)
                 )
                 Text(
                     text = task.description,
                     textAlign = TextAlign.Justify,
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            Column(
+            Button(
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(task.submissionLink))
+                    context.startActivity(intent)
+                },
+                contentPadding = PaddingValues(0.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.very_light_blue)
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 6.dp
+                ),
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.white),
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .padding(20.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.tds_link),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-                HorizontalDivider(
-                    color = colorResource(R.color.very_dark_blue),
-                    modifier = Modifier.padding(vertical = 10.dp)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.link_icon),
-                        contentDescription = "Link icon",
-                        tint = colorResource(R.color.blue),
-                        modifier = Modifier.padding(end = 12.dp)
-                    )
-                    Text(
-                        text = task.submissionLink,
-                        fontSize = 12.sp,
-                        color = colorResource(R.color.blue),
-                        modifier = Modifier.clickable {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(task.submissionLink))
-                            context.startActivity(intent)
-                        }
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.white),
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .padding(20.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.tds_information),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-                HorizontalDivider(
-                    color = colorResource(R.color.very_dark_blue),
-                    modifier = Modifier.padding(vertical = 10.dp)
-                )
-                Text(
-                    text = stringResource(R.string.tds_course),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-                Text(
-                    text = task.courseName,
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-                Text(
-                    text = stringResource(R.string.tds_type),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-                Text(
-                    text = when (task.type) {
-                        "PERSONAL" -> "Pribadi"
-                        "GROUP" -> "Kelompok"
-                        else -> "Pribadi"
-                    },
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-                Text(
-                    text = stringResource(R.string.tds_assigned),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-                Text(
-                    text = "${task.assigned["date"]} ($assigned)",
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-                Text(
-                    text = stringResource(R.string.tds_deadline),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-                Text(
-                    text = "${task.deadline["date"]} ($deadline)",
+                    text = stringResource(R.string.tds_link)
                 )
             }
         }

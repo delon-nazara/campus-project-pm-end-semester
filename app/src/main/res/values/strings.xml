@@ -72,12 +72,7 @@
 
     <!-- Task Detail Screen -->
     <string name="tds_detail">Detail Tugas</string>
-    <string name="tds_information">Keterangan Tugas</string>
-    <string name="tds_course">Mata Kuliah:</string>
-    <string name="tds_type">Tipe Tugas:</string>
-    <string name="tds_assigned">Ditugaskan:</string>
-    <string name="tds_deadline">Deadline:</string>
-    <string name="tds_link">Link drive pengumpulan tugas:</string>
+    <string name="tds_link">Link Pengumpulan Tugas</string>
 
     <!-- Module Screen -->
     <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>
