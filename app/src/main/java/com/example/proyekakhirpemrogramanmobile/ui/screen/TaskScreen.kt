@@ -132,13 +132,21 @@ fun TaskTab(
         stringResource(R.string.ts_past_task)
     )
 
-    val listActiveTask = taskData.filter {
-        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
-    }
+    val listActiveTask = taskData
+        .filter {
+            parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
+        }
+        .sortedBy {
+            parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}")
+        }
 
-    val listPastTask = taskData.filter {
-        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") < currentMilliseconds
-    }
+    val listPastTask = taskData
+        .filter {
+            parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") < currentMilliseconds
+        }
+        .sortedByDescending {
+            parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}")
+        }
 
     Column(
         modifier = Modifier.fillMaxSize()

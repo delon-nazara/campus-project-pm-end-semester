@@ -48,6 +48,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 
 @Preview
 @Composable
@@ -92,8 +93,11 @@ fun ModuleDetailScreen(
                     .padding(contentPadding)
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                val course = courseData.find { it.courseId == selectedCourseId } ?: CourseModel()
-                val module = moduleData.filter { it.courseId == selectedCourseId }
+                val course = courseData
+                    .find { it.courseId == selectedCourseId } ?: CourseModel()
+                val module = moduleData
+                    .filter { it.courseId == selectedCourseId }
+                    .sortedBy { parseDateAndTime("${it.created["date"]} ${it.created["time"]}") }
 
                 Title(
                     title = course.courseName

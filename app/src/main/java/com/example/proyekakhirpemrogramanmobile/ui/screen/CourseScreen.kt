@@ -41,6 +41,7 @@ import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.data.source.listRightCourseImage
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -89,13 +90,16 @@ fun CourseScreen(
                     .padding(contentPadding)
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
+                val course = courseData.sortedBy { it.courseName }
+
                 Title(
                     title = stringResource(R.string.sb_course)
                 )
 
                 CourseList(
-                    courseData = courseData,
-                    selectedCourse = selectedCourse
+                    courseData = course,
+                    selectedCourse = selectedCourse,
+                    navigateTo = navigateTo
                 )
             }
         }
@@ -105,7 +109,8 @@ fun CourseScreen(
 @Composable
 fun CourseList(
     courseData: List<CourseModel> = emptyList(),
-    selectedCourse: (String) -> Unit
+    selectedCourse: (String) -> Unit,
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
 ) {
     if (courseData.isEmpty()) {
         Column(
@@ -135,7 +140,7 @@ fun CourseList(
             }
 
             Button(
-                onClick = {},
+                onClick = { navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.very_light_blue)
                 )

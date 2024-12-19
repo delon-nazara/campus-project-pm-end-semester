@@ -40,6 +40,7 @@ import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.listSetting
 import com.example.proyekakhirpemrogramanmobile.data.model.SettingModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -91,7 +92,7 @@ fun SettingScreen(
             ) {
                 Title(title = stringResource(R.string.sb_setting))
                 Profile(userData = userData)
-                MyClass()
+                MyClass(navigateTo = navigateTo)
                 SettingList()
                 Logout(logout)
             }
@@ -135,12 +136,14 @@ fun Profile(userData: UserModel?) {
 }
 
 @Composable
-fun MyClass() {
+fun MyClass(
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .clickable {  }
+            .clickable { navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false) }
             .fillMaxWidth()
             .background(
                 color = colorResource(R.color.light_blue),

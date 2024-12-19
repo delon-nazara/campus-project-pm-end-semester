@@ -52,6 +52,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 import java.util.Calendar
 
 @Preview
@@ -98,7 +99,9 @@ fun ScheduleScreen(
             ) {
                 val calendar = remember { Calendar.getInstance() }
                 var selectedDate by remember { mutableStateOf(formatDate(calendar.timeInMillis)) }
-                val lectureBasedOnDate = lectureData.filter { it.schedule["date"] == selectedDate }
+                val lectureBasedOnDate = lectureData
+                    .filter { it.schedule["date"] == selectedDate }
+                    .sortedBy { parseDateAndTime("${it.schedule["date"]} ${it.schedule["time"]}") }
 
                 val datePickerDialog = DatePickerDialog(
                     LocalContext.current,

@@ -376,7 +376,6 @@ fun CreateCourseScreen(
                     if (allData.any { it.isEmpty() }) {
                         showToast(context, "Tidak boleh ada data yang kosong!")
                     } else {
-                        Log.d("noled", "confirm button")
                         onConfirmButtonClicked(allData)
                     }
                 },

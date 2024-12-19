@@ -31,11 +31,13 @@
     <string name="sps_finish">Selesai</string>
 
     <!-- Choose Course Screen -->
-    <string name="course_not_found">Tidak ada kelas mata kuliah yang tersedia \natau ditemukan saat ini. Ayo buat \nkelas sekarang!</string>
-    <string name="choose_course">Pilih Kelas</string>
-    <string name="search_course_by_courseid">Cari berdasarkan kode mata kuliah</string>
-    <string name="course_mata_kuliah">Kelas Mata Kuliah</string>
-    <string name="course_umum">Kelas Umum</string>
+    <string name="cc_title">Manajemen Kelas</string>
+    <string name="cc_your_class">Kelas Kamu</string>
+    <string name="cc_your_class_empty">Kamu tidak terdaftar pada kelas apapun.\nTambahkan sekarang dari kelas yang tersedia!</string>
+    <string name="cc_available_class">Kelas yang Tersedia</string>
+    <string name="cc_available_class_empty">Aduh, tidak ada kelas yang tersedia sekarang.\nSelalu cek halaman ini secara berkala!</string>
+    <string name="cc_create_class">Ingin Membuat Kelas Baru?</string>
+    <string name="cc_back">Kembali ke Beranda</string>
 
     <!-- Create Course Screen -->
     <string name="crc_title">Pembuatan Kelas</string>

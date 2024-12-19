@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.ChooseCourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CreateCourseScreen
@@ -48,6 +49,7 @@ fun MainApp(context: Context) {
     val userState by databaseViewModel.userState.collectAsState()
     val lectureState by databaseViewModel.lectureState.collectAsState()
     val courseState by databaseViewModel.courseState.collectAsState()
+    val allCourseState by databaseViewModel.allCourseState.collectAsState()
     val taskState by databaseViewModel.taskState.collectAsState()
     val moduleState by databaseViewModel.moduleState.collectAsState()
     val announcementState by databaseViewModel.announcementState.collectAsState()
@@ -239,7 +241,19 @@ fun MainApp(context: Context) {
 
         // Route Choose Course Screen
         composable(Route.CHOOSE_COURSE_SCREEN.name) {
-
+            ChooseCourseScreen(
+                userData = userState,
+                courseData = allCourseState,
+                addCourse = { courseId ->
+                    databaseViewModel.addUserCoursesId(courseId)
+                },
+                deleteCourse = { courseId ->
+                    databaseViewModel.deleteUserCoursesId(courseId)
+                },
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
         }
 
         // Route Create Course Screen
@@ -249,7 +263,6 @@ fun MainApp(context: Context) {
                     navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false)
                 },
                 onConfirmButtonClicked = { allData ->
-                    Log.d("noled", "called")
                     databaseViewModel.addCourseToDatabase(
                         allData[0],
                         allData[1],
@@ -265,6 +278,7 @@ fun MainApp(context: Context) {
                         allData[11],
                         allData[12],
                     )
+                    navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false)
                 }
             )
         }
@@ -428,10 +442,9 @@ fun MainApp(context: Context) {
                     navigateTo(route, clearStack)
                 },
                 logout = {
-                    navigateTo(Route.CREATE_COURSE_SCREEN.name, false)
-//                    authenticationViewModel.logout()
-//                    databaseViewModel.logout()
-//                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
+                    authenticationViewModel.logout()
+                    databaseViewModel.logout()
+                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
                 }
             )
         }
