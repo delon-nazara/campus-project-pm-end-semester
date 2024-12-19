@@ -2,6 +2,7 @@ package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import android.app.DatePickerDialog
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -58,6 +59,7 @@ import java.util.Calendar
 fun ScheduleScreen(
     userData: UserModel? = null,
     lectureData: List<LectureModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -130,7 +132,8 @@ fun ScheduleScreen(
 
                 // Today Schedule
                 Schedule(
-                    lectureData = lectureBasedOnDate
+                    lectureData = lectureBasedOnDate,
+                    selectedCourse = selectedCourse
                 )
             }
         }
@@ -197,7 +200,8 @@ fun Date(
 
 @Composable
 fun Schedule(
-    lectureData: List<LectureModel> = emptyList()
+    lectureData: List<LectureModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -260,7 +264,10 @@ fun Schedule(
                     )
             ) {
                 items(lectureData) { lecture ->
-                    ScheduleItem(lecture)
+                    ScheduleItem(
+                        lecture = lecture,
+                        selectedCourse = selectedCourse
+                    )
                 }
             }
         }
@@ -269,10 +276,13 @@ fun Schedule(
 
 @Composable
 fun ScheduleItem(
-    lecture: LectureModel
+    lecture: LectureModel,
+    selectedCourse: (String) -> Unit = {},
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { selectedCourse(lecture.courseId) }
     ) {
         // Title
         Row(

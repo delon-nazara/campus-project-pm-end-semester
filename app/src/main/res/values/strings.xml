@@ -71,7 +71,13 @@
     <string name="ts_task_empty">Tidak ada tugas saat ini.\nKamu bisa bermain game sekarang!</string>
 
     <!-- Task Detail Screen -->
-    <string name="tds_marked_as_done">Tandai Sebagai Selesai</string>
+    <string name="tds_detail">Detail Tugas</string>
+    <string name="tds_information">Keterangan Tugas</string>
+    <string name="tds_course">Mata Kuliah:</string>
+    <string name="tds_type">Tipe Tugas:</string>
+    <string name="tds_assigned">Ditugaskan:</string>
+    <string name="tds_deadline">Deadline:</string>
+    <string name="tds_link">Link drive pengumpulan tugas:</string>
 
     <!-- Module Screen -->
     <string name="ms_empty">Kamu belum mengambil\nmata kuliah apapun!</string>

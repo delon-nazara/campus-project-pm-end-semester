@@ -8,6 +8,7 @@ enum class TaskType {
 data class TaskModel(
     val courseId: String = "",
     val courseName: String = "",
+    val taskId: String = "",
     val title: String = "",
     val type: String = "",
     val description: String = "",

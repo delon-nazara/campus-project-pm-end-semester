@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -62,6 +63,8 @@ fun HomeScreen(
     userData: UserModel? = null,
     lectureData: List<LectureModel> = emptyList(),
     taskData: List<TaskModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
+    selectedTask: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -123,6 +126,7 @@ fun HomeScreen(
                     lectureData = lectureData.filter {
                         it.schedule["date"] == currentDate
                     },
+                    selectedCourse = selectedCourse,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -131,6 +135,7 @@ fun HomeScreen(
                     taskData = taskData.filter {
                         parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
                     },
+                    selectedTask = selectedTask,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -177,6 +182,7 @@ fun DateAndTime(
 @Composable
 fun TodaySchedule(
     lectureData: List<LectureModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -240,7 +246,10 @@ fun TodaySchedule(
                     )
             ) {
                 items(lectureData) { lecture ->
-                    TodayScheduleItem(lecture)
+                    TodayScheduleItem(
+                        lecture = lecture,
+                        selectedCourse = selectedCourse
+                    )
                 }
             }
         }
@@ -249,10 +258,13 @@ fun TodaySchedule(
 
 @Composable
 fun TodayScheduleItem(
-    lecture: LectureModel
+    lecture: LectureModel,
+    selectedCourse: (String) -> Unit = {},
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { selectedCourse(lecture.courseId) }
     ) {
         // Title
         Row(
@@ -341,6 +353,7 @@ fun TodayScheduleItem(
 @Composable
 fun ActiveTask(
     taskData: List<TaskModel> = emptyList(),
+    selectedTask: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -403,7 +416,10 @@ fun ActiveTask(
                     )
             ) {
                 items(taskData) { task ->
-                    ActiveTaskItem(task)
+                    ActiveTaskItem(
+                        task = task,
+                        selectedTask = selectedTask
+                    )
                 }
             }
         }
@@ -412,7 +428,8 @@ fun ActiveTask(
 
 @Composable
 fun ActiveTaskItem(
-    task: TaskModel
+    task: TaskModel,
+    selectedTask: (String) -> Unit = {},
 ) {
     val deadlineDate = "${task.deadline["date"]} ${task.deadline["time"]}"
     val deadlineMillis = parseDateAndTime(deadlineDate)
@@ -428,6 +445,7 @@ fun ActiveTaskItem(
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(horizontal = 20.dp, vertical = 16.dp)
+            .clickable { selectedTask(task.taskId) }
     ) {
         // Course
         Row(

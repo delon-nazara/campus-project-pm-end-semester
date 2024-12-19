@@ -52,6 +52,9 @@ class DatabaseViewModel : ViewModel() {
     private var _selectedCourseIdState = MutableStateFlow("")
     val selectedCourseIdState: StateFlow<String> = _selectedCourseIdState.asStateFlow()
 
+    private var _selectedTaskIdState = MutableStateFlow("")
+    val selectedTaskIdState: StateFlow<String> = _selectedTaskIdState.asStateFlow()
+
     fun addUserToDatabase(
         userId: String,
         email: String,
@@ -225,6 +228,10 @@ class DatabaseViewModel : ViewModel() {
         _selectedCourseIdState.value = courseId
     }
 
+    fun setSelectedTaskIdState(taskId: String) {
+        _selectedTaskIdState.value = taskId
+    }
+
     private fun getAllData() {
         getLectureData()
         getCourseData()
@@ -240,6 +247,7 @@ class DatabaseViewModel : ViewModel() {
         _moduleState.value = emptyList()
         _announcementState.value = emptyList()
         _selectedCourseIdState.value = ""
+        _selectedTaskIdState.value = ""
     }
 
     fun logout() {

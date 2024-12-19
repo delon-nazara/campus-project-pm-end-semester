@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -61,6 +62,7 @@ import kotlinx.coroutines.delay
 fun TaskScreen(
     userData: UserModel? = UserModel(),
     taskData: List<TaskModel> = emptyList(),
+    selectedTask: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -102,7 +104,8 @@ fun TaskScreen(
                 )
 
                 TaskTab(
-                    taskData = taskData
+                    taskData = taskData,
+                    selectedTask = selectedTask
                 )
             }
         }
@@ -111,7 +114,8 @@ fun TaskScreen(
 
 @Composable
 fun TaskTab(
-    taskData: List<TaskModel> = emptyList()
+    taskData: List<TaskModel> = emptyList(),
+    selectedTask: (String) -> Unit = {},
 ) {
     var currentMilliseconds by remember { mutableLongStateOf(getCurrentMilliseconds()) }
 
@@ -178,14 +182,20 @@ fun TaskTab(
                 if (listActiveTask.isEmpty()) {
                     TaskEmpty()
                 } else {
-                    TaskNotEmpty(listActiveTask)
+                    TaskNotEmpty(
+                        taskData = listActiveTask,
+                        selectedTask = selectedTask
+                    )
                 }
             }
             1 -> {
                 if (listPastTask.isEmpty()) {
                     TaskEmpty()
                 } else {
-                    TaskNotEmpty(listPastTask)
+                    TaskNotEmpty(
+                        taskData = listPastTask,
+                        selectedTask = selectedTask
+                    )
                 }
             }
         }
@@ -222,7 +232,8 @@ fun TaskEmpty() {
 
 @Composable
 fun TaskNotEmpty(
-    taskData: List<TaskModel>
+    taskData: List<TaskModel>,
+    selectedTask: (String) -> Unit = {},
 ) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
@@ -235,14 +246,18 @@ fun TaskNotEmpty(
             )
     ) {
         items(taskData) { task ->
-            TaskItem(task)
+            TaskItem(
+                task = task,
+                selectedTask = selectedTask
+            )
         }
     }
 }
 
 @Composable
 fun TaskItem(
-    task: TaskModel
+    task: TaskModel,
+    selectedTask: (String) -> Unit = {},
 ) {
     val deadlineDate = "${task.deadline["date"]} ${task.deadline["time"]}"
     val deadlineMillis = parseDateAndTime(deadlineDate)
@@ -263,6 +278,7 @@ fun TaskItem(
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(horizontal = 20.dp, vertical = 16.dp)
+            .clickable { selectedTask(task.taskId) }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

@@ -23,6 +23,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.RegisterScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ScheduleScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SettingScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
@@ -49,6 +50,7 @@ fun MainApp(context: Context) {
     val moduleState by databaseViewModel.moduleState.collectAsState()
     val announcementState by databaseViewModel.announcementState.collectAsState()
     val selectedCourseIdState by databaseViewModel.selectedCourseIdState.collectAsState()
+    val selectedTaskIdState by databaseViewModel.selectedTaskIdState.collectAsState()
 
     val loadingViewModel: LoadingViewModel = viewModel()
     val loadingState by loadingViewModel.loadingState.collectAsState()
@@ -241,6 +243,14 @@ fun MainApp(context: Context) {
                 userData = userState,
                 lectureData = lectureState,
                 taskData = taskState,
+                selectedCourse = { courseId ->
+                    databaseViewModel.setSelectedCourseIdState(courseId)
+                    navigateTo(Route.COURSE_DETAIL_SCREEN.name, false)
+                },
+                selectedTask = { taskId ->
+                    databaseViewModel.setSelectedTaskIdState(taskId)
+                    navigateTo(Route.TASK_DETAIL_SCREEN.name, false)
+                },
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -252,6 +262,10 @@ fun MainApp(context: Context) {
             ScheduleScreen(
                 userData = userState,
                 lectureData = lectureState,
+                selectedCourse = { courseId ->
+                    databaseViewModel.setSelectedCourseIdState(courseId)
+                    navigateTo(Route.COURSE_DETAIL_SCREEN.name, false)
+                },
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -294,6 +308,10 @@ fun MainApp(context: Context) {
             TaskScreen(
                 userData = userState,
                 taskData = taskState,
+                selectedTask = { taskId ->
+                    databaseViewModel.setSelectedTaskIdState(taskId)
+                    navigateTo(Route.TASK_DETAIL_SCREEN.name, false)
+                },
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 }
@@ -301,6 +319,16 @@ fun MainApp(context: Context) {
         }
 
         // Route Task Detail Screen
+        composable(Route.TASK_DETAIL_SCREEN.name) {
+            TaskDetailScreen(
+                userData = userState,
+                taskData = taskState,
+                selectedTaskId = selectedTaskIdState,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
 
         // Route Module Screen
         composable(Route.MODULE_SCREEN.name) {

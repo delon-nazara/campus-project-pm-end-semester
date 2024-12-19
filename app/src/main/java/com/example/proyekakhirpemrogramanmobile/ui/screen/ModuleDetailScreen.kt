@@ -1,5 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -175,8 +178,13 @@ fun ModuleDetailList(
 fun ModuleDetailListItem(
     module: ModuleModel
 ) {
+    val context = LocalContext.current
+
     Card(
-        onClick = {},
+        onClick = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(module.link))
+            context.startActivity(intent)
+        },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),
