@@ -38,10 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listModule
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ModuleModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.listLeftCourseImage
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -50,9 +50,10 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 @Preview
 @Composable
 fun ModuleScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
+    courseData: List<CourseModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> },
-    temp: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -81,16 +82,21 @@ fun ModuleScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal =  16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_module))
-                ModuleList(temp)
+                Title(
+                    title = stringResource(R.string.sb_module)
+                )
+
+                ModuleList(
+                    courseData = courseData,
+                    selectedCourse = selectedCourse
+                )
             }
         }
     }
@@ -98,8 +104,11 @@ fun ModuleScreen(
 
 
 @Composable
-fun ModuleList(temp: () -> Unit = {}) {
-    if (listModule.isEmpty()) {
+fun ModuleList(
+    courseData: List<CourseModel> = emptyList(),
+    selectedCourse: (String) -> Unit
+) {
+    if (courseData.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
@@ -117,7 +126,7 @@ fun ModuleList(temp: () -> Unit = {}) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.course_empty),
+                    text = stringResource(R.string.cs_empty),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     fontFamily = Poppins,
@@ -138,7 +147,7 @@ fun ModuleList(temp: () -> Unit = {}) {
                     modifier = Modifier.size(28.dp)
                 )
                 Text(
-                    text = stringResource(R.string.course_take_course),
+                    text = stringResource(R.string.cs_take_course),
                     fontSize = 16.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
@@ -152,17 +161,23 @@ fun ModuleList(temp: () -> Unit = {}) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(listModule) { item ->
-                ModuleListItem(item, temp)
+            items(courseData) { course ->
+                ModuleListItem(
+                    course = course,
+                    selectedCourse = selectedCourse
+                )
             }
         }
     }
 }
 
 @Composable
-fun ModuleListItem(item : ModuleModel, temp: () -> Unit = {}) {
+fun ModuleListItem(
+    course : CourseModel,
+    selectedCourse: (String) -> Unit
+) {
     Card(
-        onClick = { temp() },
+        onClick = { selectedCourse(course.courseId) },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),
@@ -176,7 +191,7 @@ fun ModuleListItem(item : ModuleModel, temp: () -> Unit = {}) {
                 .padding(vertical = 16.dp)
         ) {
             Image(
-                painter = painterResource(item.image),
+                painter = painterResource(listLeftCourseImage.random()),
                 contentDescription = "Course image",
                 modifier = Modifier.sizeIn(maxWidth = 75.dp, maxHeight = 100.dp)
             )
@@ -186,7 +201,7 @@ fun ModuleListItem(item : ModuleModel, temp: () -> Unit = {}) {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = item.course,
+                    text = course.courseName,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorResource(R.color.white)
@@ -194,7 +209,7 @@ fun ModuleListItem(item : ModuleModel, temp: () -> Unit = {}) {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = item.module,
+                    text = "${course.amount["modules"]} modul",
                     fontSize = 14.sp,
                     color = colorResource(R.color.white)
                 )

@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -37,31 +39,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSchedule
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
-import com.example.proyekakhirpemrogramanmobile.util.formatDate
-import com.example.proyekakhirpemrogramanmobile.util.formatTime
-import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
-import com.google.firebase.firestore.core.UserData
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.formatDay
+import com.example.proyekakhirpemrogramanmobile.util.formatDisplayTime
+import com.example.proyekakhirpemrogramanmobile.util.formatTimeDifferent
+import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 import kotlinx.coroutines.delay
 
 @Preview
 @Composable
 fun HomeScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = null,
+    lectureData: List<LectureModel> = emptyList(),
+    taskData: List<TaskModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
+    selectedTask: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -91,40 +94,61 @@ fun HomeScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
                     .padding(16.dp)
             ) {
+                var currentMilliseconds by remember { mutableLongStateOf(getCurrentMilliseconds()) }
+
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        delay(1000)
+                        currentMilliseconds = getCurrentMilliseconds()
+                    }
+                }
+
+                val currentDay = formatDay(currentMilliseconds)
+                val currentDate = formatDate(currentMilliseconds)
+                val currentTime = formatDisplayTime(currentMilliseconds)
+
                 // Date and Time
-                DateAndTime()
+                DateAndTime(
+                    currentDay = currentDay,
+                    currentDate = currentDate,
+                    currentTime = currentTime
+                )
 
                 // Today Schedule
-                TodaySchedule(modifier = Modifier.weight(1f)) // todo
+                TodaySchedule(
+                    lectureData = lectureData.filter {
+                        it.schedule["date"] == currentDate
+                    },
+                    selectedCourse = selectedCourse,
+                    modifier = Modifier.weight(1f)
+                )
 
                 // Active Task
-                ActiveTask(modifier = Modifier.weight(1f))
+                ActiveTask(
+                    taskData = taskData.filter {
+                        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
+                    },
+                    selectedTask = selectedTask,
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     }
 }
 
 @Composable
-fun DateAndTime() {
-    // Time Updater
-    var currentMilliseconds by remember { mutableLongStateOf(getCurrentMilliseconds()) }
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000)
-            currentMilliseconds = getCurrentMilliseconds()
-        }
-    }
-
-    val currentDate = formatDate(currentMilliseconds)
-    val currentTime = formatTime(currentMilliseconds)
-
+fun DateAndTime(
+    currentDay: String,
+    currentDate: String,
+    currentTime: String
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -137,7 +161,7 @@ fun DateAndTime() {
     ) {
         // Date
         Text(
-            text = currentDate,
+            text = "$currentDay, $currentDate",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             color = colorResource(R.color.white),
@@ -156,7 +180,11 @@ fun DateAndTime() {
 }
 
 @Composable
-fun TodaySchedule(modifier: Modifier = Modifier) {
+fun TodaySchedule(
+    lectureData: List<LectureModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -170,7 +198,7 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
                 )
         ) {
             Text(
-                text = stringResource(R.string.home_today_schedule),
+                text = stringResource(R.string.hs_today_schedule),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -179,7 +207,7 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
         }
 
         // Content
-        if (listSchedule.isEmpty()) {
+        if (lectureData.isEmpty()) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -199,7 +227,7 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.home_today_schedule_empty),
+                    text = stringResource(R.string.hs_today_schedule_empty),
                     textAlign = TextAlign.Center,
                     fontFamily = Poppins,
                     fontSize = 14.sp,
@@ -217,8 +245,11 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
             ) {
-                items(listSchedule) { item ->
-                    TodayScheduleItem(item)
+                items(lectureData) { lecture ->
+                    TodayScheduleItem(
+                        lecture = lecture,
+                        selectedCourse = selectedCourse
+                    )
                 }
             }
         }
@@ -226,25 +257,31 @@ fun TodaySchedule(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TodayScheduleItem(item: ScheduleModel) {
+fun TodayScheduleItem(
+    lecture: LectureModel,
+    selectedCourse: (String) -> Unit = {},
+) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { selectedCourse(lecture.courseId) }
     ) {
         // Title
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = when (item.status) {
-                        ScheduleStatus.PRESENT -> colorResource(R.color.light_green)
-                        ScheduleStatus.UNKNOWN -> colorResource(R.color.light_yellow)
-                        ScheduleStatus.CANCELLED -> colorResource(R.color.light_red)
+                    color = when (lecture.status) {
+                        LectureStatus.PRESENT.name -> colorResource(R.color.light_green)
+                        LectureStatus.UNKNOWN.name -> colorResource(R.color.light_yellow)
+                        LectureStatus.CANCELLED.name -> colorResource(R.color.light_red)
+                        else -> colorResource(R.color.light_yellow)
                     },
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
-        ){
+        ) {
             Text(
-                text = item.course,
+                text = lecture.courseName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
@@ -266,14 +303,14 @@ fun TodayScheduleItem(item: ScheduleModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.time_icon),
                     contentDescription = "Time icon",
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = item.time,
+                    text = "${lecture.schedule["time"]}",
                     fontSize = 14.sp
                 )
             }
@@ -282,14 +319,14 @@ fun TodayScheduleItem(item: ScheduleModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.location_icon),
                     contentDescription = "Location icon",
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = item.location,
+                    text = "Ruangan ${lecture.location["class"]}",
                     fontSize = 14.sp
                 )
             }
@@ -298,14 +335,14 @@ fun TodayScheduleItem(item: ScheduleModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.notes_icon),
                     contentDescription = "Notes icon",
                     modifier = Modifier.size(18.dp)
                 )
                 Text(
-                    text = item.notes,
+                    text = lecture.notes,
                     fontSize = 14.sp
                 )
             }
@@ -314,7 +351,11 @@ fun TodayScheduleItem(item: ScheduleModel) {
 }
 
 @Composable
-fun ActiveTask(modifier: Modifier = Modifier) {
+fun ActiveTask(
+    taskData: List<TaskModel> = emptyList(),
+    selectedTask: (String) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -328,7 +369,7 @@ fun ActiveTask(modifier: Modifier = Modifier) {
                 )
         ) {
             Text(
-                text = stringResource(R.string.home_active_task),
+                text = stringResource(R.string.hs_active_task),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.white),
@@ -336,7 +377,7 @@ fun ActiveTask(modifier: Modifier = Modifier) {
             )
         }
 
-        if (listTask.isEmpty()) {
+        if (taskData.isEmpty()) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -356,7 +397,7 @@ fun ActiveTask(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.home_active_task_empty),
+                    text = stringResource(R.string.hs_active_task_empty),
                     textAlign = TextAlign.Center,
                     fontFamily = Poppins,
                     fontSize = 14.sp,
@@ -374,8 +415,11 @@ fun ActiveTask(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
                     )
             ) {
-                items(listTask) { item ->
-                    ActiveTaskItem(item)
+                items(taskData) { task ->
+                    ActiveTaskItem(
+                        task = task,
+                        selectedTask = selectedTask
+                    )
                 }
             }
         }
@@ -383,39 +427,51 @@ fun ActiveTask(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ActiveTaskItem(item: TaskModel) {
+fun ActiveTaskItem(
+    task: TaskModel,
+    selectedTask: (String) -> Unit = {},
+) {
+    val deadlineDate = "${task.deadline["date"]} ${task.deadline["time"]}"
+    val deadlineMillis = parseDateAndTime(deadlineDate)
+    val currentMillis = getCurrentMilliseconds()
+    val deadline = formatTimeDifferent(deadlineMillis - currentMillis)
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(
                 color = colorResource(R.color.white),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .clickable { selectedTask(task.taskId) }
     ) {
-        // Subject
+        // Course
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = item.course,
+                text = task.courseName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Icon(
                 painter = painterResource(
-                    when (item.type) {
-                        TaskType.PERSONAL -> R.drawable.person_icon
-                        TaskType.GROUP -> R.drawable.group_icon
+                    when (task.type) {
+                        TaskType.PERSONAL.name -> R.drawable.person_icon
+                        TaskType.GROUP.name -> R.drawable.group_icon
+                        else -> R.drawable.person_icon
                     }
                 ),
                 contentDescription = "Type icon",
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(22.dp)
             )
         }
+
+        HorizontalDivider()
 
         // Deadline
         Row(
@@ -429,7 +485,7 @@ fun ActiveTaskItem(item: TaskModel) {
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = "Deadline ${item.deadline}",
+                text = "Deadline $deadline lagi",
                 fontSize = 14.sp,
             )
         }
@@ -446,7 +502,7 @@ fun ActiveTaskItem(item: TaskModel) {
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = item.title,
+                text = task.title,
                 fontSize = 14.sp,
             )
         }

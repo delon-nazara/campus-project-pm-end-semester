@@ -37,20 +37,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSetting
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.SettingModel
+import com.example.proyekakhirpemrogramanmobile.data.source.listSetting
+import com.example.proyekakhirpemrogramanmobile.data.model.SettingModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.setImageBasedLetter
-import kotlin.math.log
 
 @Preview
 @Composable
 fun SettingScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> },
     logout: () -> Unit = {}
 ) {
@@ -90,7 +89,7 @@ fun SettingScreen(
                     .padding(bottom = 20.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                Title(title = stringResource(R.string.sidebar_setting))
+                Title(title = stringResource(R.string.sb_setting))
                 Profile(userData = userData)
                 MyClass()
                 SettingList()
@@ -101,13 +100,13 @@ fun SettingScreen(
 }
 
 @Composable
-fun Profile(userData: UserModel) {
+fun Profile(userData: UserModel?) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(setImageBasedLetter(userData.firstLetter)),
+            painter = painterResource(setImageBasedLetter(userData?.firstLetter ?: "u")),
             contentDescription = "Profile picture",
             modifier = Modifier
                 .padding(start = 16.dp, end = 20.dp)
@@ -118,14 +117,14 @@ fun Profile(userData: UserModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = userData.fullName,
+                text = userData?.fullName ?: "Unknown User",
                 lineHeight = 24.sp,
                 fontSize = 20.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = userData.studentId,
+                text = userData?.studentId ?: "000000000",
                 fontSize = 16.sp,
                 fontFamily = Poppins,
                 fontStyle = FontStyle.Italic,
@@ -154,7 +153,7 @@ fun MyClass() {
             modifier = Modifier.size(24.dp)
         )
         Text(
-            text = stringResource(R.string.ss_my_class),
+            text = stringResource(R.string.sts_my_class),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
@@ -174,7 +173,7 @@ fun SettingList() {
                 )
         ) {
             Text(
-                text = stringResource(R.string.ss_setting),
+                text = stringResource(R.string.sts_setting),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = colorResource(R.color.white),
@@ -250,7 +249,7 @@ fun Logout(logout: () -> Unit = {}) {
                 .size(24.dp)
         )
         Text(
-            text = stringResource(R.string.logout),
+            text = stringResource(R.string.sts_logout),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 8.dp)

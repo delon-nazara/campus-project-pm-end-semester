@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -40,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -55,14 +59,14 @@ import kotlinx.coroutines.launch
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArkanToolScreen() {
+fun TaskGroupScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet{
+            ModalDrawerSheet {
                 //===============
                 // Drawer content
                 //===============
@@ -71,11 +75,11 @@ fun ArkanToolScreen() {
                         .fillMaxSize()
                         .background(colorResource(R.color.very_light_blue)),
                     verticalArrangement = Arrangement.SpaceBetween
-                ){
+                ) {
                     Column(
                         modifier = Modifier.background(colorResource(R.color.very_light_blue)),
                         verticalArrangement = Arrangement.Center
-                    ){
+                    ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -110,7 +114,7 @@ fun ArkanToolScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
-                    ){
+                    ) {
                         //=================================================
                         //Button Beranda untuk Navigation Drawer
                         //=================================================
@@ -126,7 +130,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Beranda",
                                     color = Color.White,
@@ -148,7 +152,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Jadwal",
                                     color = Color.White,
@@ -170,7 +174,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Mata Kuliah",
                                     color = Color.White,
@@ -192,7 +196,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Tugas",
                                     color = Color.White,
@@ -214,7 +218,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Modul",
                                     color = Color.White,
@@ -236,7 +240,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Informasi",
                                     color = Color.White,
@@ -258,7 +262,7 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Alat",
                                     color = Color.White,
@@ -280,14 +284,17 @@ fun ArkanToolScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 10.dp)
-                            ){
+                            ) {
                                 Text(
                                     text = "Pengaturan",
                                     color = Color.White,
                                 )
                             }
                         }
+
+
                     }
+                    //
                     Spacer(modifier = Modifier.weight(1f))
 
                     Row(
@@ -301,16 +308,17 @@ fun ArkanToolScreen() {
                         //=================================================
                         //Button Profil paling bawah untuk Navigation Drawer
                         //=================================================
-                        Button(onClick = {/* Handle click for Profil di paling bawah*/},
+                        Button(
+                            onClick = {/* Handle click for Profil di paling bawah*/ },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(Color.Transparent)
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Start
-                            ){
+                            ) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.profil_arkan),
+                                    painter = painterResource(id = R.drawable.person_icon),
                                     contentDescription = "Profile Image",
                                     modifier = Modifier
                                         .size(50.dp)
@@ -384,16 +392,13 @@ fun ArkanToolScreen() {
             }
 
         ) { contentPadding ->
-            //=========================
-            //Memanggil Halaman kontainer ALat
-            //=========================
-            IsiTHalamanAlat(contentPadding)
+            IsiKelompok(contentPadding)
         }
     }
 }
 
 @Composable
-fun IsiTHalamanAlat(paddingValues: PaddingValues) {
+fun IsiKelompok(paddingValues: PaddingValues) {
 
     Column(
         modifier = Modifier
@@ -424,88 +429,219 @@ fun IsiTHalamanAlat(paddingValues: PaddingValues) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Alat",
+                text = "Daftar Kelompok",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
 
-//        Spacer(
-//            modifier = Modifier.padding(15.dp)
-//        )
-        //====================================
-        //Pemanggilan Isi Konten dari Halaman
-        //===================================
-        AlatKeren()
-    }
+        Spacer(
+            modifier = Modifier.padding(15.dp)
+        )
 
-}
-
-@Composable
-fun AlatKeren() {
-    Spacer(
-        modifier = Modifier.padding(top = 16.dp)
-    )
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
-    ){
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.light_blue)
-                ),
-
+        //=================================================================================
+        // Cek kondisi jika list group kosong maka akan tampilan image tidak ada kelompok
+        //=================================================================================
+        if (groups.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Column(
-                    verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
-
-                ){
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Image(
-                        modifier = Modifier.size(125.dp),
-                        painter = painterResource(R.drawable.icon_vote),
-                        contentDescription = "gambar vote"
-                    )
-                    Text(
-                        text = "Voting",
-                        modifier = Modifier.padding(16.dp),
-                         fontWeight = FontWeight.SemiBold
-                    )
+                        painter = painterResource(R.drawable.empty_screen_image), // Pastikan ada resource icon yang sesuai
+                        contentDescription = "Kosong",
+                        modifier = Modifier
+                            .size(250.dp)
+                            .alpha(0.7f)
 
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Kelompok belum dibentuk",
+                        fontSize = 16.sp,
+                        color = Color.Gray
+                    )
                 }
-
             }
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.light_blue)
-                ),
-            ){
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
 
-                ){
-                    Image(
-                        modifier = Modifier.size(125.dp),
-                        painter = painterResource(R.drawable.icon_speenwheel),
-                        contentDescription = "gambar Spin Wheel"
-                    )
-                    Text(
-                        text = "Spin Wheel",
-                        modifier = Modifier.padding(16.dp),
-                        fontWeight = FontWeight.SemiBold
-                    )
-
+        } else {
+            //===================================================
+            // LazyColumn untuk daftar anggota
+            //===================================================
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                items(groups) { group ->
+                    GroupCard(group)
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
     }
 }
+
+@Composable
+fun GroupCard(group: GroupZ) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.light_blue)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.very_dark_blue))
+            ) {
+                Text(
+                    text = group.name,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .weight(1f),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.very_dark_blue))
+                ) {
+                    Text(
+                        text = "Deskripsi",
+                        color = Color.White,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+
+                //===================================================
+                // Pemanggilan deskripsi untuk LazyColumn
+                //===================================================
+                Row() {
+                    Text(
+                        text = group.description,
+                        color = Color.Black,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+            }
+
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colorResource(R.color.very_dark_blue))
+                ) {
+                    Text(
+                        text = "Daftar Anggota",
+                        color = Color.White,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+
+                //===================================================
+                // Pemanggilan data anggota kelompok untuk LazyColumn
+                //===================================================
+                group.members.forEach { member ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp)
+                            .padding(bottom = 5.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = member.name,
+                            color = Color.Black
+                        )
+                        Text(
+                            text = member.id,
+                            color = Color.Black
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+            }
+        }
+    }
+}
+
+//===================================================
+// Data Class untuk Kelompok
+//===================================================
+
+data class GroupZ(
+    val name: String,
+    val description: String,
+    val members: List<Member>
+)
+
+data class Member(
+    val name: String,
+    val id: String
+)
+
+//===================================================
+//List jika tidak ada anggota kelompok ada di list
+//===================================================
+
+// val groups = listOf<Group>()
+
+//===================================================
+//List jika anggota kelompok ada di list
+//===================================================
+
+val groups = listOf(
+    GroupZ(
+        name = "Syntax Invalid",
+        description = ".Edu adalah sebuah aplikasi mobile yang digunakan sebagai sarana berbagi informasi dalam sebuah kelas perkuliahan.",
+        members = listOf(
+            Member("Iqbal Alwi", "221401005"),
+            Member("Muhammad Fariz Arkan", "221401111"),
+            Member("Delon Grace Famohouni Nazara", "221401073"),
+            Member("Nico Saputra Siringoringo", "221401040"),
+            Member("Steven Anthony", "221401031")
+        )
+    ), GroupZ(
+        name = "Rider",
+        description = "MechaCare. Aplikasi yang memungkinkan Anda memanggil mekanik kapan saja dan menemukan bengkel terdekat dengan cepat dan mudah.",
+        members = listOf(
+            Member("Alvian", "221401085"),
+            Member("Rafli Riza Syahputra Siregar", "221401077"),
+            Member("Muhammad Nurhadi Alfayyadah", "221401011"),
+            Member("Andika Prayogo", "221401050"),
+            Member("Siti Maysi Wulandari", "221401002")
+        )
+    )
+)

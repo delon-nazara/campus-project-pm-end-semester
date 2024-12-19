@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -24,9 +26,10 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -42,19 +45,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listTask
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskModel
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.TaskType
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskType
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.formatTimeDifferent
+import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
+import kotlinx.coroutines.delay
 
 @Preview
 @Composable
 fun TaskScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
+    taskData: List<TaskModel> = emptyList(),
+    selectedTask: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -84,38 +92,52 @@ fun TaskScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 20.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_task))
-                TaskTab()
+                Title(
+                    title = stringResource(R.string.sb_task)
+                )
+
+                TaskTab(
+                    taskData = taskData,
+                    selectedTask = selectedTask
+                )
             }
         }
     }
 }
 
 @Composable
-fun TaskTab() {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabList = listOf(
-        stringResource(R.string.active_task),
-        stringResource(R.string.past_task)
-    )
+fun TaskTab(
+    taskData: List<TaskModel> = emptyList(),
+    selectedTask: (String) -> Unit = {},
+) {
+    var currentMilliseconds by remember { mutableLongStateOf(getCurrentMilliseconds()) }
 
-    val listActiveTask by remember {
-        derivedStateOf {
-            listTask.filter { it.deadline.contains("lagi") } // todo
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1000)
+            currentMilliseconds = getCurrentMilliseconds()
         }
     }
-    val listPastTask by remember {
-        derivedStateOf {
-            listTask.filter { it.deadline.contains("lalu") } // todo
-        }
+
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val tabList = listOf(
+        stringResource(R.string.ts_active_task),
+        stringResource(R.string.ts_past_task)
+    )
+
+    val listActiveTask = taskData.filter {
+        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
+    }
+
+    val listPastTask = taskData.filter {
+        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") < currentMilliseconds
     }
 
     Column(
@@ -160,14 +182,20 @@ fun TaskTab() {
                 if (listActiveTask.isEmpty()) {
                     TaskEmpty()
                 } else {
-                    TaskNotEmpty(listActiveTask)
+                    TaskNotEmpty(
+                        taskData = listActiveTask,
+                        selectedTask = selectedTask
+                    )
                 }
             }
             1 -> {
                 if (listPastTask.isEmpty()) {
                     TaskEmpty()
                 } else {
-                    TaskNotEmpty(listPastTask)
+                    TaskNotEmpty(
+                        taskData = listPastTask,
+                        selectedTask = selectedTask
+                    )
                 }
             }
         }
@@ -180,8 +208,7 @@ fun TaskEmpty() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
+            .fillMaxSize()
             .background(
                 color = colorResource(R.color.very_light_blue),
                 shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
@@ -194,7 +221,7 @@ fun TaskEmpty() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = stringResource(R.string.home_active_task_empty),
+            text = stringResource(R.string.ts_task_empty),
             textAlign = TextAlign.Center,
             fontFamily = Poppins,
             fontSize = 14.sp,
@@ -204,34 +231,54 @@ fun TaskEmpty() {
 }
 
 @Composable
-fun TaskNotEmpty(task: List<TaskModel>) {
+fun TaskNotEmpty(
+    taskData: List<TaskModel>,
+    selectedTask: (String) -> Unit = {},
+) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(
                 color = colorResource(R.color.very_light_blue),
                 shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
             )
     ) {
-        items(task) { item ->
-            TaskItem(item)
+        items(taskData) { task ->
+            TaskItem(
+                task = task,
+                selectedTask = selectedTask
+            )
         }
     }
 }
 
 @Composable
-fun TaskItem(item: TaskModel) {
+fun TaskItem(
+    task: TaskModel,
+    selectedTask: (String) -> Unit = {},
+) {
+    val deadlineDate = "${task.deadline["date"]} ${task.deadline["time"]}"
+    val deadlineMillis = parseDateAndTime(deadlineDate)
+    val currentMillis = getCurrentMilliseconds()
+
+    val deadline = if (deadlineMillis >= currentMillis) {
+        "${formatTimeDifferent(deadlineMillis - currentMillis)} lagi"
+    } else {
+        "${formatTimeDifferent(currentMillis - deadlineMillis)} yang lalu"
+    }
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(
                 color = colorResource(R.color.white),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .clickable { selectedTask(task.taskId) }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -239,28 +286,24 @@ fun TaskItem(item: TaskModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = item.course,
+                text = task.courseName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Icon(
                 painter = painterResource(
-                    when (item.type) {
-                        TaskType.PERSONAL -> R.drawable.person_icon
-                        TaskType.GROUP -> R.drawable.group_icon
+                    when (task.type) {
+                        TaskType.PERSONAL.name -> R.drawable.person_icon
+                        TaskType.GROUP.name -> R.drawable.group_icon
+                        else -> R.drawable.person_icon
                     }
                 ),
                 contentDescription = "Type icon",
-                tint = colorResource(R.color.black),
-                modifier = Modifier
-                    .background(
-                        color = colorResource(R.color.light_green),
-                        shape = CircleShape
-                    )
-                    .padding(4.dp)
-                    .size(20.dp)
+                modifier = Modifier.size(22.dp)
             )
         }
+
+        HorizontalDivider()
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -273,7 +316,7 @@ fun TaskItem(item: TaskModel) {
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = "Deadline ${item.deadline}",
+                text = "Deadline $deadline",
                 fontSize = 14.sp,
             )
         }
@@ -289,7 +332,7 @@ fun TaskItem(item: TaskModel) {
                 modifier = Modifier.size(18.dp)
             )
             Text(
-                text = item.title,
+                text = task.title,
                 fontSize = 14.sp,
             )
         }

@@ -84,7 +84,7 @@ fun SetupProfileScreen(
         ) {
             // Title
             Text(
-                text = stringResource(R.string.setup_profile_title),
+                text = stringResource(R.string.sps_title),
                 fontSize = 24.sp,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold,
@@ -128,7 +128,7 @@ fun SetupProfileScreen(
 
                     // Card Title
                     Text(
-                        text = stringResource(R.string.setup_profile_subtitle),
+                        text = stringResource(R.string.sps_subtitle),
                         fontSize = 20.sp,
                         fontFamily = Poppins,
                         fontWeight = FontWeight.SemiBold,
@@ -144,7 +144,7 @@ fun SetupProfileScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.full_name),
+                                text = stringResource(R.string.sps_full_name),
                                 fontSize = 14.sp
                             )
                         },
@@ -190,7 +190,7 @@ fun SetupProfileScreen(
                         textStyle = TextStyle(fontSize = 14.sp),
                         label = {
                             Text(
-                                text = stringResource(R.string.student_id),
+                                text = stringResource(R.string.sps_student_id),
                                 fontSize = 14.sp,
                             )
                         },
@@ -300,7 +300,7 @@ fun SetupProfileScreen(
                             .height(45.dp)
                     ){
                         Text(
-                            text = stringResource(R.string.finish),
+                            text = stringResource(R.string.sps_finish),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = colorResource(R.color.white)

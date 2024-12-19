@@ -1,5 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,19 +37,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listAnnouncement
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.AnnouncementModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
 
 @Preview
 @Composable
 fun AnnouncementScreen(
-    userData: UserModel = UserModel(),
+    userData: UserModel? = UserModel(),
+    selectedCourseId: String = "",
+    announcementData: List<AnnouncementModel> = emptyList(),
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -78,24 +80,30 @@ fun AnnouncementScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 20.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                Title(title = stringResource(R.string.sidebar_announcement))
-                AnnouncementList()
+                Title(
+                    title = stringResource(R.string.sb_announcement)
+                )
+
+                AnnouncementList(
+                    announcementData = announcementData
+                )
             }
         }
     }
 }
 
 @Composable
-fun AnnouncementList() {
-    if (listAnnouncement.isEmpty()) {
+fun AnnouncementList(
+    announcementData: List<AnnouncementModel> = emptyList(),
+) {
+    if (announcementData.isEmpty()) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -108,7 +116,7 @@ fun AnnouncementList() {
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(R.string.as_empty),
+                text = stringResource(R.string.ans_empty),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp,
                 fontFamily = Poppins,
@@ -122,7 +130,7 @@ fun AnnouncementList() {
             verticalArrangement = Arrangement.spacedBy(22.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(listAnnouncement) { announcement ->
+            items(announcementData) { announcement ->
                 AnnouncementListItem(announcement)
             }
         }
@@ -130,7 +138,9 @@ fun AnnouncementList() {
 }
 
 @Composable
-fun AnnouncementListItem(announcement: AnnouncementModel) {
+fun AnnouncementListItem(
+    announcement: AnnouncementModel
+) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -141,37 +151,37 @@ fun AnnouncementListItem(announcement: AnnouncementModel) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(vertical = 20.dp, horizontal = 24.dp)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 6.dp)
-            ) {
-                Text(
-                    text = announcement.course,
-                    fontStyle = FontStyle.Italic
-                )
-                Text(
-                    text = announcement.date,
-                    fontStyle = FontStyle.Italic
-                )
-            }
-            HorizontalDivider(
-                color = colorResource(R.color.black)
-            )
             Text(
                 text = announcement.title,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = stringResource(R.string.ans_date, "${announcement.created["date"]}"),
+                fontStyle = FontStyle.Italic,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            HorizontalDivider(
+                color = colorResource(R.color.black),
+                modifier = Modifier.padding(bottom = 10.dp)
             )
             Text(
                 text = announcement.description,
                 textAlign = TextAlign.Justify,
-                fontSize = 16.sp
+                lineHeight = 18.sp,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            Text(
+                text = announcement.courseName,
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                modifier = Modifier.align(Alignment.End)
             )
         }
     }
