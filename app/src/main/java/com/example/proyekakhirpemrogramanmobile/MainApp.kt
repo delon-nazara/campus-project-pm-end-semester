@@ -437,7 +437,7 @@ fun MainApp(context: Context) {
                 userData = userState,
                 courseData = courseState,
                 selectedCourse = { courseId ->
-                    databaseViewModel.selectedCourseIdState
+                    databaseViewModel.setSelectedCourseIdState(courseId)
                     navigateTo(Route.ADMIN_DETAIL_SCREEN.name, false)
                 },
                 navigateTo = { route, clearStack ->
@@ -449,7 +449,16 @@ fun MainApp(context: Context) {
         // Route Admin Detail Screen
         composable(Route.ADMIN_DETAIL_SCREEN.name) {
             AdminDetailScreen(
-
+                userData = userState,
+                selectedCourseId = selectedCourseIdState,
+                courseData = courseState,
+                lectureData = lectureState,
+                taskData = taskState,
+                moduleData = moduleState,
+                announcementData = announcementState,
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
             )
         }
 

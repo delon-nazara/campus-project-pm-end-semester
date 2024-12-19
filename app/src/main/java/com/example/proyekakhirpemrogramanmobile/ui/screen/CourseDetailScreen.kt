@@ -115,7 +115,7 @@ fun CourseDetailScreen(
                     .sortedBy { parseDateAndTime("${it.created["date"]} ${it.created["time"]}") }
                     .map { it.title }
                 val listAnnouncementTitle = announcementData
-                    .filter { it.courseId == "s" }
+                    .filter { it.courseId == selectedCourseId }
                     .sortedBy { parseDateAndTime("${it.created["date"]} ${it.created["time"]}") }
                     .map { it.title }
 
