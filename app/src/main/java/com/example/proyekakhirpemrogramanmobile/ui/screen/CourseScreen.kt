@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -140,22 +142,27 @@ fun CourseList(
             }
 
             Button(
-                onClick = { navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false) },
+                onClick = { navigateTo(Route.COURSE_MANAGE_SCREEN.name, false) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.very_light_blue)
-                )
+                ),
+                shape = RoundedCornerShape(16.dp),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_icon),
                     contentDescription = "Add icon",
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.padding(end = 6.dp).size(28.dp)
                 )
                 Text(
                     text = stringResource(R.string.cs_take_course),
                     fontSize = 16.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 16.dp)
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))

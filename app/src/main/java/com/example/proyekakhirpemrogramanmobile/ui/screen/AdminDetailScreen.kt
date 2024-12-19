@@ -16,8 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -29,7 +27,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,11 +44,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.ScheduleStatus
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.ClassStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.CourseInfo
 import com.example.proyekakhirpemrogramanmobile.data.source.CourseModul
 import com.example.proyekakhirpemrogramanmobile.data.source.CourseTask
+import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.data.source.listClassStatus
 import com.example.proyekakhirpemrogramanmobile.data.source.listInfoDetails
 import com.example.proyekakhirpemrogramanmobile.data.source.listModulDetails
@@ -63,10 +61,10 @@ import com.example.proyekakhirpemrogramanmobile.util.Poppins
 
 @Preview
 @Composable
-fun ManageCourseScreen() {
+fun AdminDetailScreen() {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = R.string.sidebar_home
+    val selectedMenu = Menu.HOME
     val scrollState = rememberScrollState()
 
     ModalNavigationDrawer(
@@ -193,9 +191,9 @@ fun ManageCourseStatusItem(item : ClassStatus) {
             .fillMaxWidth()
             .background(
                 color = when (item.status) {
-                    ScheduleStatus.PRESENT -> colorResource(R.color.light_green)
-                    ScheduleStatus.UNKNOWN -> colorResource(R.color.light_yellow)
-                    ScheduleStatus.CANCELLED -> colorResource(R.color.light_red)
+                    LectureStatus.PRESENT -> colorResource(R.color.light_green)
+                    LectureStatus.UNKNOWN -> colorResource(R.color.light_yellow)
+                    LectureStatus.CANCELLED -> colorResource(R.color.light_red)
                 },
                 shape = RoundedCornerShape(16.dp)
             )
@@ -223,7 +221,7 @@ fun ManageCourseStatusItem(item : ClassStatus) {
                         onClick = {editDialog = true},
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.icon_pencil),
+                            painter = painterResource(R.drawable.profile_icon),
                             contentDescription = "Edit Class Date",
                             modifier = Modifier
                                 .fillMaxSize()
@@ -254,7 +252,7 @@ fun ManageCourseStatusItem(item : ClassStatus) {
                                 Button(
                                     onClick = {
                                         editDialog = false
-//                                        item.status = ScheduleStatus.UNKNOWN //gatau ini aku cara ngubah warnanya kalau di edit
+//                                        item.status = LectureStatus.UNKNOWN //gatau ini aku cara ngubah warnanya kalau di edit
                                               },
                                     colors = ButtonColors(
                                         containerColor = colorResource(R.color.white),
@@ -351,9 +349,9 @@ fun ManageCourseStatusItem(item : ClassStatus) {
             ){
                 Text(
                     text = when (item.status){
-                        ScheduleStatus.PRESENT -> "Selesai"
-                        ScheduleStatus.UNKNOWN -> "Diganti"
-                        ScheduleStatus.CANCELLED -> "Batal"
+                        LectureStatus.PRESENT -> "Selesai"
+                        LectureStatus.UNKNOWN -> "Diganti"
+                        LectureStatus.CANCELLED -> "Batal"
                     }
                 )
                 Text(
@@ -490,12 +488,12 @@ fun ManageCourseTasksItem(item: CourseTask) {
                 ){
                     if (item.taskType){
                         Image(
-                            painter = painterResource(R.drawable.tugas_pribadi),
+                            painter = painterResource(R.drawable.person_icon),
                             contentDescription = null
                         )
                     } else {
                         Image(
-                            painter = painterResource(R.drawable.tugas_kelompok),
+                            painter = painterResource(R.drawable.group_icon),
                             contentDescription = null
                         )
                     }
@@ -530,7 +528,7 @@ fun ManageCourseTasksItem(item: CourseTask) {
                     onClick = {editDialog = true},
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.icon_pencil),
+                        painter = painterResource(R.drawable.profile_icon),
                         contentDescription = "Edit Class Date",
                         modifier = Modifier
                             .fillMaxSize()
@@ -562,7 +560,7 @@ fun ManageCourseTasksItem(item: CourseTask) {
                             Button(
                                 onClick = {
                                     editDialog = false
-//                                        item.status = ScheduleStatus.UNKNOWN //gatau ini aku cara ngubah warnanya kalau di edit
+//                                        item.status = LectureStatus.UNKNOWN //gatau ini aku cara ngubah warnanya kalau di edit
                                 },
                                 colors = ButtonColors(
                                     containerColor = colorResource(R.color.white),

@@ -143,11 +143,11 @@ fun MyClass(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .clickable { navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false) }
+            .clickable { navigateTo(Route.COURSE_MANAGE_SCREEN.name, false) }
             .fillMaxWidth()
             .background(
                 color = colorResource(R.color.light_blue),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(12.dp)
             )
     ) {
         Icon(

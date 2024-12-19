@@ -2,6 +2,8 @@ package com.example.proyekakhirpemrogramanmobile.viewmodel
 
 import android.icu.util.Calendar
 import android.util.Log
+import androidx.compose.animation.core.snap
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.DEFAULT_ARGS_KEY
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
@@ -197,11 +199,11 @@ class DatabaseViewModel : ViewModel() {
             semester = semester,
             year = year,
             amount = mapOf(
-                "announcements" to "0",
-                "lectures" to "16",
-                "modules" to "0",
-                "students" to "1",
-                "tasks" to "0",
+                "announcements" to 0,
+                "lectures" to 16,
+                "modules" to 0,
+                "students" to 1,
+                "tasks" to 0,
             ),
             created = mapOf(
                 "date" to formatDate(getCurrentMilliseconds()),
@@ -279,7 +281,7 @@ class DatabaseViewModel : ViewModel() {
             .document(_userState.value!!.userId)
             .update("coursesId", FieldValue.arrayUnion(courseId))
             .addOnSuccessListener {
-                getUserFromDatabase(_userState.value!!.userId)
+                updateStudentsAmount(courseId, 1)
             }
     }
 
@@ -290,7 +292,28 @@ class DatabaseViewModel : ViewModel() {
             .document(_userState.value!!.userId)
             .update("coursesId", FieldValue.arrayRemove(courseId))
             .addOnSuccessListener {
-                getUserFromDatabase(_userState.value!!.userId)
+                updateStudentsAmount(courseId, -1)
+            }
+    }
+
+    private fun updateStudentsAmount(
+        courseId: String,
+        inc: Long,
+    ) {
+        courseReference
+            .whereEqualTo("courseId", courseId)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    snapshot
+                        .documents[0]
+                        .reference
+                        .update("amount.students", FieldValue.increment(inc))
+                        .addOnSuccessListener {
+                            deleteAllData()
+                            getUserFromDatabase(_userState.value!!.userId)
+                        }
+                }
             }
     }
 

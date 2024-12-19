@@ -10,7 +10,7 @@ data class CourseModel(
     val lecturer: String = "",
     val semester: String = "",
     val year: String = "",
-    val amount: Map<String, String> = emptyMap(),
+    val amount: Map<String, Long> = emptyMap(),
     val created: Map<String, String> = emptyMap(),
     val location: Map<String, String> = emptyMap(),
     val schedule: Map<String, String> = emptyMap(),

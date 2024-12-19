@@ -30,16 +30,20 @@
     <string name="sps_student_id">NIM</string>
     <string name="sps_finish">Selesai</string>
 
-    <!-- Choose Course Screen -->
-    <string name="cc_title">Manajemen Kelas</string>
-    <string name="cc_your_class">Kelas Kamu</string>
-    <string name="cc_your_class_empty">Kamu tidak terdaftar pada kelas apapun.\nTambahkan sekarang dari kelas yang tersedia!</string>
-    <string name="cc_available_class">Kelas yang Tersedia</string>
-    <string name="cc_available_class_empty">Aduh, tidak ada kelas yang tersedia sekarang.\nSelalu cek halaman ini secara berkala!</string>
-    <string name="cc_create_class">Ingin Membuat Kelas Baru?</string>
-    <string name="cc_back">Kembali ke Beranda</string>
+    <!-- Course Manage Screen -->
+    <string name="cm_title">Manajemen Kelas</string>
+    <string name="cm_your_class">Kelas Kamu</string>
+    <string name="cm_your_class_empty">Kamu tidak terdaftar pada kelas apapun.\nTambahkan sekarang dari kelas yang tersedia!</string>
+    <string name="cm_available_class">Kelas yang Tersedia</string>
+    <string name="cm_available_class_empty">Aduh, tidak ada kelas yang tersedia saat ini.\nBagaimana kalau kamu coba membuatnya?</string>
+    <string name="cm_confirm">Konfirmasi</string>
+    <string name="cm_confirm_text">Apakah kamu yakin ingin melanjutkan?</string>
+    <string name="cm_yes">Ya</string>
+    <string name="cm_no">Tidak</string>
+    <string name="cm_create_class">Ingin Membuat Kelas Baru?</string>
+    <string name="cm_back">Kembali ke Beranda</string>
 
-    <!-- Create Course Screen -->
+    <!-- Course Create Screen -->
     <string name="crc_title">Pembuatan Kelas</string>
     <string name="crc_description">Silahkan isi data berikut!</string>
     <string name="crc_input_name">Nama Kelas</string>
@@ -105,6 +109,7 @@
     <string name="ms_take_course">Ambil Mata Kuliah</string>
 
     <!-- Module Detail Screen -->
+    <string name="mds_empty">Tidak ada modul yang tersedia saat ini.\nBeritahu admin untuk menambahkannya!</string>
 
     <!-- Announcement Screen -->
     <string name="ans_empty">Tidak ada pengumuman untuk saat ini!</string>
@@ -120,7 +125,7 @@
 
     <!-- Admin Screen -->
 
-    <!-- Admin Child Screen -->
+    <!-- Admin Detail Screen -->
 
     <!-- Setting Screen -->
     <string name="sts_setting">Pengaturan</string>

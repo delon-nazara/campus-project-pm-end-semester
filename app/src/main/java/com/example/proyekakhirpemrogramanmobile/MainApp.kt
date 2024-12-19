@@ -1,7 +1,6 @@
 package com.example.proyekakhirpemrogramanmobile
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -12,11 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
+import com.example.proyekakhirpemrogramanmobile.ui.screen.AdminDetailScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.AdminScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
-import com.example.proyekakhirpemrogramanmobile.ui.screen.ChooseCourseScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseManageScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
-import com.example.proyekakhirpemrogramanmobile.ui.screen.CreateCourseScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseCreateScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleDetailScreen
@@ -240,8 +241,8 @@ fun MainApp(context: Context) {
         }
 
         // Route Choose Course Screen
-        composable(Route.CHOOSE_COURSE_SCREEN.name) {
-            ChooseCourseScreen(
+        composable(Route.COURSE_MANAGE_SCREEN.name) {
+            CourseManageScreen(
                 userData = userState,
                 courseData = allCourseState,
                 addCourse = { courseId ->
@@ -257,10 +258,10 @@ fun MainApp(context: Context) {
         }
 
         // Route Create Course Screen
-        composable(Route.CREATE_COURSE_SCREEN.name) {
-            CreateCourseScreen(
+        composable(Route.COURSE_CREATE_SCREEN.name) {
+            CourseCreateScreen(
                 onCancelButtonClicked = {
-                    navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false)
+                    navigateTo(Route.COURSE_MANAGE_SCREEN.name, false)
                 },
                 onConfirmButtonClicked = { allData ->
                     databaseViewModel.addCourseToDatabase(
@@ -278,7 +279,7 @@ fun MainApp(context: Context) {
                         allData[11],
                         allData[12],
                     )
-                    navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false)
+                    navigateTo(Route.COURSE_MANAGE_SCREEN.name, false)
                 }
             )
         }
@@ -431,8 +432,18 @@ fun MainApp(context: Context) {
         // Route Tool Voting Screen
 
         // Route Admin Screen
+        composable(Route.ADMIN_SCREEN.name) {
+            AdminScreen(
 
-        // Route Admin Child Screen
+            )
+        }
+
+        // Route Admin Detail Screen
+        composable(Route.ADMIN_DETAIL_SCREEN.name) {
+            AdminDetailScreen(
+
+            )
+        }
 
         // Route Setting Screen
         composable(Route.SETTING_SCREEN.name) {

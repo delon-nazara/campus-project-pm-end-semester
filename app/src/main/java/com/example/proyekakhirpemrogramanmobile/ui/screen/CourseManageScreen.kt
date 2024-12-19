@@ -11,15 +11,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -34,11 +40,10 @@ import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
-import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 
 @Preview
 @Composable
-fun ChooseCourseScreen(
+fun CourseManageScreen(
     userData: UserModel? = null,
     courseData: List<CourseModel> = emptyList(),
     addCourse: (String) -> Unit = {},
@@ -55,7 +60,7 @@ fun ChooseCourseScreen(
             .padding(horizontal = 20.dp, vertical = 40.dp)
     ) {
         Text(
-            text = stringResource(R.string.cc_title),
+            text = stringResource(R.string.cm_title),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = colorResource(R.color.white),
@@ -83,7 +88,7 @@ fun ChooseCourseScreen(
                     )
             ) {
                 Text(
-                    text = stringResource(R.string.cc_your_class),
+                    text = stringResource(R.string.cm_your_class),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colorResource(R.color.white),
@@ -112,7 +117,7 @@ fun ChooseCourseScreen(
                             .height(72.dp)
                     )
                     Text(
-                        text = stringResource(R.string.cc_your_class_empty),
+                        text = stringResource(R.string.cm_your_class_empty),
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
@@ -158,7 +163,7 @@ fun ChooseCourseScreen(
                     )
             ) {
                 Text(
-                    text = stringResource(R.string.cc_available_class),
+                    text = stringResource(R.string.cm_available_class),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colorResource(R.color.white),
@@ -187,7 +192,7 @@ fun ChooseCourseScreen(
                             .height(72.dp)
                     )
                     Text(
-                        text = stringResource(R.string.cc_available_class_empty),
+                        text = stringResource(R.string.cm_available_class_empty),
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
@@ -225,7 +230,7 @@ fun ChooseCourseScreen(
                 .fillMaxWidth()
         ) {
             Button(
-                onClick = { navigateTo(Route.CREATE_COURSE_SCREEN.name, false) },
+                onClick = { navigateTo(Route.COURSE_CREATE_SCREEN.name, false) },
                 contentPadding = PaddingValues(0.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.very_light_blue)
@@ -238,7 +243,7 @@ fun ChooseCourseScreen(
                     .weight(1f)
             ) {
                 Text(
-                    text = stringResource(R.string.cc_create_class),
+                    text = stringResource(R.string.cm_create_class),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(12.dp)
@@ -265,7 +270,7 @@ fun ChooseCourseScreen(
                     .weight(1f)
             ) {
                 Text(
-                    text = stringResource(R.string.cc_back),
+                    text = stringResource(R.string.cm_back),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(12.dp)
@@ -281,6 +286,8 @@ fun CourseItem(
     icon: Int,
     onClick: (String) -> Unit
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -307,7 +314,7 @@ fun CourseItem(
             )
         }
         IconButton(
-            onClick = { onClick(course.courseId) },
+            onClick = { showDialog = true },
         ) {
             Icon(
                 painter = painterResource(icon),
@@ -321,5 +328,46 @@ fun CourseItem(
                 modifier = Modifier.size(28.dp)
             )
         }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(text = stringResource(R.string.cm_confirm)) },
+            text = { Text(text = stringResource(R.string.cm_confirm_text)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDialog = false
+                        onClick(course.courseId)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        colorResource(R.color.very_dark_blue)
+                    ),
+                    modifier = Modifier.width(100.dp)
+                ) {
+                    Text(text = stringResource(R.string.cm_yes))
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        showDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        colorResource(R.color.very_light_blue)
+                    ),
+                    modifier = Modifier.width(100.dp)
+                ) {
+                    Text(text = stringResource(R.string.cm_no))
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.white),
+                    shape = RoundedCornerShape(16.dp)
+                )
+        )
     }
 }

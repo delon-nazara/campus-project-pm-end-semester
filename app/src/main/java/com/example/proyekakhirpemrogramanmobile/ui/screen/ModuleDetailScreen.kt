@@ -134,32 +134,12 @@ fun ModuleDetailList(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.cs_empty),
+                    text = stringResource(R.string.mds_empty),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
                     color = colorResource(R.color.gray)
-                )
-            }
-
-            Button(
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.very_light_blue)
-                )
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.add_icon),
-                    contentDescription = "Add icon",
-                    modifier = Modifier.size(28.dp)
-                )
-                Text(
-                    text = stringResource(R.string.cs_take_course),
-                    fontSize = 16.sp,
-                    fontFamily = Poppins,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
