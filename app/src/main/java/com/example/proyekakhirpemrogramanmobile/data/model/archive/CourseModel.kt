@@ -1,9 +1,18 @@
 package com.example.proyekakhirpemrogramanmobile.data.model.archive
 
 data class CourseModel(
-    val course: String,
-    val lecture: String,
-    val students: Int,
-    val semester: Int,
-    val image: Int // todo: temp
+    val courseId: String = "",
+    val name: String = "",
+    val code: String = "",
+    val credits: String = "",
+    val major: String = "",
+    val faculty: String = "",
+    val leader: String = "",
+    val lecturer: String = "",
+    val semester: String = "",
+    val year: String = "",
+    val amount: Map<String, String> = emptyMap(),
+    val created: Map<String, String> = emptyMap(),
+    val location: Map<String, String> = emptyMap(),
+    val schedule: Map<String, String> = emptyMap(),
 )

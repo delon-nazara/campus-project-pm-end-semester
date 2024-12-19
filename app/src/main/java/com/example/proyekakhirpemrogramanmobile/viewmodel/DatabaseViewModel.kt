@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
 import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
 import com.example.proyekakhirpemrogramanmobile.util.formatDay
 import com.example.proyekakhirpemrogramanmobile.util.formatName
@@ -22,17 +23,24 @@ class DatabaseViewModel : ViewModel() {
 
     private val database: FirebaseFirestore = Firebase.firestore
     private val userReference = database.collection("user")
+    private val courseReference = database.collection("course")
     private val lectureReference = database.collection("lecture")
     private val taskReference = database.collection("task")
 
     private var _userState = MutableStateFlow<UserModel?>(null)
     val userState: StateFlow<UserModel?> = _userState.asStateFlow()
 
+    private var _courseState = MutableStateFlow<List<CourseModel>>(emptyList())
+    val courseState: StateFlow<List<CourseModel>> = _courseState.asStateFlow()
+
     private var _lectureState = MutableStateFlow<List<LectureModel>>(emptyList())
     val lectureState: StateFlow<List<LectureModel>> = _lectureState.asStateFlow()
 
     private var _taskState = MutableStateFlow<List<TaskModel>>(emptyList())
     val taskState: StateFlow<List<TaskModel>> = _taskState.asStateFlow()
+
+    private var _selectedCourseIdState = MutableStateFlow("")
+    val selectedCourseIdState: StateFlow<String> = _selectedCourseIdState.asStateFlow()
 
     fun addUserToDatabase(
         userId: String,
@@ -58,8 +66,7 @@ class DatabaseViewModel : ViewModel() {
             studentId = studentId,
             firstWord = firstWord,
             firstLetter = firstLetter,
-            finishedTasksId = null,
-            coursesId = null,
+            coursesId = emptyList(),
             created = mapOf(
                 "day" to day,
                 "date" to date,
@@ -134,6 +141,20 @@ class DatabaseViewModel : ViewModel() {
             }
     }
 
+    private fun getCourseData() {
+        _userState.value?.coursesId?.let {
+            courseReference
+                .whereIn("courseId", it)
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        _courseState.value = snapshot?.toObjects(CourseModel::class.java) ?: emptyList()
+                    } else {
+                        _courseState.value = emptyList()
+                    }
+                }
+        }
+    }
+
     private fun getLectureData() {
         _userState.value?.coursesId?.let {
             lectureReference
@@ -162,14 +183,22 @@ class DatabaseViewModel : ViewModel() {
         }
     }
 
+    fun setSelectedCourseIdState(courseId: String) {
+        _selectedCourseIdState.value = courseId
+    }
+
     private fun getAllData() {
+        getCourseData()
         getLectureData()
         getTaskData()
     }
 
     private fun deleteAllData() {
+        _courseState.value = emptyList()
         _lectureState.value = emptyList()
         _taskState.value = emptyList()
+
+        _selectedCourseIdState.value = ""
     }
 
     fun logout() {

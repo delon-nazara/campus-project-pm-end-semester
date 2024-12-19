@@ -39,12 +39,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
+import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.AnnouncementModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.model.archive.ModuleModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.generalInformationData
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.taskListData
 import com.example.proyekakhirpemrogramanmobile.data.source.archive.learningModuleData
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.lecturerInformationData
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.lecturerSummaryData
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -52,7 +54,15 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 
 @Preview
 @Composable
-fun CourseDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
+fun CourseDetailScreen(
+    selectedCourseId: String = "",
+    courseData: List<CourseModel> = emptyList(),
+    lectureData: List<LectureModel> = emptyList(),
+    taskData: List<TaskModel> = emptyList(),
+//    announcementData: AnnouncementModel = AnnouncementModel(),
+//    moduleData: ModuleModel = ModuleModel(),
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val selectedMenu = Menu.COURSE
@@ -78,36 +88,72 @@ fun CourseDetailScreen(navigateTo: (String, Boolean) -> Unit = { _, _ -> }) {
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                Title(title = "Pemrograman Mobile") // todo: change
+                val course = courseData.find { it.courseId == selectedCourseId } ?: CourseModel()
+                val listLectureSummary = lectureData.filter { it.courseId == selectedCourseId }.map { it.summary }
+                val listTaskTitle = taskData.filter { it.courseId == selectedCourseId }.map { it.title }
+
+                Title(
+                    title = course.name
+                )
+
                 DropdownData(
                     title = R.string.cds_general_information,
-                    listData = generalInformationData
+                    listData = mapOf(
+                        "Nama" to course.name,
+                        "Kode" to course.code,
+                        "SKS" to "${course.credits} SKS",
+                        "Program Studi" to course.major,
+                        "Fakultas" to course.faculty,
+                        "Semester" to course.semester,
+                        "Tahun" to course.year,
+                        "Dosen" to course.lecturer,
+                        "Komting" to course.leader,
+                        "Jumlah Mahasiswa" to "${course.amount["students"]} orang",
+                    )
                 )
+
                 DropdownData(
-                    title = R.string.cds_lecturer_information,
-                    listData = lecturerInformationData
+                    title = R.string.cds_lecture_information,
+                    listData = mapOf(
+                        "Hari" to "${course.schedule["day"]}",
+                        "Pukul" to "${course.schedule["time"]}",
+                        "Gedung" to "${course.location["building"]}",
+                        "Lantai" to "${course.location["floor"]}",
+                        "Ruangan" to "${course.location["class"]}",
+                    )
                 )
+
                 DropdownData(
-                    title = R.string.cds_lecturer_summary,
-                    listData = lecturerSummaryData
+                    title = R.string.cds_lecture_summary,
+                    listData = listLectureSummary.mapIndexed { index, value ->
+                        "Pertemuan ${index + 1}" to value
+                    }.toMap()
                 )
+
                 DropdownData(
                     title = R.string.cds_task_list,
-                    listData = taskListData
+                    listData = listTaskTitle.mapIndexed { index, value ->
+                        "Tugas ${index + 1}" to value
+                    }.toMap()
                 )
-                DropdownData(
-                    title = R.string.cds_learning_module,
-                    listData = learningModuleData
-                )
+
+//                DropdownData(
+//                    title = R.string.cds_announcement_list,
+//                    listData = taskListData
+//                )
+//
+//                DropdownData(
+//                    title = R.string.cds_learning_module,
+//                    listData = learningModuleData
+//                )
             }
         }
     }
@@ -175,7 +221,12 @@ fun DropdownData(
                     listData.forEach { data ->
                         CourseData(
                             title = data.key,
-                            content = data.value
+                            content = data.value,
+                            textAlign = if (title == R.string.cds_lecture_summary) {
+                                TextAlign.Justify
+                            } else {
+                                TextAlign.Start
+                            }
                         )
                     }
                 }
@@ -187,7 +238,8 @@ fun DropdownData(
 @Composable
 fun CourseData(
     title: String,
-    content: String
+    content: String,
+    textAlign: TextAlign
 ) {
     Column(
         modifier = Modifier
@@ -201,7 +253,7 @@ fun CourseData(
         )
         Text(
             text = content,
-            textAlign = TextAlign.Justify
+            textAlign = textAlign
         )
     }
 }

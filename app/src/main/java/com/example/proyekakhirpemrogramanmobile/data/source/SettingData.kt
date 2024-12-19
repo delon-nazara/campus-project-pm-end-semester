@@ -1,7 +1,7 @@
-package com.example.proyekakhirpemrogramanmobile.data.source.archive
+package com.example.proyekakhirpemrogramanmobile.data.source
 
 import com.example.proyekakhirpemrogramanmobile.R
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.SettingModel
+import com.example.proyekakhirpemrogramanmobile.data.model.SettingModel
 
 val listSetting = listOf(
     SettingModel(

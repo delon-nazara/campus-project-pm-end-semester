@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listSetting
-import com.example.proyekakhirpemrogramanmobile.data.model.archive.SettingModel
+import com.example.proyekakhirpemrogramanmobile.data.source.listSetting
+import com.example.proyekakhirpemrogramanmobile.data.model.SettingModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar

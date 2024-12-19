@@ -94,7 +94,7 @@ fun TaskScreen(
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
                 Title(
                     title = stringResource(R.string.sb_task)

@@ -59,9 +59,10 @@
 
     <!-- Course Detail Screen -->
     <string name="cds_general_information">Informasi Umum</string>
-    <string name="cds_lecturer_information">Informasi Perkuliahan</string>
-    <string name="cds_lecturer_summary">Rangkuman Perkuliahan</string>
+    <string name="cds_lecture_information">Informasi Perkuliahan</string>
+    <string name="cds_lecture_summary">Rangkuman Pertemuan</string>
     <string name="cds_task_list">Daftar Tugas</string>
+    <string name="cds_announcement_list">Pengumuman</string>
     <string name="cds_learning_module">Modul Pembelajaran</string>
 
     <!-- Task Screen -->

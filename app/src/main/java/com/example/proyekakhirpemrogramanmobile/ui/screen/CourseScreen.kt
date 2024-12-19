@@ -39,20 +39,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
-import com.example.proyekakhirpemrogramanmobile.data.source.archive.listCourse
 import com.example.proyekakhirpemrogramanmobile.data.model.archive.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
-import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.data.source.listRightCourseImage
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
+import com.example.proyekakhirpemrogramanmobile.util.Poppins
 
 @Preview
 @Composable
 fun CourseScreen(
     userData: UserModel? = UserModel(),
+    courseData: List<CourseModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> },
-    temp: () -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -81,24 +82,32 @@ fun CourseScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal =  16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                Title(title = stringResource(R.string.sb_course))
-                CourseList(temp)
+                Title(
+                    title = stringResource(R.string.sb_course)
+                )
+
+                CourseList(
+                    courseData = courseData,
+                    selectedCourse = selectedCourse
+                )
             }
         }
     }
 }
 
 @Composable
-fun CourseList(temp: () -> Unit) {
-    if (listCourse.isEmpty()) {
+fun CourseList(
+    courseData: List<CourseModel> = emptyList(),
+    selectedCourse: (String) -> Unit
+) {
+    if (courseData.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
@@ -151,17 +160,23 @@ fun CourseList(temp: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(listCourse) { item ->
-                CourseListItem(item, temp)
+            items(courseData) { course ->
+                CourseListItem(
+                    course = course,
+                    selectedCourse = selectedCourse
+                )
             }
         }
     }
 }
 
 @Composable
-fun CourseListItem(item : CourseModel, temp: () -> Unit) {
+fun CourseListItem(
+    course : CourseModel,
+    selectedCourse: (String) -> Unit
+) {
     Card(
-        onClick = { temp() },
+        onClick = { selectedCourse(course.courseId) },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),
@@ -178,7 +193,7 @@ fun CourseListItem(item : CourseModel, temp: () -> Unit) {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = item.course,
+                    text = course.name,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorResource(R.color.white)
@@ -186,14 +201,14 @@ fun CourseListItem(item : CourseModel, temp: () -> Unit) {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = item.lecture,
+                    text = course.lecturer,
                     fontSize = 14.sp,
                     color = colorResource(R.color.white)
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = "Semester ${item.semester}",
+                    text = "Semester ${course.semester}",
                     fontSize = 14.sp,
                     color = colorResource(R.color.white)
                 )
@@ -201,7 +216,7 @@ fun CourseListItem(item : CourseModel, temp: () -> Unit) {
             Spacer(modifier = Modifier.width(10.dp))
 
             Image(
-                painter = painterResource(item.image),
+                painter = painterResource(listRightCourseImage.random()),
                 contentDescription = "Course image",
                 modifier = Modifier.sizeIn(maxWidth = 75.dp, maxHeight = 100.dp)
             )

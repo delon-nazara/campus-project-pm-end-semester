@@ -81,16 +81,20 @@ fun ModuleScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(22.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(horizontal =  16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
-                Title(title = stringResource(R.string.sb_module))
-                ModuleList(temp)
+                Title(
+                    title = stringResource(R.string.sb_module)
+                )
+
+                ModuleList(
+                    temp
+                )
             }
         }
     }
@@ -98,7 +102,9 @@ fun ModuleScreen(
 
 
 @Composable
-fun ModuleList(temp: () -> Unit = {}) {
+fun ModuleList(
+    temp: () -> Unit = {}
+) {
     if (listModule.isEmpty()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

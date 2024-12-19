@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
@@ -41,8 +42,10 @@ fun MainApp(context: Context) {
 
     val databaseViewModel: DatabaseViewModel = viewModel()
     val userState by databaseViewModel.userState.collectAsState()
+    val courseState by databaseViewModel.courseState.collectAsState()
     val lectureState by databaseViewModel.lectureState.collectAsState()
     val taskState by databaseViewModel.taskState.collectAsState()
+    val selectedCourseIdState by databaseViewModel.selectedCourseIdState.collectAsState()
 
     val loadingViewModel: LoadingViewModel = viewModel()
     val loadingState by loadingViewModel.loadingState.collectAsState()
@@ -256,16 +259,26 @@ fun MainApp(context: Context) {
         composable(Route.COURSE_SCREEN.name) {
             CourseScreen(
                 userData = userState,
+                courseData = courseState,
+                selectedCourse = { courseId ->
+                    databaseViewModel.setSelectedCourseIdState(courseId)
+                    navigateTo(Route.COURSE_DETAIL_SCREEN.name, false)
+                },
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
-                },
-                temp = {
-                    navigateTo(Route.COURSE_DETAIL_SCREEN.name, false)
                 }
             )
         }
 
         // Route Course Detail Screen
+        composable(Route.COURSE_DETAIL_SCREEN.name) {
+            CourseDetailScreen(
+                selectedCourseId = selectedCourseIdState,
+                courseData = courseState,
+                lectureData = lectureState,
+                taskData = taskState
+            )
+        }
 
         // Route Task Screen
         composable(Route.TASK_SCREEN.name) {
