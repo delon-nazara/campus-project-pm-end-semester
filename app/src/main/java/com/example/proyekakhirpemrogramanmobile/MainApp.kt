@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,6 +15,7 @@ import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CreateCourseScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleDetailScreen
@@ -236,6 +238,36 @@ fun MainApp(context: Context) {
         }
 
         // Route Choose Course Screen
+        composable(Route.CHOOSE_COURSE_SCREEN.name) {
+
+        }
+
+        // Route Create Course Screen
+        composable(Route.CREATE_COURSE_SCREEN.name) {
+            CreateCourseScreen(
+                onCancelButtonClicked = {
+                    navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false)
+                },
+                onConfirmButtonClicked = { allData ->
+                    Log.d("noled", "called")
+                    databaseViewModel.addCourseToDatabase(
+                        allData[0],
+                        allData[1],
+                        allData[2],
+                        allData[3],
+                        allData[4],
+                        allData[5],
+                        allData[6],
+                        allData[7],
+                        allData[8],
+                        allData[9],
+                        allData[10],
+                        allData[11],
+                        allData[12],
+                    )
+                }
+            )
+        }
 
         // Route Home Screen
         composable(Route.HOME_SCREEN.name) {
@@ -396,9 +428,10 @@ fun MainApp(context: Context) {
                     navigateTo(route, clearStack)
                 },
                 logout = {
-                    authenticationViewModel.logout()
-                    databaseViewModel.logout()
-                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
+                    navigateTo(Route.CREATE_COURSE_SCREEN.name, false)
+//                    authenticationViewModel.logout()
+//                    databaseViewModel.logout()
+//                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
                 }
             )
         }

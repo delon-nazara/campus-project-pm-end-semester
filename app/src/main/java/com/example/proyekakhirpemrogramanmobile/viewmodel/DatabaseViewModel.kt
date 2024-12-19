@@ -1,25 +1,35 @@
 package com.example.proyekakhirpemrogramanmobile.viewmodel
 
+import android.icu.util.Calendar
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
 import com.example.proyekakhirpemrogramanmobile.data.model.TaskModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
+import com.example.proyekakhirpemrogramanmobile.data.model.LectureStatus
 import com.example.proyekakhirpemrogramanmobile.data.model.ModuleModel
 import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.formatDateForId
 import com.example.proyekakhirpemrogramanmobile.util.formatDay
-import com.example.proyekakhirpemrogramanmobile.util.formatName
+import com.example.proyekakhirpemrogramanmobile.util.formatText
 import com.example.proyekakhirpemrogramanmobile.util.formatTime
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import com.example.proyekakhirpemrogramanmobile.util.getFirstLetter
+import com.example.proyekakhirpemrogramanmobile.util.getFirstLetters
 import com.example.proyekakhirpemrogramanmobile.util.getFirstWord
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DatabaseViewModel : ViewModel() {
 
@@ -65,7 +75,7 @@ class DatabaseViewModel : ViewModel() {
         onSuccess: () -> Unit,
         onFailure: () -> Unit
     ) {
-        val cleanName = formatName(fullName)
+        val cleanName = formatText(fullName)
         val firstWord = getFirstWord(cleanName)
         val firstLetter = getFirstLetter(cleanName).toString()
         val day = formatDay(getCurrentMilliseconds())
@@ -73,6 +83,7 @@ class DatabaseViewModel : ViewModel() {
         val time = formatTime(getCurrentMilliseconds())
 
         val newUser = UserModel(
+            userId = userId,
             email = email,
             gender = gender,
             fullName = cleanName,
@@ -152,6 +163,116 @@ class DatabaseViewModel : ViewModel() {
                 showLoading(false)
                 onFailure()
             }
+    }
+
+    fun addCourseToDatabase(
+        name: String,
+        credits: String,
+        lecturer: String,
+        semester: String,
+        year: String,
+        major: String,
+        faculty: String,
+        building: String,
+        floor: String,
+        room: String,
+        startDate: String,
+        startTime: String,
+        endTime: String,
+    ) {
+        Log.d("noled", "in database")
+
+        val newCourse = CourseModel(
+            courseId = "${getFirstLetters(name)}_${formatDateForId(getCurrentMilliseconds())}",
+            courseName = formatText(name),
+            credits = credits,
+            major = major,
+            faculty = faculty,
+            leader = _userState.value?.fullName ?: "Unknown User",
+            lecturer = lecturer,
+            semester = semester,
+            year = year,
+            amount = mapOf(
+                "announcements" to "0",
+                "lectures" to "16",
+                "modules" to "0",
+                "students" to "1",
+                "tasks" to "0",
+            ),
+            created = mapOf(
+                "date" to formatDate(getCurrentMilliseconds()),
+                "day" to formatDay(getCurrentMilliseconds()),
+                "time" to formatTime(getCurrentMilliseconds())
+            ),
+            location = mapOf(
+                "building" to building,
+                "floor" to floor,
+                "class" to room
+            ),
+            schedule = mapOf(
+                "day" to formatDay(parseDateAndTime("$startDate $startTime")),
+                "time" to "$startTime - $endTime"
+            ),
+        )
+
+        courseReference
+            .add(newCourse)
+            .addOnSuccessListener {
+                Log.d("noled", "success")
+                userReference
+                    .document(_userState.value!!.userId)
+                    .update("coursesId", FieldValue.arrayUnion(newCourse.courseId))
+
+                val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
+                val calendar = Calendar.getInstance()
+                calendar.time = dateFormat.parse(startDate) ?: Date()
+
+                for (i in 1 until 17) {
+                    val schedule = mapOf(
+                        "date" to formatDate(calendar.timeInMillis),
+                        "day" to newCourse.schedule["day"]!!,
+                        "time" to newCourse.schedule["time"]!!
+                    )
+
+                    addLectureToDatabase(
+                        courseId = newCourse.courseId,
+                        courseName = newCourse.courseName,
+                        number = i.toString(),
+                        schedule = schedule,
+                        location = newCourse.location
+                    )
+
+                    calendar.add(Calendar.DAY_OF_MONTH, 7)
+                    if (i == 8) {
+                        calendar.add(Calendar.DAY_OF_MONTH, 7)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.d("noled", e.toString())
+            }
+    }
+
+    private fun addLectureToDatabase(
+        courseId: String,
+        courseName: String,
+        number: String,
+        schedule: Map<String, String>,
+        location: Map<String, String>,
+    ) {
+        Log.d("noled", "lecture called")
+        val newLecture = LectureModel(
+            courseId = courseId,
+            courseName = courseName,
+            number = number,
+            notes = "Tidak ada konfirmasi perkuliahan dari dosen. Tapi tetap masuk sesuai dengan jadwal.",
+            summary = "Admin masih belum menambahkan rangkuman perkuliahan pada pertemuan ini.",
+            status = LectureStatus.UNKNOWN.name,
+            schedule = schedule,
+            location = location,
+        )
+
+        lectureReference.add(newLecture)
     }
 
     private fun getLectureData() {

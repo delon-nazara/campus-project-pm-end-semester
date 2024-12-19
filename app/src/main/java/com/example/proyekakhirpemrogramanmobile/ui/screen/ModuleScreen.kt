@@ -102,7 +102,6 @@ fun ModuleScreen(
     }
 }
 
-
 @Composable
 fun ModuleList(
     courseData: List<CourseModel> = emptyList(),

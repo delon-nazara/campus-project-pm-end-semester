@@ -113,7 +113,6 @@ fun CourseDetailScreen(
                     title = R.string.cds_general_information,
                     listData = mapOf(
                         "Nama" to course.courseName,
-                        "Kode" to course.code,
                         "SKS" to "${course.credits} SKS",
                         "Program Studi" to course.major,
                         "Fakultas" to course.faculty,

@@ -10,8 +10,8 @@ fun showToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-fun formatName(name: String): String {
-    return name
+fun formatText(input: String): String {
+    return input
         .lowercase()
         .split(" ")
         .joinToString(" ") { word ->
@@ -21,12 +21,21 @@ fun formatName(name: String): String {
         }
 }
 
-fun getFirstWord(name: String): String {
-    return name.split(" ").first()
+fun getFirstWord(input: String): String {
+    return input
+        .split(" ")
+        .first()
 }
 
-fun getFirstLetter(name: String): Char {
-    return name[0].lowercaseChar()
+fun getFirstLetter(input: String): Char {
+    return input[0].lowercaseChar()
+}
+
+fun getFirstLetters(input: String): String {
+    return input
+        .split(" ")
+        .map { it.firstOrNull()?.lowercaseChar() ?: "" }
+        .joinToString("")
 }
 
 fun setImageBasedLetter(letter: String): Int {
@@ -63,6 +72,11 @@ fun setImageBasedLetter(letter: String): Int {
 
 fun getCurrentMilliseconds(): Long {
     return System.currentTimeMillis()
+}
+
+fun formatDateForId(milliseconds: Long): String {
+    val formatter = SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale("id", "ID"))
+    return formatter.format(milliseconds)
 }
 
 fun formatDate(milliseconds: Long): String {

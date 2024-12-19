@@ -104,7 +104,7 @@ fun ScheduleScreen(
                     LocalContext.current,
                     { _, selectedYear, selectedMonth, selectedDay ->
                         calendar.set(selectedYear, selectedMonth, selectedDay)
-                        selectedDate = (formatDate(calendar.timeInMillis))
+                        selectedDate = formatDate(calendar.timeInMillis)
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),

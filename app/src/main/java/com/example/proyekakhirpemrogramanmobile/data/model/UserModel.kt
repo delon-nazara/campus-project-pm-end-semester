@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.data.model
 
 data class UserModel(
+    val userId: String = "",
     val email: String = "",
     val gender: String = "",
     val fullName: String = "",

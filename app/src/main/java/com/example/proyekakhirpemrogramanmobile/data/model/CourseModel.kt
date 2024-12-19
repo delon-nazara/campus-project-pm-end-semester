@@ -3,7 +3,6 @@ package com.example.proyekakhirpemrogramanmobile.data.model
 data class CourseModel(
     val courseId: String = "",
     val courseName: String = "",
-    val code: String = "",
     val credits: String = "",
     val major: String = "",
     val faculty: String = "",

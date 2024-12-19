@@ -32,6 +32,25 @@
 
     <!-- Choose Course Screen -->
 
+    <!-- Create Course Screen -->
+    <string name="crc_title">Pembuatan Kelas</string>
+    <string name="crc_description">Silahkan isi data berikut!</string>
+    <string name="crc_input_name">Nama Kelas</string>
+    <string name="crc_input_credits">Jumlah SKS</string>
+    <string name="crc_input_lecturer">Nama Dosen</string>
+    <string name="crc_input_semester">Semester</string>
+    <string name="crc_input_year">Tahun</string>
+    <string name="crc_input_major">Jurusan</string>
+    <string name="crc_input_faculty">Fakultas</string>
+    <string name="crc_input_start_date">Tanggal Awal Perkuliahan</string>
+    <string name="crc_input_start_time">Jam Masuk Perkuliahan</string>
+    <string name="crc_input_end_time">Jam Keluar Perkuliahan</string>
+    <string name="crc_input_building">Gedung</string>
+    <string name="crc_input_floor">Lantai</string>
+    <string name="crc_input_room">Ruangan</string>
+    <string name="crc_cancel">Batal</string>
+    <string name="crc_confirm">Buat Kelas</string>
+
     <!-- Side Bar -->
     <string name="sb_home">Beranda</string>
     <string name="sb_schedule">Jadwal</string>
