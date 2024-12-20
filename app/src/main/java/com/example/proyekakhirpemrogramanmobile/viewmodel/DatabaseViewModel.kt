@@ -2,9 +2,6 @@ package com.example.proyekakhirpemrogramanmobile.viewmodel
 
 import android.icu.util.Calendar
 import android.util.Log
-import androidx.compose.animation.core.snap
-import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.DEFAULT_ARGS_KEY
 import androidx.lifecycle.ViewModel
 import com.example.proyekakhirpemrogramanmobile.data.model.AnnouncementModel
 import com.example.proyekakhirpemrogramanmobile.data.model.LectureModel
@@ -23,10 +20,10 @@ import com.example.proyekakhirpemrogramanmobile.util.getFirstLetter
 import com.example.proyekakhirpemrogramanmobile.util.getFirstLetters
 import com.example.proyekakhirpemrogramanmobile.util.getFirstWord
 import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
-import com.google.android.play.integrity.internal.l
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -253,6 +250,65 @@ class DatabaseViewModel : ViewModel() {
             }
     }
 
+    fun deleteLectureFromDatabase(
+        courseId: String,
+        meeting: String
+    ) {
+        lectureReference
+            .whereEqualTo("courseId", courseId)
+            .whereEqualTo("number", meeting)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    snapshot
+                        .documents[0]
+                        .reference
+                        .delete()
+                }
+            }
+    }
+
+    fun updateLectureFromDatabase(
+        courseId: String,
+        meeting: String,
+        status: String,
+        notes: String,
+        summary: String,
+        building: String,
+        floor: String,
+        room: String,
+        date: String,
+        time: String
+    ) {
+        val updateLecture = mapOf(
+            "number" to meeting,
+            "status" to status,
+            "notes" to notes,
+            "summary" to summary,
+            "location" to mapOf(
+                "building" to building,
+                "floor" to floor,
+                "class" to room
+            ),
+            "schedule" to mapOf(
+                "date" to date,
+                "time" to time
+            ),
+        )
+        lectureReference
+            .whereEqualTo("courseId", courseId)
+            .whereEqualTo("number", meeting)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    snapshot
+                        .documents[0]
+                        .reference
+                        .set(updateLecture, SetOptions.merge())
+                }
+            }
+    }
+
     private fun addLectureToDatabase(
         courseId: String,
         courseName: String,
@@ -272,6 +328,44 @@ class DatabaseViewModel : ViewModel() {
         )
 
         lectureReference.add(newLecture)
+    }
+
+    fun addTaskToDatabase(
+        courseId: String,
+        courseName: String,
+        title: String,
+        type: String,
+        description: String,
+        submissionLink: String,
+        date: String,
+        time: String
+    ){
+        val newTask = TaskModel(
+            courseId = courseId,
+            courseName = courseName,
+            taskId = "${getFirstLetters(title)}_${formatDateForId(getCurrentMilliseconds())}",
+            title = title,
+            type = type,
+            description = description,
+            submissionLink = submissionLink,
+            created = mapOf(
+                "date" to formatDate(getCurrentMilliseconds()),
+                "day" to formatDay(getCurrentMilliseconds()),
+                "time" to formatTime(getCurrentMilliseconds())
+            ),
+            assigned = mapOf(
+                "date" to formatDate(getCurrentMilliseconds()),
+                "day" to formatDay(getCurrentMilliseconds()),
+                "time" to formatTime(getCurrentMilliseconds())
+            ),
+            deadline = mapOf(
+                "date" to date,
+                "day" to formatDay(parseDateAndTime("$date $time")),
+                "time" to time
+            )
+        )
+
+        taskReference.add(newTask)
     }
 
     fun addUserCoursesId(

@@ -1,5 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,6 +35,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -48,6 +53,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -79,7 +85,10 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.formatDate
+import com.example.proyekakhirpemrogramanmobile.util.formatTime
 import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
+import java.util.Calendar
 
 @Preview
 @Composable
@@ -91,6 +100,9 @@ fun AdminDetailScreen(
     taskData: List<TaskModel> = emptyList(),
     moduleData: List<ModuleModel> = emptyList(),
     announcementData: List<AnnouncementModel> = emptyList(),
+    onEditButtonClicked: (List<String>) -> Unit = {},
+    onDeleteButtonClicked: (String, String) -> Unit = { _, _ ->},
+    onAddButtonClicked: (List<String>) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -149,31 +161,31 @@ fun AdminDetailScreen(
 
                 LectureCard(
                     title = R.string.adds_lecture,
-                    onAddButtonClicked = {},
                     lectureData = lecture,
-                    emptyText = R.string.adds_lecture_empty
+                    emptyText = R.string.adds_lecture_empty,
+                    onEditButtonClicked = onEditButtonClicked,
+                    onDeleteButtonClicked = onDeleteButtonClicked,
                 )
-//
-//                Temp(
-//                    title = R.string.adds_task,
-//                    onAddButtonClicked = {},
-//                    data = emptyList(),
-//                    emptyText = R.string.adds_task_empty
-//                )
-//
-//                Temp(
-//                    title = R.string.adds_module,
-//                    onAddButtonClicked = {},
-//                    data = emptyList(),
-//                    emptyText = R.string.adds_module_empty
-//                )
-//
-//                Temp(
-//                    title = R.string.adds_announcement,
-//                    onAddButtonClicked = {},
-//                    data = emptyList(),
-//                    emptyText = R.string.adds_announcement_empty
-//                )
+
+                TaskCard(
+                    title = R.string.adds_task,
+                    taskData = task,
+                    courseData = course,
+                    emptyText = R.string.adds_task_empty,
+                    onAddButtonClicked = onAddButtonClicked,
+                )
+
+                ModuleCard(
+                    title = R.string.adds_module,
+                    moduleData = module,
+                    emptyText = R.string.adds_module_empty
+                )
+
+                AnnouncementCard(
+                    title = R.string.adds_announcement,
+                    announcementData = announcement,
+                    emptyText = R.string.adds_announcement_empty
+                )
             }
         }
     }
@@ -182,7 +194,8 @@ fun AdminDetailScreen(
 @Composable
 fun LectureCard(
     title: Int,
-    onAddButtonClicked: () -> Unit,
+    onEditButtonClicked: (List<String>) -> Unit,
+    onDeleteButtonClicked: (String, String) -> Unit = { _, _ ->},
     lectureData: List<LectureModel>,
     emptyText: Int
 ) {
@@ -210,7 +223,7 @@ fun LectureCard(
                 color = colorResource(R.color.white),
             )
             IconButton(
-                onClick = { onAddButtonClicked() }
+                onClick = {}
             ) {
                 Icon(
                     painter = painterResource(R.drawable.circle_add_icon),
@@ -261,8 +274,8 @@ fun LectureCard(
                 items(lectureData) { lecture ->
                     LectureCardItem(
                         lecture = lecture,
-                        onEditButtonClicked = {},
-                        onDeleteButtonClicked = {}
+                        onEditButtonClicked = onEditButtonClicked,
+                        onDeleteButtonClicked = onDeleteButtonClicked
                     )
                 }
             }
@@ -274,8 +287,8 @@ fun LectureCard(
 @Composable
 fun LectureCardItem(
     lecture: LectureModel,
-    onEditButtonClicked: () -> Unit,
-    onDeleteButtonClicked: () -> Unit,
+    onEditButtonClicked: (List<String>) -> Unit,
+    onDeleteButtonClicked: (String, String) -> Unit = { _, _ ->},
 ) {
     var showEditDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -324,6 +337,57 @@ fun LectureCardItem(
     }
 
     if (showEditDialog) {
+        var meeting by rememberSaveable { mutableStateOf(lecture.number) }
+        var status by remember { mutableStateOf(lecture.status) }
+        var notes by rememberSaveable { mutableStateOf(lecture.notes) }
+        var summary by rememberSaveable { mutableStateOf(lecture.summary) }
+        var building by rememberSaveable { mutableStateOf(lecture.location["building"] ?: "unknown") }
+        var floor by rememberSaveable { mutableStateOf(lecture.location["floor"] ?: "unknown") }
+        var room by rememberSaveable { mutableStateOf(lecture.location["room"] ?: "unknown") }
+
+        val startDateCalendar = remember { Calendar.getInstance() }
+        var startDate by remember { mutableStateOf(lecture.schedule["date"] ?: formatDate(startDateCalendar.timeInMillis)) }
+        val startDatePickerDialog = DatePickerDialog(
+            LocalContext.current,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                startDateCalendar.set(selectedYear, selectedMonth, selectedDay)
+                startDate = formatDate(startDateCalendar.timeInMillis)
+            },
+            startDateCalendar.get(Calendar.YEAR),
+            startDateCalendar.get(Calendar.MONTH),
+            startDateCalendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val time = lecture.schedule["time"]?.split(" - ")
+
+        val startTimeCalendar = remember { Calendar.getInstance() }
+        var startTime by remember { mutableStateOf(time?.get(0) ?: formatTime(startTimeCalendar.timeInMillis)) }
+        val startTimePickerDialog = TimePickerDialog(
+            LocalContext.current,
+            { _, selectedHour, selectedMinute ->
+                startTimeCalendar.set(Calendar.HOUR_OF_DAY, selectedHour)
+                startTimeCalendar.set(Calendar.MINUTE, selectedMinute)
+                startTime = formatTime(startTimeCalendar.timeInMillis)
+            },
+            startTimeCalendar.get(Calendar.HOUR_OF_DAY),
+            startTimeCalendar.get(Calendar.MINUTE),
+            true
+        )
+
+        val endTimeCalendar = remember { Calendar.getInstance() }
+        var endTime by remember { mutableStateOf(time?.get(1) ?: formatTime(endTimeCalendar.timeInMillis)) }
+        val endTimePickerDialog = TimePickerDialog(
+            LocalContext.current,
+            { _, selectedHour, selectedMinute ->
+                endTimeCalendar.set(Calendar.HOUR_OF_DAY, selectedHour)
+                endTimeCalendar.set(Calendar.MINUTE, selectedMinute)
+                endTime = formatTime(endTimeCalendar.timeInMillis)
+            },
+            endTimeCalendar.get(Calendar.HOUR_OF_DAY),
+            endTimeCalendar.get(Calendar.MINUTE),
+            true
+        )
+
         BasicAlertDialog(
             onDismissRequest = { showEditDialog = false }
         ) {
@@ -340,7 +404,7 @@ fun LectureCardItem(
                     .padding(26.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.adds_lecture_edit_title),
+                    text = stringResource(R.string.adds_edit_title),
                     fontSize = 18.sp,
                     fontWeight = Bold
                 )
@@ -356,26 +420,147 @@ fun LectureCardItem(
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    var meeting by rememberSaveable { mutableStateOf("") }
-                    var notes by rememberSaveable { mutableStateOf("") }
-                    var summary by rememberSaveable { mutableStateOf("") }
-                    var building by rememberSaveable { mutableStateOf("") }
-                    var floor by rememberSaveable { mutableStateOf("") }
-                    var room by rememberSaveable { mutableStateOf("") }
-
                     TextInputEdit(
                         value = meeting,
                         onValueChange = { meeting = it },
                         label = R.string.adds_lecture_edit_meeting,
                         keyboardType = KeyboardType.Number
                     )
-                    // status
+                    SingleChoiceSegmentedButtonRow {
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3),
+                            onClick = { status = "PRESENT" },
+                            selected = "PRESENT" == status
+                        ) {
+                            Text("Present")
+                        }
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3),
+                            onClick = { status = "UNKNOWN" },
+                            selected = "UNKNOWN" == status
+                        ) {
+                            Text("Unknown")
+                        }
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3),
+                            onClick = { status = "CANCELLED" },
+                            selected = "CANCELLED" == status
+                        ) {
+                            Text("Cancelled")
+                        }
+                    }
                     TextInputEdit(
                         value = notes,
                         onValueChange = { notes = it },
                         label = R.string.adds_lecture_edit_notes,
                     )
-                    // schedule
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = colorResource(R.color.white),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .border(2.dp, colorResource(R.color.gray), RoundedCornerShape(12.dp))
+                            .padding(start = 16.dp, end = 6.dp)
+                            .padding(vertical = 12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.crc_input_start_date),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                            Text(
+                                text = startDate,
+                                fontSize = 14.sp
+                            )
+                        }
+                        IconButton(
+                            onClick = { startDatePickerDialog.show() }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.next_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = colorResource(R.color.white),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .border(2.dp, colorResource(R.color.gray), RoundedCornerShape(12.dp))
+                            .padding(start = 16.dp, end = 6.dp)
+                            .padding(vertical = 12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.crc_input_start_time),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                            Text(
+                                text = startTime,
+                                fontSize = 14.sp
+                            )
+                        }
+                        IconButton(
+                            onClick = { startTimePickerDialog.show() }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.next_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = colorResource(R.color.white),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .border(2.dp, colorResource(R.color.gray), RoundedCornerShape(12.dp))
+                            .padding(start = 16.dp, end = 6.dp)
+                            .padding(vertical = 12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.crc_input_end_time),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                            Text(
+                                text = endTime,
+                                fontSize = 14.sp
+                            )
+                        }
+                        IconButton(
+                            onClick = { endTimePickerDialog.show() }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.next_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
                     TextInputEdit(
                         value = building,
                         onValueChange = { building = it },
@@ -423,7 +608,21 @@ fun LectureCardItem(
                     Button(
                         onClick = {
                             showEditDialog = false
-                            onEditButtonClicked()
+
+                            val allData = listOf(
+                                lecture.courseId,
+                                meeting,
+                                status,
+                                notes,
+                                summary,
+                                building,
+                                floor,
+                                room,
+                                startDate,
+                                "$startTime - $endTime"
+                            )
+
+                            onEditButtonClicked(allData)
                         },
                         contentPadding = PaddingValues(0.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -485,7 +684,7 @@ fun LectureCardItem(
                     Button(
                         onClick = {
                             showDeleteDialog = false
-                            onDeleteButtonClicked()
+                            onDeleteButtonClicked(lecture.courseId, lecture.number)
                         },
                         contentPadding = PaddingValues(0.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -499,6 +698,545 @@ fun LectureCardItem(
                             modifier = Modifier.width(100.dp)
                         )
                     }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TaskCard(
+    title: Int,
+    courseData: CourseModel,
+    onAddButtonClicked: (List<String>) -> Unit,
+    taskData: List<TaskModel>,
+    emptyText: Int
+) {
+    var showAddDialog by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(500.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.very_dark_blue),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                )
+                .padding(start = 24.dp, end = 12.dp)
+                .padding(vertical = 6.dp)
+        ) {
+            Text(
+                text = stringResource(title),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(R.color.white),
+            )
+            IconButton(
+                onClick = { showAddDialog = true }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.circle_add_icon),
+                    contentDescription = null,
+                    tint = colorResource(R.color.white),
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        }
+
+        if (taskData.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.empty_screen_image),
+                    contentDescription = "Night icon",
+                    modifier = Modifier.width(96.dp)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = stringResource(emptyText),
+                    textAlign = TextAlign.Center,
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                items(taskData) { task ->
+                    TaskCardItem(
+                        task = task
+                    )
+                }
+            }
+        }
+    }
+
+    if (showAddDialog) {
+        var taskTitle by rememberSaveable { mutableStateOf("") }
+        var type by remember { mutableStateOf("PERSONAL") }
+        var description by rememberSaveable { mutableStateOf("") }
+        var submissionLink by rememberSaveable { mutableStateOf("") }
+
+        val dateCalendar = remember { Calendar.getInstance() }
+        var date by remember { mutableStateOf(formatDate(dateCalendar.timeInMillis)) }
+        val datePickerDialog = DatePickerDialog(
+            LocalContext.current,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                dateCalendar.set(selectedYear, selectedMonth, selectedDay)
+                date = formatDate(dateCalendar.timeInMillis)
+            },
+            dateCalendar.get(Calendar.YEAR),
+            dateCalendar.get(Calendar.MONTH),
+            dateCalendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val timeCalendar = remember { Calendar.getInstance() }
+        var time by remember { mutableStateOf(formatTime(timeCalendar.timeInMillis)) }
+        val timePickerDialog = TimePickerDialog(
+            LocalContext.current,
+            { _, selectedHour, selectedMinute ->
+                timeCalendar.set(Calendar.HOUR_OF_DAY, selectedHour)
+                timeCalendar.set(Calendar.MINUTE, selectedMinute)
+                time = formatTime(timeCalendar.timeInMillis)
+            },
+            timeCalendar.get(Calendar.HOUR_OF_DAY),
+            timeCalendar.get(Calendar.MINUTE),
+            true
+        )
+
+        BasicAlertDialog(
+            onDismissRequest = { showAddDialog = false }
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(500.dp)
+                    .background(
+                        color = colorResource(R.color.white),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(26.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.adds_add_title),
+                    fontSize = 18.sp,
+                    fontWeight = Bold
+                )
+                HorizontalDivider(
+                    thickness = 2.dp,
+                    modifier = Modifier.padding(bottom = 6.dp)
+                )
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    TextInputEdit(
+                        value = taskTitle,
+                        onValueChange = { taskTitle = it },
+                        label = R.string.adds_task_add_title,
+                        keyboardType = KeyboardType.Number
+                    )
+                    SingleChoiceSegmentedButtonRow {
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                            onClick = { type = "PERSONAL" },
+                            selected = "PERSONAL" == type
+                        ) {
+                            Text("Pribadi")
+                        }
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                            onClick = { type = "GROUP" },
+                            selected = "GROUP" == type
+                        ) {
+                            Text("Kelompok")
+                        }
+                    }
+                    TextInputEdit(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = R.string.adds_task_add_description,
+                    )
+                    TextInputEdit(
+                        value = submissionLink,
+                        onValueChange = { submissionLink = it },
+                        label = R.string.adds_task_add_link,
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = colorResource(R.color.white),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .border(2.dp, colorResource(R.color.gray), RoundedCornerShape(12.dp))
+                            .padding(start = 16.dp, end = 6.dp)
+                            .padding(vertical = 12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = "Tanggal Deadline",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                            Text(
+                                text = date,
+                                fontSize = 14.sp
+                            )
+                        }
+                        IconButton(
+                            onClick = { datePickerDialog.show() }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.next_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = colorResource(R.color.white),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .border(2.dp, colorResource(R.color.gray), RoundedCornerShape(12.dp))
+                            .padding(start = 16.dp, end = 6.dp)
+                            .padding(vertical = 12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = "Jam Deadline",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                            Text(
+                                text = time,
+                                fontSize = 14.sp
+                            )
+                        }
+                        IconButton(
+                            onClick = { timePickerDialog.show() }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.next_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            showAddDialog = false
+                        },
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            colorResource(R.color.very_dark_blue)
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.adds_no),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.width(100.dp)
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            showAddDialog = false
+
+                            val allData = listOf(
+                                courseData.courseId,
+                                courseData.courseName,
+                                taskTitle,
+                                type,
+                                description,
+                                submissionLink,
+                                date,
+                                time
+                            )
+
+                            onAddButtonClicked(allData)
+                        },
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            colorResource(R.color.very_light_blue)
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.adds_edit),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.width(100.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TaskCardItem(
+    task: TaskModel,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = colorResource(R.color.white),
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = task.title,
+                fontSize = 16.sp,
+                fontWeight = Bold
+            )
+            Text(
+                text = task.deadline["date"] ?: "20 Desember 2024",
+                fontSize = 14.sp,
+            )
+
+        }
+        Icon(
+            painter = painterResource(R.drawable.profile_icon),
+            contentDescription = null,
+            tint = colorResource(R.color.blue),
+            modifier = Modifier
+                .padding(end = 12.dp)
+                .size(26.dp)
+                .clickable {}
+        )
+        Icon(
+            painter = painterResource(R.drawable.delete_icon),
+            contentDescription = null,
+            tint = colorResource(R.color.red),
+            modifier = Modifier
+                .size(26.dp)
+                .clickable {}
+        )
+    }
+}
+
+@Composable
+fun ModuleCard(
+    title: Int,
+    moduleData: List<ModuleModel>,
+    emptyText: Int
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(500.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.very_dark_blue),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                )
+                .padding(start = 24.dp, end = 12.dp)
+                .padding(vertical = 6.dp)
+        ) {
+            Text(
+                text = stringResource(title),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(R.color.white),
+            )
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.circle_add_icon),
+                    contentDescription = null,
+                    tint = colorResource(R.color.white),
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        }
+
+        if (moduleData.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.empty_screen_image),
+                    contentDescription = "Night icon",
+                    modifier = Modifier.width(96.dp)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = stringResource(emptyText),
+                    textAlign = TextAlign.Center,
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                items(moduleData) { module ->
+                    // ModuleCardItem
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AnnouncementCard(
+    title: Int,
+    announcementData: List<AnnouncementModel>,
+    emptyText: Int
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(500.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.very_dark_blue),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                )
+                .padding(start = 24.dp, end = 12.dp)
+                .padding(vertical = 6.dp)
+        ) {
+            Text(
+                text = stringResource(title),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(R.color.white),
+            )
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.circle_add_icon),
+                    contentDescription = null,
+                    tint = colorResource(R.color.white),
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        }
+
+        if (announcementData.isEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.empty_screen_image),
+                    contentDescription = "Night icon",
+                    modifier = Modifier.width(96.dp)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = stringResource(emptyText),
+                    textAlign = TextAlign.Center,
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = colorResource(R.color.light_blue),
+                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+                    )
+            ) {
+                items(announcementData) { announcement ->
+                    // AnnouncementCardItem
                 }
             }
         }
@@ -540,922 +1278,4 @@ fun TextInputEdit(
             .fillMaxWidth()
             .border(2.dp, colorResource(R.color.gray), RoundedCornerShape(12.dp))
     )
-}
-
-@Composable
-fun ManageCourseStatus(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        // Title
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                )
-        ) {
-            Text(
-                text = "Pertemuan",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white),
-                modifier = Modifier.padding(horizontal = 22.dp, vertical = 16.dp)
-            )
-        }
-        // Content
-        if (listClassStatus.isEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.sleep_icon),
-                        contentDescription = "Night icon",
-                        modifier = Modifier.size(48.dp)
-                    )
-                    //                Spacer(modifier = Modifier.height(24.dp))
-
-                    Text(
-                        text = "Tidak ada jadwal Kelas",
-                        textAlign = TextAlign.Center,
-                        fontFamily = Poppins,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                items(listClassStatus) { item ->
-                    ManageCourseStatusItem(item)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ManageCourseStatusItem(item: ClassStatus) {
-    var editDialog by remember { mutableStateOf(false) }
-    var cancelDialog by remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = when (item.status) {
-                    LectureStatus.PRESENT -> colorResource(R.color.light_green)
-                    LectureStatus.UNKNOWN -> colorResource(R.color.light_yellow)
-                    LectureStatus.CANCELLED -> colorResource(R.color.light_red)
-                },
-                shape = RoundedCornerShape(16.dp)
-            )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = item.meet,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Row(
-
-                ) {
-                    IconButton(
-                        onClick = { editDialog = true },
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.profile_icon),
-                            contentDescription = "Edit Class Date",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(5.dp)
-                        )
-                    }
-                    if (editDialog) {
-                        AlertDialog(
-                            onDismissRequest = { editDialog = false },
-                            containerColor = colorResource(R.color.very_dark_blue),
-                            title = {
-                                Text(
-                                    text = "Ubah Tanggal Pertemuan",
-                                    color = colorResource(R.color.white)
-                                )
-                            },
-                            text = {
-                                Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = "Ubah Pertemuan pada tanggal\n${item.time} ?",
-                                    fontSize = 14.sp,
-                                    color = colorResource(R.color.white),
-                                    fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.Start
-                                )
-                            },
-                            confirmButton = {
-                                Button(
-                                    onClick = {
-                                        editDialog = false
-//                                        item.status = LectureStatus.UNKNOWN //gatau ini aku cara ngubah warnanya kalau di edit
-                                    },
-                                    colors = ButtonColors(
-                                        containerColor = colorResource(R.color.white),
-                                        contentColor = colorResource(R.color.very_dark_blue),
-                                        disabledContainerColor = colorResource(R.color.white),
-                                        disabledContentColor = colorResource(R.color.white)
-                                    )
-                                ) {
-                                    Text(
-                                        text = "Ubah",
-                                    )
-                                }
-                            },
-                            dismissButton = {
-                                Button(
-                                    onClick = { editDialog = false },
-                                    colors = ButtonColors(
-                                        containerColor = colorResource(R.color.very_dark_blue),
-                                        contentColor = colorResource(R.color.white),
-                                        disabledContainerColor = colorResource(R.color.white),
-                                        disabledContentColor = colorResource(R.color.white)
-                                    )
-                                ) {
-                                    Text("Batal")
-                                }
-                            }
-                        )
-                    }
-                    IconButton(
-                        onClick = { cancelDialog = true }
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.close_icon),
-                            contentDescription = "Cancel Class Status",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(5.dp)
-                        )
-                    }
-                    if (cancelDialog) {
-                        AlertDialog(
-                            onDismissRequest = { cancelDialog = false },
-                            containerColor = colorResource(R.color.very_dark_blue),
-                            title = {
-                                Text(
-                                    text = "Batalkan Pertemuan",
-                                    color = colorResource(R.color.white)
-                                )
-                            },
-                            text = {
-                                Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = "Batalkan Pertemuan pada tanggal\n${item.time} ?",
-                                    fontSize = 14.sp,
-                                    color = colorResource(R.color.white),
-                                    fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.Start
-                                )
-                            },
-                            confirmButton = {
-                                Button(
-                                    onClick = { cancelDialog = false },
-                                    colors = ButtonColors(
-                                        containerColor = colorResource(R.color.white),
-                                        contentColor = colorResource(R.color.very_dark_blue),
-                                        disabledContainerColor = colorResource(R.color.white),
-                                        disabledContentColor = colorResource(R.color.white)
-                                    )
-                                ) {
-                                    Text(
-                                        text = "Konfirmasi",
-                                    )
-                                }
-                            },
-                            dismissButton = {
-                                Button(
-                                    onClick = { cancelDialog = false },
-                                    colors = ButtonColors(
-                                        containerColor = colorResource(R.color.very_dark_blue),
-                                        contentColor = colorResource(R.color.white),
-                                        disabledContainerColor = colorResource(R.color.white),
-                                        disabledContentColor = colorResource(R.color.white)
-                                    )
-                                ) {
-                                    Text("Batal")
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Text(
-                    text = when (item.status) {
-                        LectureStatus.PRESENT -> "Selesai"
-                        LectureStatus.UNKNOWN -> "Diganti"
-                        LectureStatus.CANCELLED -> "Batal"
-                    }
-                )
-                Text(
-                    text = item.time,
-                    fontSize = 14.sp
-                )
-            }
-        }
-    }
-}
-
-//TUGAS
-@Composable
-fun ManageCourseTasks(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                colorResource(R.color.light_blue),
-                shape = RoundedCornerShape(16.dp)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Title
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                )
-        ) {
-            Text(
-                text = "Tugas",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white),
-                modifier = Modifier.padding(horizontal = 22.dp, vertical = 16.dp)
-            )
-        }
-        // Content
-        TextButton(
-            onClick = {},
-        ) {
-            Text(
-                text = "+ Tambahkan Tugas"
-            )
-        }
-        HorizontalDivider(
-            color = colorResource(R.color.light_gray),
-            thickness = 4.dp,
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        if (listTaskDetails.isEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.sleep_icon),
-                        contentDescription = "Night icon",
-                        modifier = Modifier.size(48.dp)
-                    )
-
-                    Text(
-                        text = "Tidak ada Tugas Saat Ini",
-                        textAlign = TextAlign.Center,
-                        fontFamily = Poppins,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                items(listTaskDetails) { item ->
-                    ManageCourseTasksItem(item)
-                }
-            }
-
-        }
-    }
-}
-
-@Composable
-fun ManageCourseTasksItem(item: CourseTask) {
-    var editDialog by remember { mutableStateOf(false) }
-    var removeDialog by remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                colorResource(R.color.very_light_blue),
-                shape = RoundedCornerShape(16.dp)
-            )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = item.name,
-                    fontSize = 20.sp,
-                    fontWeight = Bold
-                )
-                Row(
-                ) {
-                    if (item.taskType) {
-                        Image(
-                            painter = painterResource(R.drawable.person_icon),
-                            contentDescription = null
-                        )
-                    } else {
-                        Image(
-                            painter = painterResource(R.drawable.group_icon),
-                            contentDescription = null
-                        )
-                    }
-                }
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    if (item.status) {
-                        Text(
-                            text = "Selesai"
-                        )
-                    } else {
-                        Text(
-                            text = "Berjalan"
-                        )
-                    }
-                    Text(
-                        text = item.time
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(
-                    onClick = { editDialog = true },
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.profile_icon),
-                        contentDescription = "Edit Class Date",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(5.dp)
-                            .size(15.dp)
-                    )
-                }
-                if (editDialog) {
-                    AlertDialog(
-                        onDismissRequest = { editDialog = false },
-                        containerColor = colorResource(R.color.very_dark_blue),
-                        title = {
-                            Text(
-                                text = "Ubah Informasi Tugas",
-                                color = colorResource(R.color.white)
-                            )
-                        },
-                        text = {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "Ubah Informasi Tugas\n${item.name} ?",
-                                fontSize = 14.sp,
-                                color = colorResource(R.color.white),
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Start
-                            )
-                        },
-                        confirmButton = {
-                            Button(
-                                onClick = {
-                                    editDialog = false
-//                                        item.status = LectureStatus.UNKNOWN //gatau ini aku cara ngubah warnanya kalau di edit
-                                },
-                                colors = ButtonColors(
-                                    containerColor = colorResource(R.color.white),
-                                    contentColor = colorResource(R.color.very_dark_blue),
-                                    disabledContainerColor = colorResource(R.color.white),
-                                    disabledContentColor = colorResource(R.color.white)
-                                )
-                            ) {
-                                Text(
-                                    text = "Ubah",
-                                )
-                            }
-                        },
-                        dismissButton = {
-                            Button(
-                                onClick = { editDialog = false },
-                                colors = ButtonColors(
-                                    containerColor = colorResource(R.color.very_dark_blue),
-                                    contentColor = colorResource(R.color.white),
-                                    disabledContainerColor = colorResource(R.color.white),
-                                    disabledContentColor = colorResource(R.color.white)
-                                )
-                            ) {
-                                Text("Batal")
-                            }
-                        }
-                    )
-                }
-                IconButton(
-                    onClick = { removeDialog = true }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.close_icon),
-                        contentDescription = "Cancel Class Status",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(5.dp)
-                            .size(15.dp)
-                    )
-                }
-                if (removeDialog) {
-                    AlertDialog(
-                        onDismissRequest = { removeDialog = false },
-                        containerColor = colorResource(R.color.very_dark_blue),
-                        title = {
-                            Text(
-                                text = "Hapus Tugas",
-                                color = colorResource(R.color.white)
-                            )
-                        },
-                        text = {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "Hapus Tugas\n${item.name} ?",
-                                fontSize = 14.sp,
-                                color = colorResource(R.color.white),
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Start
-                            )
-                        },
-                        confirmButton = {
-                            Button(
-                                onClick = { removeDialog = false },
-                                colors = ButtonColors(
-                                    containerColor = colorResource(R.color.white),
-                                    contentColor = colorResource(R.color.very_dark_blue),
-                                    disabledContainerColor = colorResource(R.color.white),
-                                    disabledContentColor = colorResource(R.color.white)
-                                )
-                            ) {
-                                Text(
-                                    text = "Konfirmasi",
-                                )
-                            }
-                        },
-                        dismissButton = {
-                            Button(
-                                onClick = { removeDialog = false },
-                                colors = ButtonColors(
-                                    containerColor = colorResource(R.color.very_dark_blue),
-                                    contentColor = colorResource(R.color.white),
-                                    disabledContainerColor = colorResource(R.color.white),
-                                    disabledContentColor = colorResource(R.color.white)
-                                )
-                            ) {
-                                Text("Batal")
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-//MODUL
-@Composable
-fun ManageCourseModul(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                colorResource(R.color.light_blue),
-                shape = RoundedCornerShape(16.dp)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Title
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                )
-        ) {
-            Text(
-                text = "Modul",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white),
-                modifier = Modifier.padding(horizontal = 22.dp, vertical = 16.dp)
-            )
-        }
-        // Content
-        TextButton(
-            onClick = {},
-        ) {
-            Text(
-                text = "+ Tambahkan Modul"
-            )
-        }
-        HorizontalDivider(
-            color = colorResource(R.color.light_gray),
-            thickness = 4.dp,
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        if (listModulDetails.isEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.sleep_icon),
-                        contentDescription = "Night icon",
-                        modifier = Modifier.size(48.dp)
-                    )
-
-                    Text(
-                        text = "Tidak ada Tugas Saat Ini",
-                        textAlign = TextAlign.Center,
-                        fontFamily = Poppins,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                items(listModulDetails) { item ->
-                    ManageCourseModulsItem(item)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ManageCourseModulsItem(item: CourseModul) {
-    var removeDialog by remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                colorResource(R.color.very_light_blue),
-                shape = RoundedCornerShape(16.dp)
-            )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text(
-                text = item.name,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white)
-            )
-            IconButton(
-                onClick = { removeDialog = true }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.close_icon),
-                    contentDescription = "Cancel Class Status",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(5.dp)
-                        .size(15.dp)
-                )
-            }
-            if (removeDialog) {
-                AlertDialog(
-                    onDismissRequest = { removeDialog = false },
-                    containerColor = colorResource(R.color.very_dark_blue),
-                    title = {
-                        Text(
-                            text = "Hapus Modul?",
-                            color = colorResource(R.color.white)
-                        )
-                    },
-                    text = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Hapus Modul : \n${item.name}",
-                            fontSize = 14.sp,
-                            color = colorResource(R.color.white),
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Start
-                        )
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = { removeDialog = false },
-                            colors = ButtonColors(
-                                containerColor = colorResource(R.color.white),
-                                contentColor = colorResource(R.color.very_dark_blue),
-                                disabledContainerColor = colorResource(R.color.white),
-                                disabledContentColor = colorResource(R.color.white)
-                            )
-                        ) {
-                            Text(
-                                text = "Konfirmasi",
-                            )
-                        }
-                    },
-                    dismissButton = {
-                        Button(
-                            onClick = { removeDialog = false },
-                            colors = ButtonColors(
-                                containerColor = colorResource(R.color.very_dark_blue),
-                                contentColor = colorResource(R.color.white),
-                                disabledContainerColor = colorResource(R.color.white),
-                                disabledContentColor = colorResource(R.color.white)
-                            )
-                        ) {
-                            Text("Batal")
-                        }
-                    }
-                )
-            }
-        }
-    }
-}
-
-//INFO
-@Composable
-fun ManageCourseInfo(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                colorResource(R.color.light_blue),
-                shape = RoundedCornerShape(16.dp)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Title
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(R.color.very_dark_blue),
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                )
-        ) {
-            Text(
-                text = "Informasi",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white),
-                modifier = Modifier.padding(horizontal = 22.dp, vertical = 16.dp)
-            )
-        }
-        // Content
-        TextButton(
-            onClick = {},
-        ) {
-            Text(
-                text = "+ Tambahkan Info"
-            )
-        }
-        HorizontalDivider(
-            color = colorResource(R.color.light_gray),
-            thickness = 4.dp,
-            modifier = Modifier.padding(horizontal = 30.dp)
-        )
-        if (listModulDetails.isEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.sleep_icon),
-                        contentDescription = "Night icon",
-                        modifier = Modifier.size(48.dp)
-                    )
-
-                    Text(
-                        text = "Tidak ada Tugas Saat Ini",
-                        textAlign = TextAlign.Center,
-                        fontFamily = Poppins,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.light_blue),
-                        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
-                    )
-            ) {
-                items(listInfoDetails) { item ->
-                    ManageCourseInfosItem(item)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ManageCourseInfosItem(item: CourseInfo) {
-    var removeDialog by remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                colorResource(R.color.very_light_blue),
-                shape = RoundedCornerShape(16.dp)
-            )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = item.informasi,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white)
-            )
-            IconButton(
-                onClick = { removeDialog = true }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.close_icon),
-                    contentDescription = "Cancel Class Status",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(5.dp)
-                        .size(15.dp)
-                )
-            }
-            if (removeDialog) {
-                AlertDialog(
-                    onDismissRequest = { removeDialog = false },
-                    containerColor = colorResource(R.color.very_dark_blue),
-                    title = {
-                        Text(
-                            text = "Hapus Informasi?",
-                            color = colorResource(R.color.white)
-                        )
-                    },
-                    text = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Hapus informasi : \n${item.informasi}",
-                            fontSize = 14.sp,
-                            color = colorResource(R.color.white),
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Start
-                        )
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = { removeDialog = false },
-                            colors = ButtonColors(
-                                containerColor = colorResource(R.color.white),
-                                contentColor = colorResource(R.color.very_dark_blue),
-                                disabledContainerColor = colorResource(R.color.white),
-                                disabledContentColor = colorResource(R.color.white)
-                            )
-                        ) {
-                            Text(
-                                text = "Konfirmasi",
-                            )
-                        }
-                    },
-                    dismissButton = {
-                        Button(
-                            onClick = { removeDialog = false },
-                            colors = ButtonColors(
-                                containerColor = colorResource(R.color.very_dark_blue),
-                                contentColor = colorResource(R.color.white),
-                                disabledContainerColor = colorResource(R.color.white),
-                                disabledContentColor = colorResource(R.color.white)
-                            )
-                        ) {
-                            Text("Batal")
-                        }
-                    }
-                )
-            }
-        }
-    }
 }

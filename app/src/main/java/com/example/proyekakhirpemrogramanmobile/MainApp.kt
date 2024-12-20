@@ -456,6 +456,34 @@ fun MainApp(context: Context) {
                 taskData = taskState,
                 moduleData = moduleState,
                 announcementData = announcementState,
+                onEditButtonClicked = { allData ->
+                    databaseViewModel.updateLectureFromDatabase(
+                        allData[0],
+                        allData[1],
+                        allData[2],
+                        allData[3],
+                        allData[4],
+                        allData[5],
+                        allData[6],
+                        allData[7],
+                        allData[8],
+                        allData[9],
+                    ) },
+                onDeleteButtonClicked = { courseId, number ->
+                    databaseViewModel.deleteLectureFromDatabase(courseId, number)
+                },
+                onAddButtonClicked = { allData ->
+                    databaseViewModel.addTaskToDatabase(
+                        allData[0],
+                        allData[1],
+                        allData[2],
+                        allData[3],
+                        allData[4],
+                        allData[5],
+                        allData[6],
+                        allData[7],
+                    )
+                },
                 navigateTo = { route, clearStack ->
                     navigateTo(route, clearStack)
                 },

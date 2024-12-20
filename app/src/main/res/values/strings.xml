@@ -130,7 +130,6 @@
     <!-- Admin Detail Screen -->
     <string name="adds_lecture">Perkuliahan</string>
     <string name="adds_lecture_empty">Data perkuliahan kosong.\nTambahkan data sekarang!</string>
-    <string name="adds_lecture_edit_title">Edit Data Perkuliahan</string>
     <string name="adds_lecture_edit_meeting">Pertemuan</string>
     <string name="adds_lecture_edit_notes">Catatan</string>
     <string name="adds_lecture_edit_building">Gedung</string>
@@ -139,10 +138,15 @@
     <string name="adds_lecture_edit_summary">Rangkuman Perkuliahan</string>
     <string name="adds_task">Tugas</string>
     <string name="adds_task_empty">Data tugas kosong.\nTambahkan data sekarang!</string>
+    <string name="adds_task_add_title">Title</string>
+    <string name="adds_task_add_description">Description</string>
+    <string name="adds_task_add_link">Link Pengumpulan</string>
     <string name="adds_module">Modul</string>
     <string name="adds_module_empty">Data modul kosong.\nTambahkan data sekarang!</string>
     <string name="adds_announcement">Pengumuman</string>
     <string name="adds_announcement_empty">Data pengumuman kosong.\nTambahkan data sekarang!</string>
+    <string name="adds_edit_title">Edit Data</string>
+    <string name="adds_add_title">Add Data</string>
     <string name="adds_delete">Apakah kamu yakin\ningin menghapus data ini?</string>
     <string name="adds_yes">Iya</string>
     <string name="adds_edit">Edit</string>
