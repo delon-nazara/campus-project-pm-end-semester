@@ -2,6 +2,7 @@ package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.listTool
 import com.example.proyekakhirpemrogramanmobile.data.model.ToolModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
@@ -79,27 +81,37 @@ fun ToolScreen(
                     .padding(bottom = 20.dp)
             ) {
                 Title(title = stringResource(R.string.sb_tool))
-                ToolList()
+                ToolList(
+                    navigateTo = navigateTo
+                )
             }
         }
     }
 }
 
 @Composable
-fun ToolList() {
+fun ToolList(
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         items(listTool) { tool ->
-            ToolListItem(tool)
+            ToolListItem(
+                tool = tool,
+                navigateTo = navigateTo
+            )
         }
     }
 }
 
 @Composable
-fun ToolListItem(tool: ToolModel) {
+fun ToolListItem(
+    tool: ToolModel,
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> }
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -110,6 +122,7 @@ fun ToolListItem(tool: ToolModel) {
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(24.dp)
+            .clickable { navigateTo(Route.TOOL_SPIN_WHEEL_SCREEN.name, false) }
     ) {
         Image(
             painter = painterResource(tool.image),

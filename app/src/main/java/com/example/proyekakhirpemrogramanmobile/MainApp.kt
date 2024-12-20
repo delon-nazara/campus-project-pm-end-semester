@@ -1,6 +1,7 @@
 package com.example.proyekakhirpemrogramanmobile
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +31,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.temp.SpinWheelTool
 import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
@@ -428,6 +430,10 @@ fun MainApp(context: Context) {
         }
 
         // Route Tool Spin Wheel Screen
+        composable(Route.TOOL_SPIN_WHEEL_SCREEN.name) {
+            Log.d("noled", "called")
+            SpinWheelTool()
+        }
 
         // Route Tool Voting Screen
 

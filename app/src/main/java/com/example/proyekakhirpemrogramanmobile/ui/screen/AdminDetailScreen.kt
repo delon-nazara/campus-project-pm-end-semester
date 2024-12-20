@@ -865,7 +865,6 @@ fun TaskCard(
                         value = taskTitle,
                         onValueChange = { taskTitle = it },
                         label = R.string.adds_task_add_title,
-                        keyboardType = KeyboardType.Number
                     )
                     SingleChoiceSegmentedButtonRow {
                         SegmentedButton(
