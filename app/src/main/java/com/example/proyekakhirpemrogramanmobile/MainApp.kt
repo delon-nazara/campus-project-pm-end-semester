@@ -12,10 +12,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyekakhirpemrogramanmobile.data.source.Route
+import com.example.proyekakhirpemrogramanmobile.ui.screen.AdminDetailScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.AdminScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.AnnouncementScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseManageScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseScreen
-import com.example.proyekakhirpemrogramanmobile.ui.screen.CreateCourseScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.CourseCreateScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.HomeScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.LoginScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ModuleDetailScreen
@@ -28,6 +31,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.temp.SpinWheelTool
 import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
@@ -48,6 +52,7 @@ fun MainApp(context: Context) {
     val userState by databaseViewModel.userState.collectAsState()
     val lectureState by databaseViewModel.lectureState.collectAsState()
     val courseState by databaseViewModel.courseState.collectAsState()
+    val allCourseState by databaseViewModel.allCourseState.collectAsState()
     val taskState by databaseViewModel.taskState.collectAsState()
     val moduleState by databaseViewModel.moduleState.collectAsState()
     val announcementState by databaseViewModel.announcementState.collectAsState()
@@ -226,7 +231,7 @@ fun MainApp(context: Context) {
                                 loadingViewModel.showLoading(state)
                             },
                             onSuccess = {
-                                navigateTo(Route.HOME_SCREEN.name, true)
+                                navigateTo(Route.COURSE_MANAGE_SCREEN.name, true)
                             },
                             onFailure = {
                                 showToast(context, "Pendaftaran gagal, coba kembali")
@@ -238,18 +243,29 @@ fun MainApp(context: Context) {
         }
 
         // Route Choose Course Screen
-        composable(Route.CHOOSE_COURSE_SCREEN.name) {
-
+        composable(Route.COURSE_MANAGE_SCREEN.name) {
+            CourseManageScreen(
+                userData = userState,
+                courseData = allCourseState,
+                addCourse = { courseId ->
+                    databaseViewModel.addUserCoursesId(courseId)
+                },
+                deleteCourse = { courseId ->
+                    databaseViewModel.deleteUserCoursesId(courseId)
+                },
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
         }
 
         // Route Create Course Screen
-        composable(Route.CREATE_COURSE_SCREEN.name) {
-            CreateCourseScreen(
+        composable(Route.COURSE_CREATE_SCREEN.name) {
+            CourseCreateScreen(
                 onCancelButtonClicked = {
-                    navigateTo(Route.CHOOSE_COURSE_SCREEN.name, false)
+                    navController.popBackStack()
                 },
                 onConfirmButtonClicked = { allData ->
-                    Log.d("noled", "called")
                     databaseViewModel.addCourseToDatabase(
                         allData[0],
                         allData[1],
@@ -265,6 +281,7 @@ fun MainApp(context: Context) {
                         allData[11],
                         allData[12],
                     )
+                    navigateTo(Route.COURSE_MANAGE_SCREEN.name, false)
                 }
             )
         }
@@ -413,12 +430,71 @@ fun MainApp(context: Context) {
         }
 
         // Route Tool Spin Wheel Screen
+        composable(Route.TOOL_SPIN_WHEEL_SCREEN.name) {
+            Log.d("noled", "called")
+            SpinWheelTool()
+        }
 
         // Route Tool Voting Screen
 
         // Route Admin Screen
+        composable(Route.ADMIN_SCREEN.name) {
+            AdminScreen(
+                userData = userState,
+                courseData = courseState,
+                selectedCourse = { courseId ->
+                    databaseViewModel.setSelectedCourseIdState(courseId)
+                    navigateTo(Route.ADMIN_DETAIL_SCREEN.name, false)
+                },
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
 
-        // Route Admin Child Screen
+        // Route Admin Detail Screen
+        composable(Route.ADMIN_DETAIL_SCREEN.name) {
+            AdminDetailScreen(
+                userData = userState,
+                selectedCourseId = selectedCourseIdState,
+                courseData = courseState,
+                lectureData = lectureState,
+                taskData = taskState,
+                moduleData = moduleState,
+                announcementData = announcementState,
+                onEditButtonClicked = { allData ->
+                    databaseViewModel.updateLectureFromDatabase(
+                        allData[0],
+                        allData[1],
+                        allData[2],
+                        allData[3],
+                        allData[4],
+                        allData[5],
+                        allData[6],
+                        allData[7],
+                        allData[8],
+                        allData[9],
+                    ) },
+                onDeleteButtonClicked = { courseId, number ->
+                    databaseViewModel.deleteLectureFromDatabase(courseId, number)
+                },
+                onAddButtonClicked = { allData ->
+                    databaseViewModel.addTaskToDatabase(
+                        allData[0],
+                        allData[1],
+                        allData[2],
+                        allData[3],
+                        allData[4],
+                        allData[5],
+                        allData[6],
+                        allData[7],
+                    )
+                },
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                },
+            )
+        }
 
         // Route Setting Screen
         composable(Route.SETTING_SCREEN.name) {
@@ -428,10 +504,9 @@ fun MainApp(context: Context) {
                     navigateTo(route, clearStack)
                 },
                 logout = {
-                    navigateTo(Route.CREATE_COURSE_SCREEN.name, false)
-//                    authenticationViewModel.logout()
-//                    databaseViewModel.logout()
-//                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
+                    authenticationViewModel.logout()
+                    databaseViewModel.logout()
+                    navigateTo(Route.ONBOARDING_SCREEN.name, true)
                 }
             )
         }

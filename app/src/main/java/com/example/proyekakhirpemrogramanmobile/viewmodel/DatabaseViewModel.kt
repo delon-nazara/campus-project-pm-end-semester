@@ -22,6 +22,8 @@ import com.example.proyekakhirpemrogramanmobile.util.getFirstWord
 import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +51,9 @@ class DatabaseViewModel : ViewModel() {
 
     private var _courseState = MutableStateFlow<List<CourseModel>>(emptyList())
     val courseState: StateFlow<List<CourseModel>> = _courseState.asStateFlow()
+
+    private var _allCourseState = MutableStateFlow<List<CourseModel>>(emptyList())
+    val allCourseState: StateFlow<List<CourseModel>> = _allCourseState.asStateFlow()
 
     private var _taskState = MutableStateFlow<List<TaskModel>>(emptyList())
     val taskState: StateFlow<List<TaskModel>> = _taskState.asStateFlow()
@@ -118,9 +123,9 @@ class DatabaseViewModel : ViewModel() {
 
     fun getUserFromDatabase(
         userId: String,
-        showLoading: (Boolean) -> Unit,
-        onSuccess: () -> Unit,
-        onFailure: () -> Unit
+        showLoading: (Boolean) -> Unit = {},
+        onSuccess: () -> Unit = {},
+        onFailure: () -> Unit = {}
     ) {
         showLoading(true)
         userReference
@@ -180,8 +185,6 @@ class DatabaseViewModel : ViewModel() {
         startTime: String,
         endTime: String,
     ) {
-        Log.d("noled", "in database")
-
         val newCourse = CourseModel(
             courseId = "${getFirstLetters(name)}_${formatDateForId(getCurrentMilliseconds())}",
             courseName = formatText(name),
@@ -193,11 +196,11 @@ class DatabaseViewModel : ViewModel() {
             semester = semester,
             year = year,
             amount = mapOf(
-                "announcements" to "0",
-                "lectures" to "16",
-                "modules" to "0",
-                "students" to "1",
-                "tasks" to "0",
+                "announcements" to 0,
+                "lectures" to 16,
+                "modules" to 0,
+                "students" to 1,
+                "tasks" to 0,
             ),
             created = mapOf(
                 "date" to formatDate(getCurrentMilliseconds()),
@@ -218,11 +221,6 @@ class DatabaseViewModel : ViewModel() {
         courseReference
             .add(newCourse)
             .addOnSuccessListener {
-                Log.d("noled", "success")
-                userReference
-                    .document(_userState.value!!.userId)
-                    .update("coursesId", FieldValue.arrayUnion(newCourse.courseId))
-
                 val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
                 val calendar = Calendar.getInstance()
                 calendar.time = dateFormat.parse(startDate) ?: Date()
@@ -247,9 +245,67 @@ class DatabaseViewModel : ViewModel() {
                         calendar.add(Calendar.DAY_OF_MONTH, 7)
                     }
                 }
+
+                addUserCoursesId(newCourse.courseId)
             }
-            .addOnFailureListener { e ->
-                Log.d("noled", e.toString())
+    }
+
+    fun deleteLectureFromDatabase(
+        courseId: String,
+        meeting: String
+    ) {
+        lectureReference
+            .whereEqualTo("courseId", courseId)
+            .whereEqualTo("number", meeting)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    snapshot
+                        .documents[0]
+                        .reference
+                        .delete()
+                }
+            }
+    }
+
+    fun updateLectureFromDatabase(
+        courseId: String,
+        meeting: String,
+        status: String,
+        notes: String,
+        summary: String,
+        building: String,
+        floor: String,
+        room: String,
+        date: String,
+        time: String
+    ) {
+        val updateLecture = mapOf(
+            "number" to meeting,
+            "status" to status,
+            "notes" to notes,
+            "summary" to summary,
+            "location" to mapOf(
+                "building" to building,
+                "floor" to floor,
+                "class" to room
+            ),
+            "schedule" to mapOf(
+                "date" to date,
+                "time" to time
+            ),
+        )
+        lectureReference
+            .whereEqualTo("courseId", courseId)
+            .whereEqualTo("number", meeting)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    snapshot
+                        .documents[0]
+                        .reference
+                        .set(updateLecture, SetOptions.merge())
+                }
             }
     }
 
@@ -260,7 +316,6 @@ class DatabaseViewModel : ViewModel() {
         schedule: Map<String, String>,
         location: Map<String, String>,
     ) {
-        Log.d("noled", "lecture called")
         val newLecture = LectureModel(
             courseId = courseId,
             courseName = courseName,
@@ -275,10 +330,92 @@ class DatabaseViewModel : ViewModel() {
         lectureReference.add(newLecture)
     }
 
+    fun addTaskToDatabase(
+        courseId: String,
+        courseName: String,
+        title: String,
+        type: String,
+        description: String,
+        submissionLink: String,
+        date: String,
+        time: String
+    ){
+        val newTask = TaskModel(
+            courseId = courseId,
+            courseName = courseName,
+            taskId = "${getFirstLetters(title)}_${formatDateForId(getCurrentMilliseconds())}",
+            title = title,
+            type = type,
+            description = description,
+            submissionLink = submissionLink,
+            created = mapOf(
+                "date" to formatDate(getCurrentMilliseconds()),
+                "day" to formatDay(getCurrentMilliseconds()),
+                "time" to formatTime(getCurrentMilliseconds())
+            ),
+            assigned = mapOf(
+                "date" to formatDate(getCurrentMilliseconds()),
+                "day" to formatDay(getCurrentMilliseconds()),
+                "time" to formatTime(getCurrentMilliseconds())
+            ),
+            deadline = mapOf(
+                "date" to date,
+                "day" to formatDay(parseDateAndTime("$date $time")),
+                "time" to time
+            )
+        )
+
+        taskReference.add(newTask)
+    }
+
+    fun addUserCoursesId(
+        courseId: String
+    ) {
+        userReference
+            .document(_userState.value!!.userId)
+            .update("coursesId", FieldValue.arrayUnion(courseId))
+            .addOnSuccessListener {
+                updateStudentsAmount(courseId, 1)
+            }
+    }
+
+    fun deleteUserCoursesId(
+        courseId: String
+    ) {
+        userReference
+            .document(_userState.value!!.userId)
+            .update("coursesId", FieldValue.arrayRemove(courseId))
+            .addOnSuccessListener {
+                updateStudentsAmount(courseId, -1)
+            }
+    }
+
+    private fun updateStudentsAmount(
+        courseId: String,
+        inc: Long,
+    ) {
+        courseReference
+            .whereEqualTo("courseId", courseId)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    snapshot
+                        .documents[0]
+                        .reference
+                        .update("amount.students", FieldValue.increment(inc))
+                        .addOnSuccessListener {
+                            deleteAllData()
+                            getUserFromDatabase(_userState.value!!.userId)
+                        }
+                }
+            }
+    }
+
     private fun getLectureData() {
-        _userState.value?.coursesId?.let {
+        val coursesId = _userState.value?.coursesId
+        if (!coursesId.isNullOrEmpty()) {
             lectureReference
-                .whereIn("courseId", it)
+                .whereIn("courseId", coursesId)
                 .addSnapshotListener { snapshot, e ->
                     if (e == null) {
                         _lectureState.value = snapshot?.toObjects(LectureModel::class.java) ?: emptyList()
@@ -290,9 +427,10 @@ class DatabaseViewModel : ViewModel() {
     }
 
     private fun getCourseData() {
-        _userState.value?.coursesId?.let {
+        val coursesId = _userState.value?.coursesId
+        if (!coursesId.isNullOrEmpty()) {
             courseReference
-                .whereIn("courseId", it)
+                .whereIn("courseId", coursesId)
                 .addSnapshotListener { snapshot, e ->
                     if (e == null) {
                         _courseState.value = snapshot?.toObjects(CourseModel::class.java) ?: emptyList()
@@ -303,10 +441,23 @@ class DatabaseViewModel : ViewModel() {
         }
     }
 
+    private fun getAllCourseData() {
+        courseReference
+            .orderBy("courseName", Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    _allCourseState.value = snapshot?.toObjects(CourseModel::class.java) ?: emptyList()
+                } else {
+                    _allCourseState.value = emptyList()
+                }
+            }
+    }
+
     private fun getTaskData() {
-        _userState.value?.coursesId?.let {
+        val coursesId = _userState.value?.coursesId
+        if (!coursesId.isNullOrEmpty()) {
             taskReference
-                .whereIn("courseId", it)
+                .whereIn("courseId", coursesId)
                 .addSnapshotListener { snapshot, e ->
                     if (e == null) {
                         _taskState.value = snapshot?.toObjects(TaskModel::class.java) ?: emptyList()
@@ -318,9 +469,10 @@ class DatabaseViewModel : ViewModel() {
     }
 
     private fun getModuleData() {
-        _userState.value?.coursesId?.let {
+        val coursesId = _userState.value?.coursesId
+        if (!coursesId.isNullOrEmpty()) {
             moduleReference
-                .whereIn("courseId", it)
+                .whereIn("courseId", coursesId)
                 .addSnapshotListener { snapshot, e ->
                     if (e == null) {
                         _moduleState.value = snapshot?.toObjects(ModuleModel::class.java) ?: emptyList()
@@ -332,9 +484,10 @@ class DatabaseViewModel : ViewModel() {
     }
 
     private fun getAnnouncementData() {
-        _userState.value?.coursesId?.let {
+        val coursesId = _userState.value?.coursesId
+        if (!coursesId.isNullOrEmpty()) {
             announcementReference
-                .whereIn("courseId", it)
+                .whereIn("courseId", coursesId)
                 .addSnapshotListener { snapshot, e ->
                     if (e == null) {
                         _announcementState.value = snapshot?.toObjects(AnnouncementModel::class.java) ?: emptyList()
@@ -356,6 +509,7 @@ class DatabaseViewModel : ViewModel() {
     private fun getAllData() {
         getLectureData()
         getCourseData()
+        getAllCourseData()
         getTaskData()
         getModuleData()
         getAnnouncementData()
@@ -364,6 +518,7 @@ class DatabaseViewModel : ViewModel() {
     private fun deleteAllData() {
         _lectureState.value = emptyList()
         _courseState.value = emptyList()
+        _allCourseState.value = emptyList()
         _taskState.value = emptyList()
         _moduleState.value = emptyList()
         _announcementState.value = emptyList()

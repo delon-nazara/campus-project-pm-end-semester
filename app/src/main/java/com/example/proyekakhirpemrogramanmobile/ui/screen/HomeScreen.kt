@@ -123,18 +123,26 @@ fun HomeScreen(
 
                 // Today Schedule
                 TodaySchedule(
-                    lectureData = lectureData.filter {
-                        it.schedule["date"] == currentDate
-                    },
+                    lectureData = lectureData
+                        .filter {
+                            it.schedule["date"] == currentDate
+                        }
+                        .sortedBy {
+                            parseDateAndTime("${it.schedule["date"]} ${it.schedule["time"]}")
+                        },
                     selectedCourse = selectedCourse,
                     modifier = Modifier.weight(1f)
                 )
 
                 // Active Task
                 ActiveTask(
-                    taskData = taskData.filter {
-                        parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
-                    },
+                    taskData = taskData
+                        .filter {
+                            parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") >= currentMilliseconds
+                        }
+                        .sortedBy {
+                            parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}")
+                        },
                     selectedTask = selectedTask,
                     modifier = Modifier.weight(1f)
                 )

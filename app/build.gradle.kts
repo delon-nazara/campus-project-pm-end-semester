@@ -84,4 +84,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.auth.ktx)
     implementation(libs.firebase.firestore)
+
+    // Spin Wheel Library
+    implementation(libs.spinwheelcompose)
 }

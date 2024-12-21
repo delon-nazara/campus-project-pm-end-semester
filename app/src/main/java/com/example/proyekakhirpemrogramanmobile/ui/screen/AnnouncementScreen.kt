@@ -1,11 +1,9 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,6 +42,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 
 @Preview
 @Composable
@@ -87,12 +86,16 @@ fun AnnouncementScreen(
                     .padding(contentPadding)
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
+                val announcement = announcementData.sortedByDescending {
+                    parseDateAndTime("${it.created["date"]} ${it.created["time"]}")
+                }
+
                 Title(
                     title = stringResource(R.string.sb_announcement)
                 )
 
                 AnnouncementList(
-                    announcementData = announcementData
+                    announcementData = announcement
                 )
             }
         }

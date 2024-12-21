@@ -1,11 +1,10 @@
 package com.example.proyekakhirpemrogramanmobile.ui.screen
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +15,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,36 +41,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
-import com.example.proyekakhirpemrogramanmobile.data.model.ModuleModel
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
-import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 
 @Preview
 @Composable
-fun ModuleDetailScreen(
-    userData: UserModel? = UserModel(),
-    selectedCourseId: String = "",
+fun AdminScreen(
+    userData: UserModel? = null,
     courseData: List<CourseModel> = emptyList(),
-    moduleData: List<ModuleModel> = emptyList(),
+    selectedCourse: (String) -> Unit = {},
     navigateTo: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val selectedMenu = Menu.MODULE
+    val selectedMenu = Menu.ADMIN
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideBar(
                 userData = userData,
+                selectedMenu = selectedMenu,
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
-                selectedMenu = selectedMenu,
                 navigateTo = navigateTo
             )
         }
@@ -86,41 +84,42 @@ fun ModuleDetailScreen(
             }
         ) { contentPadding ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.white))
                     .padding(contentPadding)
-                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
+                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 0.dp)
             ) {
                 val course = courseData
-                    .find { it.courseId == selectedCourseId } ?: CourseModel()
-                val module = moduleData
-                    .filter { it.courseId == selectedCourseId }
-                    .sortedBy { parseDateAndTime("${it.created["date"]} ${it.created["time"]}") }
+                    .filter { it.leader == userData?.fullName }
+                    .sortedBy { it.courseName }
 
                 Title(
-                    title = course.courseName
+                    title = stringResource(R.string.sb_admin)
                 )
 
-                ModuleDetailList(
-                    moduleData = module
+                CourseAdminList(
+                    courseData = course,
+                    navigateTo = navigateTo,
+                    selectedCourse = selectedCourse
                 )
             }
         }
     }
 }
 
-
 @Composable
-fun ModuleDetailList(
-    moduleData: List<ModuleModel> = emptyList(),
+fun CourseAdminList(
+    courseData: List<CourseModel>,
+    selectedCourse: (String) -> Unit,
+    navigateTo: (String, Boolean) -> Unit
 ) {
-    if (moduleData.isEmpty()) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (courseData.isEmpty()) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -134,7 +133,7 @@ fun ModuleDetailList(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = stringResource(R.string.mds_empty),
+                    text = stringResource(R.string.ads_empty),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     fontFamily = Poppins,
@@ -142,33 +141,56 @@ fun ModuleDetailList(
                     color = colorResource(R.color.gray)
                 )
             }
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-    } else {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(moduleData) { module ->
-                ModuleDetailListItem(
-                    module = module
-                )
+        } else {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                items(courseData) { course ->
+                    CourseAdminListItem(
+                        course = course,
+                        selectedCourse = selectedCourse
+                    )
+                }
             }
         }
+
+        Button(
+            onClick = { navigateTo(Route.COURSE_CREATE_SCREEN.name, false) },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(R.color.very_light_blue)
+            ),
+            shape = RoundedCornerShape(16.dp),
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.add_icon),
+                contentDescription = "Add icon",
+                modifier = Modifier.padding(end = 6.dp).size(28.dp)
+            )
+            Text(
+                text = stringResource(R.string.ads_create),
+                fontSize = 16.sp,
+                fontFamily = Poppins,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
 @Composable
-fun ModuleDetailListItem(
-    module: ModuleModel
+fun CourseAdminListItem(
+    course : CourseModel,
+    selectedCourse: (String) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Card(
-        onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(module.link))
-            context.startActivity(intent)
-        },
         colors = CardDefaults.cardColors(
             containerColor = colorResource(R.color.very_light_blue),
         ),
@@ -178,28 +200,28 @@ fun ModuleDetailListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(start = 24.dp, end = 10.dp)
+                .padding(vertical = 6.dp)
         ) {
-            Icon(
-                painter = painterResource(
-                    when (module.type) {
-                        "pdf" -> R.drawable.pdf_icon
-                        "ppt" -> R.drawable.ppt_icon
-                        else -> R.drawable.pdf_icon
-                    }
-                ),
-                contentDescription = "Module icon",
-                tint = colorResource(R.color.white),
-                modifier = Modifier.size(22.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-
             Text(
-                text = module.title,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(R.color.white)
+                text = course.courseName,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(R.color.white),
+                modifier = Modifier.weight(1f)
             )
+            IconButton(
+                onClick = { selectedCourse(course.courseId) }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.next_icon),
+                    contentDescription = null,
+                    tint = colorResource(R.color.white),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     }
 }
+
+

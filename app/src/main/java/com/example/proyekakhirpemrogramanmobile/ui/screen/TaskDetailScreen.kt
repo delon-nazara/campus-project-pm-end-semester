@@ -51,6 +51,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.formatTimeDifferent
 import com.example.proyekakhirpemrogramanmobile.util.getCurrentMilliseconds
 import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
+import com.example.proyekakhirpemrogramanmobile.util.showToast
 
 @Preview
 @Composable
@@ -198,8 +199,12 @@ fun DetailTask(
 
             Button(
                 onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(task.submissionLink))
-                    context.startActivity(intent)
+                    if (task.submissionLink.isEmpty()) {
+                        showToast(context, "Link pengumpulan belum diberikan!")
+                    } else {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(task.submissionLink))
+                        context.startActivity(intent)
+                    }
                 },
                 contentPadding = PaddingValues(0.dp),
                 colors = ButtonDefaults.buttonColors(

@@ -2,7 +2,6 @@ package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -51,7 +50,7 @@ import java.util.Calendar
 
 @Preview
 @Composable
-fun CreateCourseScreen(
+fun CourseCreateScreen(
     onCancelButtonClicked: () -> Unit = {},
     onConfirmButtonClicked: (List<String>) -> Unit = {},
 ) {
@@ -376,7 +375,6 @@ fun CreateCourseScreen(
                     if (allData.any { it.isEmpty() }) {
                         showToast(context, "Tidak boleh ada data yang kosong!")
                     } else {
-                        Log.d("noled", "confirm button")
                         onConfirmButtonClicked(allData)
                     }
                 },

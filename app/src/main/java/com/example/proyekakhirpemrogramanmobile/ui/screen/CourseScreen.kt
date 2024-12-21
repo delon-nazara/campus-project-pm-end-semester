@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -41,6 +43,7 @@ import com.example.proyekakhirpemrogramanmobile.R
 import com.example.proyekakhirpemrogramanmobile.data.model.UserModel
 import com.example.proyekakhirpemrogramanmobile.data.model.CourseModel
 import com.example.proyekakhirpemrogramanmobile.data.source.Menu
+import com.example.proyekakhirpemrogramanmobile.data.source.Route
 import com.example.proyekakhirpemrogramanmobile.data.source.listRightCourseImage
 import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
@@ -89,13 +92,16 @@ fun CourseScreen(
                     .padding(contentPadding)
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
             ) {
+                val course = courseData.sortedBy { it.courseName }
+
                 Title(
                     title = stringResource(R.string.sb_course)
                 )
 
                 CourseList(
-                    courseData = courseData,
-                    selectedCourse = selectedCourse
+                    courseData = course,
+                    selectedCourse = selectedCourse,
+                    navigateTo = navigateTo
                 )
             }
         }
@@ -105,7 +111,8 @@ fun CourseScreen(
 @Composable
 fun CourseList(
     courseData: List<CourseModel> = emptyList(),
-    selectedCourse: (String) -> Unit
+    selectedCourse: (String) -> Unit,
+    navigateTo: (String, Boolean) -> Unit = { _, _ -> },
 ) {
     if (courseData.isEmpty()) {
         Column(
@@ -135,22 +142,27 @@ fun CourseList(
             }
 
             Button(
-                onClick = {},
+                onClick = { navigateTo(Route.COURSE_MANAGE_SCREEN.name, false) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.very_light_blue)
-                )
+                ),
+                shape = RoundedCornerShape(16.dp),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_icon),
                     contentDescription = "Add icon",
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.padding(end = 6.dp).size(28.dp)
                 )
                 Text(
                     text = stringResource(R.string.cs_take_course),
                     fontSize = 16.sp,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 16.dp)
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))

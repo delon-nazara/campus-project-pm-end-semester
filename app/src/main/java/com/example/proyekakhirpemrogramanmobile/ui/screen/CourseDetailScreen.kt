@@ -50,6 +50,7 @@ import com.example.proyekakhirpemrogramanmobile.ui.component.SideBar
 import com.example.proyekakhirpemrogramanmobile.ui.component.Title
 import com.example.proyekakhirpemrogramanmobile.ui.component.TopBar
 import com.example.proyekakhirpemrogramanmobile.util.Poppins
+import com.example.proyekakhirpemrogramanmobile.util.parseDateAndTime
 import com.google.android.play.integrity.internal.s
 
 @Preview
@@ -99,11 +100,24 @@ fun CourseDetailScreen(
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                val course = courseData.find { it.courseId == selectedCourseId } ?: CourseModel()
-                val listLectureSummary = lectureData.filter { it.courseId == selectedCourseId }.map { it.summary }
-                val listTaskTitle = taskData.filter { it.courseId == selectedCourseId }.map { it.title }
-                val listModuleTitle = moduleData.filter { it.courseId == selectedCourseId }.map { it.title }
-                val listAnnouncementTitle = announcementData.filter { it.courseId == "s" }.map { it.title }
+                val course = courseData
+                    .find { it.courseId == selectedCourseId } ?: CourseModel()
+                val listLectureSummary = lectureData
+                    .filter { it.courseId == selectedCourseId }
+                    .sortedBy { it.number.toInt() }
+                    .map { it.summary }
+                val listTaskTitle = taskData
+                    .filter { it.courseId == selectedCourseId }
+                    .sortedBy { parseDateAndTime("${it.deadline["date"]} ${it.deadline["time"]}") }
+                    .map { it.title }
+                val listModuleTitle = moduleData
+                    .filter { it.courseId == selectedCourseId }
+                    .sortedBy { parseDateAndTime("${it.created["date"]} ${it.created["time"]}") }
+                    .map { it.title }
+                val listAnnouncementTitle = announcementData
+                    .filter { it.courseId == selectedCourseId }
+                    .sortedBy { parseDateAndTime("${it.created["date"]} ${it.created["time"]}") }
+                    .map { it.title }
 
                 Title(
                     title = course.courseName
