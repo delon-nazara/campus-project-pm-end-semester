@@ -163,4 +163,7 @@
     <string name="sts_about">Tentang Aplikasi</string>
     <string name="sts_logout">Keluar</string>
 
+    <!-- Temp -->
+    <string name="title_activity_spin_wheel">SpinWheel</string>
+
 </resources>
