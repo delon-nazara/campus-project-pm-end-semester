@@ -119,10 +119,6 @@
     <string name="tls_spin_wheel">Spin Wheel</string>
     <string name="tls_voting">Voting</string>
 
-    <!-- Tool Spin Wheel Screen -->
-
-    <!-- Tool Voting Screen -->
-
     <!-- Admin Screen -->
     <string name="ads_empty">Kamu bukan seorang admin di kelas manapun.\nJadilah admin dengan membuat kelas baru!</string>
     <string name="ads_create">Buat Kelas Baru</string>
@@ -162,8 +158,5 @@
     <string name="sts_privacy">Privasi dan Keamanan</string>
     <string name="sts_about">Tentang Aplikasi</string>
     <string name="sts_logout">Keluar</string>
-
-    <!-- Temp -->
-    <string name="title_activity_spin_wheel">SpinWheel</string>
 
 </resources>

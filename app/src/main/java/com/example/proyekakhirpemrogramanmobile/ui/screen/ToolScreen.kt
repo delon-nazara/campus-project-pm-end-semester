@@ -122,7 +122,7 @@ fun ToolListItem(
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(24.dp)
-            .clickable { navigateTo(Route.TOOL_SPIN_WHEEL_SCREEN.name, false) }
+            .clickable { navigateTo(tool.route, false) }
     ) {
         Image(
             painter = painterResource(tool.image),

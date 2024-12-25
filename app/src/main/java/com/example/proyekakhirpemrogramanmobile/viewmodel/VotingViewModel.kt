@@ -1,27 +1,23 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen.Voting
+package com.example.proyekakhirpemrogramanmobile.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.proyekakhirpemrogramanmobile.domain.Voting.Vote
-import com.example.proyekakhirpemrogramanmobile.domain.Voting.VoteList
+import com.example.proyekakhirpemrogramanmobile.data.model.Vote
+import com.example.proyekakhirpemrogramanmobile.data.model.VoteList
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class VotingViewModel() : ViewModel() {
     private var db = Firebase.firestore
-    private val voteId: String = "CeXHVIldmERBJ5shEhid"
 
     private var _votes = MutableStateFlow<VoteList?>(null)
-    var votes = _votes.asStateFlow()
+    val votes: StateFlow<VoteList?> = _votes.asStateFlow()
 
-    init {
-        fetchVote()
-    }
-
-    private fun fetchVote(){
-        db.collection("Votes").document(voteId)
-            .addSnapshotListener{ snapshot, exception ->
+    fun fetchVote(voteId: String) {
+        db.collection("vote").document(voteId)
+            .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
                     exception.printStackTrace()
                     return@addSnapshotListener
@@ -45,13 +41,12 @@ class VotingViewModel() : ViewModel() {
             }
     }
 
-    fun updateVote(name: String) {
+    fun updateVote(name: String, voteId: String) {
         val currentVote = _votes.value ?: return
-        val voteValue = currentVote.options.map {option ->
-            if(option.name == name) {
+        val voteValue = currentVote.options.map { option ->
+            if (option.name == name) {
                 option.copy(count = option.count + 1)
-            }
-            else {
+            } else {
                 option
             }
         }
@@ -60,7 +55,7 @@ class VotingViewModel() : ViewModel() {
             mapOf("name" to it.name, "count" to it.count)
         }
 
-        db.collection("Votes").document(voteId)
+        db.collection("vote").document(voteId)
             .update("Options", optionsForFirebase)
     }
 }

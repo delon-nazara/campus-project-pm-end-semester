@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen.CreateVote
+package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,12 +33,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.proyekakhirpemrogramanmobile.domain.Voting.Vote
+import com.example.proyekakhirpemrogramanmobile.data.model.Vote
+import com.example.proyekakhirpemrogramanmobile.viewmodel.VotingCreateViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateVoteScreen() {
-    val viewModel: CreateVoteViewModel = viewModel()
+fun VotingCreateScreen() {
+    val viewModel: VotingCreateViewModel = viewModel()
     val isSubmitting = viewModel.isSubmitting.collectAsState()
 
     var title by remember { mutableStateOf("") }
@@ -90,13 +92,16 @@ fun CreateVoteScreen() {
                 Button(
                     onClick = {
                         if (optionName.isNotBlank()) {
-                            options.add(Vote(name = optionName, count = 0))
+                            options = options.toMutableList().apply {
+                                add(Vote(name = optionName, count = 0))
+                            }
                             optionName = ""
                         }
                     }
                 ) {
                     Text("Add Option")
                 }
+
             }
 
             Text("Options:", style = MaterialTheme.typography.titleMedium)
@@ -112,9 +117,14 @@ fun CreateVoteScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = option.name, style = MaterialTheme.typography.bodyMedium)
-                        IconButton(onClick = { options.remove(option) }) {
+                        IconButton(onClick = {
+                            options = options.toMutableList().apply {
+                                remove(option)
+                            }
+                        }) {
                             Icon(Icons.Default.Delete, contentDescription = "Remove Option")
                         }
+
                     }
                 }
             }

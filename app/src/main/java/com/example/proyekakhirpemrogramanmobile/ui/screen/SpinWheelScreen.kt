@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen.temp
+package com.example.proyekakhirpemrogramanmobile.ui.screen
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.layout.Arrangement

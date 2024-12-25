@@ -1,13 +1,13 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen.CreateVote
+package com.example.proyekakhirpemrogramanmobile.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.proyekakhirpemrogramanmobile.domain.Voting.Vote
+import com.example.proyekakhirpemrogramanmobile.data.model.Vote
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class CreateVoteViewModel() : ViewModel() {
+class VotingCreateViewModel() : ViewModel() {
     private val db = Firebase.firestore
 
     private val _isSubmitting = MutableStateFlow(false)
@@ -23,7 +23,7 @@ class CreateVoteViewModel() : ViewModel() {
             }
         )
 
-        db.collection("Votes")
+        db.collection("vote")
             .add(newVote)
             .addOnSuccessListener {
                 _isSubmitting.value = false

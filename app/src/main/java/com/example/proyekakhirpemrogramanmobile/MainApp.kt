@@ -31,11 +31,16 @@ import com.example.proyekakhirpemrogramanmobile.ui.screen.SetupProfileScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskDetailScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.TaskScreen
 import com.example.proyekakhirpemrogramanmobile.ui.screen.ToolScreen
-import com.example.proyekakhirpemrogramanmobile.ui.screen.temp.SpinWheelTool
+import com.example.proyekakhirpemrogramanmobile.ui.screen.SpinWheelTool
+import com.example.proyekakhirpemrogramanmobile.ui.screen.VotingCreateScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.VotingListScreen
+import com.example.proyekakhirpemrogramanmobile.ui.screen.VotingScreen
 import com.example.proyekakhirpemrogramanmobile.util.showToast
 import com.example.proyekakhirpemrogramanmobile.viewmodel.AuthenticationViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.DatabaseViewModel
 import com.example.proyekakhirpemrogramanmobile.viewmodel.LoadingViewModel
+import com.example.proyekakhirpemrogramanmobile.viewmodel.VotingCreateViewModel
+import com.example.proyekakhirpemrogramanmobile.viewmodel.VotingViewModel
 
 @Composable
 fun MainApp(context: Context) {
@@ -431,11 +436,27 @@ fun MainApp(context: Context) {
 
         // Route Tool Spin Wheel Screen
         composable(Route.TOOL_SPIN_WHEEL_SCREEN.name) {
-            Log.d("noled", "called")
             SpinWheelTool()
         }
 
+        // Route Tool Voting List Screen
+        composable(Route.TOOL_VOTING_LIST_SCREEN.name) {
+            VotingListScreen(
+                navigateTo = { route, clearStack ->
+                    navigateTo(route, clearStack)
+                }
+            )
+        }
+
+        // Route Tool Voting Create Screen
+        composable(Route.TOOL_VOTING_CREATE_SCREEN.name) {
+            VotingCreateScreen()
+        }
+
         // Route Tool Voting Screen
+        composable(Route.TOOL_VOTING_SCREEN.name) {
+            VotingScreen()
+        }
 
         // Route Admin Screen
         composable(Route.ADMIN_SCREEN.name) {

@@ -1,4 +1,4 @@
-package com.example.proyekakhirpemrogramanmobile.domain.Voting
+package com.example.proyekakhirpemrogramanmobile.data.model
 
 data class Vote(
     val name : String,

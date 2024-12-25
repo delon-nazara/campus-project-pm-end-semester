@@ -1,11 +1,9 @@
-package com.example.proyekakhirpemrogramanmobile.ui.screen.VotingList
+package com.example.proyekakhirpemrogramanmobile.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.proyekakhirpemrogramanmobile.domain.Voting.Vote
-import com.example.proyekakhirpemrogramanmobile.domain.Voting.VoteList
+import com.example.proyekakhirpemrogramanmobile.data.model.Vote
+import com.example.proyekakhirpemrogramanmobile.data.model.VoteList
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +19,7 @@ class VotingListViewModel : ViewModel() {
     }
 
     private fun fetchVoteLists() {
-        db.collection("Votes")
+        db.collection("vote")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
                     exception.printStackTrace()
